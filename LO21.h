@@ -1,10 +1,16 @@
 #ifndef LO21_H_INCLUDED
 #define LO21_H_INCLUDED
 #include <ctime>
+#include <QString>
 
-class NotesException{
+enum Statut { En attente, En cours, terminée};
+
+enum Media {image, audio, video};
+
+
+class NoteException{
 public:
-    NotesException(const QString& message):info(message){}
+    NoteException(const QString& message):info(message){}
     QString getInfo() const { return info; }
 private:
     QString info;
@@ -14,8 +20,8 @@ private:
 class Note //Class car on veut tout en privé
 {
     friend class NoteManager;  //seule classe qui pourra accéder aux attributs et methodes
-    string id;
-    string titre;
+    QString id;
+    QString titre;
     tm dateCrea; //normalement tm est un type struct de la bibli ctime
     bool active;
     bool supprime;
@@ -26,8 +32,8 @@ class Note //Class car on veut tout en privé
     Note(const Note& n);  //constructeur par recopie
     
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter
-    int getId(){return id;}
-    string getTitre(){return titre;}
+    QString getId(){return id;}
+    QString getTitre(){return titre;}
     tm getDate(){return dateCrea;}
     bool getActive(){return active;}
     bool getStatutSupp(){return supprime;}
@@ -41,10 +47,10 @@ class NoteManager
     void addNote(Note* n);
     
     
-    NotesManager();
-    ~NotesManager();
-    NotesManager(const NotesManager& m);
-    NotesManager& operator=(const NotesManager& m);
+    NoteManager();
+    ~NoteManager();
+    NoteManager(const NoteManager& m);
+    NoteManager& operator=(const NoteManager& m);
     
     public :
     class Iterator {
@@ -57,16 +63,78 @@ class NoteManager
             bool isDone() const { return nbRemain==0; }
             void next() {
                 if (isDone())
-                    throw NotesException("error, next on an iterator which is done");
+                    throw NoteException("error, next on an iterator which is done");
                 nbRemain--;
                 currentN++;
             }
             Note& current() const {
                 if (isDone())
-                    throw NotesException("error, indirection on an iterator which is done");
+                    throw NoteException("error, indirection on an iterator which is done");
                 return **currentN;
             }
 };
+    
+    Iterator getIterator() {
+            return Iterator(notes,nbNotes);
+        }
+};
+    
+    
+class Relation{
+    friend class RelationManager;
+    QString titre;
+    QString description;
+    bool orientee;
+    Relation(); //constructeur sans argument
+    ~Relation();
+    void SeeRelation();
+    Relation(Relation& r);
+    
+    public :
+    QString getTitre(){return titre;}
+    QString getDesc(){return description;}
+    bool getOrient(){return orientee;}
+};
 
+
+
+class RelationManager
+{
+    Relation** relations;
+    unsigned int nbRelations;
+    void addRelation(Relation* r);
+    
+    
+    RelationManager();
+    ~RelationManager();
+    RelationManager(const RelationManager& m);
+    RelationManager& operator=(const RelationManager& m);
+    
+    public :
+    class Iterator {
+            friend class RelationManager;
+            Relation** currentR;
+            unsigned int nbRemain;
+            Iterator(Relation** r, unsigned nb):currentR(r),nbRemain(nb){}
+        public:
+            Iterator():nbRemain(0),currentR(nullptr){}
+            bool isDone() const { return nbRemain==0; }
+            void next() {
+                if (isDone())
+                    throw NoteException("error, next on an iterator which is done");
+                nbRemain--;
+                currentR++;
+            }
+            Relation& current() const {
+                if (isDone())
+                    throw NoteException("error, indirection on an iterator which is done");
+                return **currentR;
+            }
+};
+    
+    Iterator getIterator() {
+            return Iterator(relations,nbRelations);
+        }
+};
 
 #endif // LO21_H_INCLUDED

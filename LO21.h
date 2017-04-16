@@ -44,6 +44,7 @@ class NoteManager
 {
     Note** notes;
     unsigned int nbNotes;
+    unsigned int nbMaxNotes;
     void addNote(Note* n);
     
     
@@ -102,6 +103,7 @@ class RelationManager
 {
     Relation** relations;
     unsigned int nbRelations;
+    unsigned int nbMaxRelations;
     void addRelation(Relation* r);
     
     

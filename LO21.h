@@ -85,7 +85,7 @@ class Relation{
     QString titre;
     QString description;
     bool orientee;
-    Relation(); //constructeur sans argument
+    Relation():orientee(True){} //constructeur sans argument, orientee vrai par défaut
     ~Relation();
     void SeeRelation();
     Relation(Relation& r);

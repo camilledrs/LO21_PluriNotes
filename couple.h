@@ -12,15 +12,18 @@ class Couple //Class car on veut tout en privé
     int label
     Notes* note1;
     Notes* note2;
+ 
+    Editer(){};
     
-    Couple();
-    ~Couple();
     
-    Couple(const Couple& n);  //constructeur par recopie
     
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter
+    
     int getLabel(){return label;}
-    suppCouple();  //à définir dans couple.cpp  //attention 
+    Couple();
+    ~Couple();
+    Couple(const Couple& n);  //constructeur par recopie
+     
 };
 
 #endif //COUPLE_H_INCLUDED

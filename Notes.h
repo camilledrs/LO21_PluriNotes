@@ -4,6 +4,14 @@
 #include <QString>
 #include "NoteManager.h"
 
+class NoteException{
+public:
+    NoteException(const QString& message):info(message){}
+    QString getInfo() const { return info; }
+private:
+    QString info;
+};
+
 class Note //Class car on veut tout en privé
 {
     friend class NoteManager;  //seule classe qui pourra accéder aux attributs et methodes

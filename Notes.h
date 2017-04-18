@@ -26,3 +26,5 @@ class Note //Class car on veut tout en privé
     bool getStatutSupp(){return supprime;}
     suppNote();  //à définir dans LO21.cpp  //attention ne supprimer que les archivées + voir autres conditions dans Drive
 };
+
+#endif //NOTES_H_INCLUDED

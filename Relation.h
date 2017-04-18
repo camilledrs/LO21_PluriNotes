@@ -2,6 +2,15 @@
 #define RELATION_H_INCLUDED
 #include <ctime>
 #include <QString>
+#include "RelationManager.h"
+
+class RelationException{
+public:
+    RelationException(const QString& message):info(message){}
+    QString getInfo() const { return info; }
+private:
+    QString info;
+};
 
 class Relation{
     friend class RelationManager;

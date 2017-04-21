@@ -14,10 +14,17 @@ void RelationManager::addRelation(Relation* r){
 	if (nbRelations==nbMaxRelations){
 		Relation** newRelations= new Relation*[nbMaxRelations+5];
 		for(unsigned int i=0; i<nbRelations; i++) newRelations[i]=relations[i];
-		Relation** oldRelations=relation;
-		relation=newRelations;
+		Relation** oldRelations=relations;
+		relations=newRelations;
 		nbMaxRelations+=5;
 		if (oldRelations) delete[] oldRelations;
 	}
-	relation[nbRelations++]=r;
+	relations[nbRelations++]=r;
+}
+
+
+RelationManager::RelationManager(const RelationManager& m):relations(new Relation[m.nbRelations]),nbRelations(m.nbRelations), nbMaxRelations(m .nbMaxRelations){
+for(unsigned int i=0; i<nbRelations; i++) {
+relations[i]=new Relation(*m.relations[i]); // si composition
+//relations[i]=m.relations[i]; // si agrégation }
 }

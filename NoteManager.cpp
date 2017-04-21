@@ -14,10 +14,16 @@ void NoteManager::addNote(Note* n){
 	if (nbNotes==nbMaxNotes){
 		Note** newNotes= new Note*[nbMaxNotes+5];
 		for(unsigned int i=0; i<nbNotes; i++) newNotes[i]=notes[i];
-		Note** oldNotes=note;
-		note=newNotes;
+		Note** oldNotes=notes;
+		notes=newNotes;
 		nbMaxNotes+=5;
 		if (oldNotes) delete[] oldNotes;
 	}
-	note[nbNotes++]=n;
+	notes[nbNotes++]=n;
+}
+
+NoteManager::NoteManager(const NoteManager& m):notes(new Note[m.nbNotes]),nbNotes(m.nbNotes), nbMaxNotes(m .nbMaxNotes){
+for(unsigned int i=0; i<nbNotes; i++) {
+notes[i]=new Note(*m.notes[i]); // si composition
+//notes[i]=m.notes[i]; // si agrégation }
 }

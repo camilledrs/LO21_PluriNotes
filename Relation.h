@@ -3,6 +3,7 @@
 #include <ctime>
 #include <QString>
 #include "RelationManager.h"
+#include "Couple.h"
 
 class RelationException{
 public:
@@ -14,6 +15,7 @@ private:
 
 class Relation{
     friend class RelationManager;
+    Couple **tab;
     QString titre;
     QString description;
     bool orientee;

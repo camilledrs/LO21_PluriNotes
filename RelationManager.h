@@ -13,7 +13,10 @@ class RelationManager
     
     
     RelationManager();
-    ~RelationManager();
+    ~RelationManager(){
+for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
+delete[] relations; // composition + agrégation
+    };
     RelationManager(const RelationManager& m);
     RelationManager& operator=(const RelationManager& m);
     

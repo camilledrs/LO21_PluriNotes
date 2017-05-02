@@ -27,3 +27,17 @@ for(unsigned int i=0; i<nbNotes; i++) {
 notes[i]=new Note(*m.notes[i]); // si composition
 //notes[i]=m.notes[i]; // si agrégation }
 }
+
+
+NoteManager::NoteManager& operator=(const NoteManager& m){
+	if (this != &m)
+	{
+		nbNotes=m.nbNotes;
+		nbMaxNotes=m.nbMaxNotes;
+		newtab= new Note[nbMaxNotes];
+		for(unisgned int i=0; i<nb; i++) newtab[i]=m.notes[i];
+		delete[] notes;
+		notes=newtab;
+	}
+	return *this;
+}

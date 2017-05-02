@@ -16,7 +16,7 @@ class NoteManager
     ~NoteManager(){
 for(unsigned int i=0; i<nbNotes; i++) delete notes[i]; // composition uniquement
 delete[] notes; // composition + agrégation
-    };;
+    }
     NoteManager(const NoteManager& m);
     NoteManager& operator=(const NoteManager& m);
     

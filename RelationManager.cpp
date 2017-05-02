@@ -28,3 +28,17 @@ for(unsigned int i=0; i<nbRelations; i++) {
 relations[i]=new Relation(*m.relations[i]); // si composition
 //relations[i]=m.relations[i]; // si agrégation }
 }
+
+
+RelationManager::NoteManager& operator=(const RelationManager& m){
+	if (this != &m)
+	{
+		nbRelations=m.nbRelations;
+		nbMaxRelations=m.nbMaxRelations;
+		newtab= new Note[nbMaxRelations];
+		for(unisgned int i=0; i<nb; i++) newtab[i]=m.relations[i];
+		delete[] relations;
+		relations=newtab;
+	}
+	return *this;
+}

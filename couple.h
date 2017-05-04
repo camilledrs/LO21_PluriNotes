@@ -10,8 +10,8 @@ class Couple //Class car on veut tout en privé
 {
     
     int label
-    Notes* note1;
-    Notes* note2;
+    Note* note1;
+    Note* note2;
  
     Editer(){};
     
@@ -20,7 +20,7 @@ class Couple //Class car on veut tout en privé
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter
     
     int getLabel(){return label;}
-    Couple(const Note& n1, const Note& n2, int l):label(l), note1(new Notes(&n1)), note2(new Notes(&n2)) {}
+    Couple(const Note& n1, const Note& n2, int l):label(l), note1(new Note(&n1)), note2(new Note(&n2)) {}
 
     ~Couple(){delete note1, delete note2;}
     Couple(const Couple& n);  //constructeur par recopie

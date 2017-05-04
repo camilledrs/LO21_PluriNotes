@@ -20,8 +20,9 @@ class Couple //Class car on veut tout en privé
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter
     
     int getLabel(){return label;}
-    Couple();
-    ~Couple();
+    Couple(const Note& n1, const Note& n2, int l):label(l), note1(new Notes(&n1)), note2(new Notes(&n2)) {}
+
+    ~Couple(){delete note1, delete note2;}
     Couple(const Couple& n);  //constructeur par recopie
      
 };

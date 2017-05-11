@@ -21,6 +21,9 @@ class Note //Class car on veut tout en privé
     bool active;
     bool supprime;
     Version **versions;  //faire un tableau
+    int nbVersion;
+    int nbMaxVersion;
+    
     Note();
     ~Note();
     editer();  //creation d'une nouvelle version

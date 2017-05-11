@@ -5,9 +5,9 @@
 
 
 
-void NoteManager::addNote(Note* n){
+void NoteManager::addNote(QString id, QString title, tm crea,tm modif){
 	for(unsigned int i=0; i<nbNotes; i++){
-		if (notes[i]->getId()==n->getId()) throw NoteException("error, creation of an already existent note");
+		if (notes[i]->getId()==id) throw NoteException("error, creation of an already existent note");
 	}
 	if (nbNotes==nbMaxNotes){
 		Note** newNotes= new Note*[nbMaxNotes+5];
@@ -17,7 +17,7 @@ void NoteManager::addNote(Note* n){
 		nbMaxNotes+=5;
 		if (oldNotes) delete[] oldNotes;
 	}
-	notes[nbNotes++]=n;
+	notes[nbNotes++]=new Note(id, title, crea, modif);
 }
 
 NoteManager::NoteManager(const NoteManager& m):notes(new Note[m.nbNotes]),nbNotes(m.nbNotes), nbMaxNotes(m .nbMaxNotes){

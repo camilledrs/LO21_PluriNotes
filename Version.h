@@ -12,6 +12,7 @@ class Version
     
     public :
         Version(Version&);
+        virtual ~Version();
         Version(datetime d):Date(d);
         virtual void editer()=0;   //class abstraite
         datetime getDate(){return date;}

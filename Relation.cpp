@@ -28,17 +28,18 @@ Relation::Relation& operator=(const Relation& r){
       
 
 
-void RelationManager::addCouple(Couple* c){
+void Relation::addCouple(const Couple& c){
 	for(unsigned int i=0; i<nb; i++){
 		if (tab[i]->getLabel()==c->getLabel()) throw NoteException("error, creation of an already existent note");
 	}
 	if (nb==max){
 		Couple** newtab= new Couple*[max+5];
-		for(unsigned int i=0; i<nb; i++) newtab[i]=couples[i];
-		Couple** old=couples;
-		couples=newtab;
+		for(unsigned int i=0; i<nb; i++) newtab[i]=couple[i];
+		Couple** old=couple;
+		couple=newtab;
 		max+=5;
 		if (old) delete[] old;
 	}
-	couples[nb++]=c;
+	//couple[nb++]=c;//attention c'est une compo
+	couple[nb++]= new Couple(c);
 }

@@ -1,5 +1,3 @@
-#include "Notes.h"
-#include "NoteManager.h"
 #include <QFile>
 #include <QTextCodec>
 #include <QtXml>

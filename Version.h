@@ -24,7 +24,7 @@ class Article : public Version
         QString texte;
         
     public :
-        Article(const QString& s):texte(s){}
+        Article(datetime d,const QString& s):Version(d),texte(s){}
         void editer();  //à voir, parce que ça veut dire créer une nouvelle version, on est obligés de la définir pour que ce ne soit plus une classe abstraite
 
 };
@@ -39,7 +39,7 @@ class Tache : public Version
         unsigned int priorite;
         
      public :
-        Tachee(const QString a, datetime d=0, unsigned int p=0) :action(a), statut('En attente'), dateTache(d), priorite(p){}
+        Tachee(datetime dv,const QString a, datetime d=0, unsigned int p=0) :Version(dv),action(a), statut('En attente'), dateTache(d), priorite(p){}
         editer(); //a voir
         QString getAction(){return action;}
         Statut getStatut(){return statut;}
@@ -59,7 +59,7 @@ class Multimedia : public Version
         Media type;
         
      public :
-        Multimedia(const QString& d, const QString& f, Media t):description(d), fichier(f), type(t){}
+        Multimedia(datetime dv,const QString& d, const QString& f, Media t):Version(dv),description(d), fichier(f), type(t){}
         editer(); //a voir
         QString getDescription() {return description;}
         QString getFichier() {return fichier;}

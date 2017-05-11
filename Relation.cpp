@@ -10,7 +10,7 @@ Relation::Relation(Relation& r):tab(new *Couple[r.max]),nb(r.nb), max(r.max), ti
   }
   
 
-Relation::Relation& operator=(const Relation& r){
+Relation::Relation& Relation::operator=(const Relation& r){
   if(this!=&r)
   {
       nb=r.nb;

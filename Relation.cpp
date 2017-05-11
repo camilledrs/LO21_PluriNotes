@@ -1,5 +1,3 @@
-#ifndef COUPLE_H_INCLUDED
-#define COUPLE_H_INCLUDED
 #include <ctime>
 #include <QString>
 #include "Relation.h"

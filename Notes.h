@@ -24,7 +24,7 @@ class Note //Class car on veut tout en privé
     
     Note();
     ~Note();
-    virtual editer()=0; //virtuelle pure
+    editer();
     Note(const Note& n);  //constructeur par recopie
     
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter

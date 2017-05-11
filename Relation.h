@@ -32,7 +32,7 @@ class Relation{
     QString getDesc() const {return description;}
     bool getOrient()const {return orientee;}
     void addCouple(const Couple& c);
-        
+    void Editer(); //à voir
 };
 
 #endif // RELATION_H_INCLUDED

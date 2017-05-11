@@ -18,6 +18,7 @@ class Note //Class car on veut tout en privé
     QString id;
     QString titre;
     tm dateCrea; //normalement tm est un type struct de la bibli ctime
+    tn dateModif;
     bool active;
     bool supprime;
     Version **versions;  //faire un tableau

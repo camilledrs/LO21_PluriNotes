@@ -23,11 +23,31 @@ class Relation{
     bool orientee;
     Relation():orientee(True){} //constructeur sans argument, orientee vrai par défaut
     ~Relation() {delete[] tab;}
-    void SeeRelation(); //utiliser un const_iterator pour avoir un accès en lecture ?
+    void SeeRelation(); 
     Relation(Relation& r);
     Relation& operator=(Relation& r);
     setTitre(QString newt){titre=newt;}
     setDesc(QString newd){description=newd;}
+    
+ /*J'ai mis la classe const_iterator en privée car je ne veux qu'on y ai accès que 
+ grâce à la méthode public seeRelation()
+ A discuter */
+    
+        class const_iterator {
+        friend class Relation;
+        const Couple * courant;
+        const_iterator(const Couple* deb):courant(deb){}
+        
+      public :
+        const_iterator():courant(0){}
+        const Couple& operator*() const {return *courant;}
+        const_iterator& operator++(){++courant; return *this;}
+        const_it operator operator++(int) {const_iterator old=*this; ++courant; return old;}
+        bool operator==(const_iterator it) const {return courant==it.courant;}
+        bool operator!=(const_iterator it) const {return courant!=it.courant;}
+    };
+    const_iterator begin() const {return const_iterator(tab);}
+    const_iterator end() const {return const_iterator(tab+nb);}
     
     public :
     QString getTitre() const {return titre;}
@@ -36,6 +56,11 @@ class Relation{
     void addCouple(const Couple& c);
     void suppCouple(const Note& n1, const Note& n2);
     void Editer(); //à voir
+    
+
+    
+          
+        
 };
 
 #endif // RELATION_H_INCLUDED

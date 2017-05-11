@@ -23,7 +23,7 @@ class Note //Class car on veut tout en privé
     Version **versions;  //faire un tableau
     Note();
     ~Note();
-    editer();
+    editer();  //creation d'une nouvelle version
     Note(const Note& n);  //constructeur par recopie
     
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter

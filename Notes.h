@@ -18,14 +18,17 @@ class Note //Class car on veut tout en privé
     QString id;
     QString titre;
     tm dateCrea; //normalement tm est un type struct de la bibli ctime
-    tn dateModif;
-    bool active;
+    tm dateModif;
+    bool active;  //active par défaut ?
     bool supprime;
     Version **versions;  //faire un tableau
     int nbVersion;
     int nbMaxVersion;
     
-    Note();
+    Note(QString id, QString title, tm crea,tm modif):id(id), titre(title),dateCrea(crea), dateModif(modif), active(true), supprime(false), nbVersion(0), nbMaxVersion(0){
+        versions=new Version*[5];
+        versions[0]=Version(crea);
+    }
     ~Note();
     editer();  //creation d'une nouvelle version
     Note(const Note& n);  //constructeur par recopie

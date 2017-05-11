@@ -26,12 +26,15 @@ class Relation{
     void SeeRelation(); //utiliser un const_iterator pour avoir un accès en lecture ?
     Relation(Relation& r);
     Relation& operator=(Relation& r);
+    setTitre(QString newt){titre=newt;}
+    setDesc(QString newd){description=newd;}
     
     public :
     QString getTitre() const {return titre;}
     QString getDesc() const {return description;}
     bool getOrient()const {return orientee;}
     void addCouple(const Couple& c);
+    void suppCouple(const Note& n1, const Note& n2);
     void Editer(); //à voir
 };
 

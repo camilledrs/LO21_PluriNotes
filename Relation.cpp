@@ -41,3 +41,19 @@ void Relation::addCouple(const Couple& c){
 	//couple[nb++]=c;//attention c'est une compo
 	couple[nb++]= new Couple(c);
 }
+
+
+
+
+void Relation::seeRelation(){
+	std::cout<<"titre = "<<titre<<"\n"<<"description = "<<description<<"\n"<<"orientation = "<<orientee<<"\n";
+	Relation::const_iterator it=begin();
+	Relation::const_iterator end=end();
+	if(it!=end){
+	do
+	{
+		cout<<"label : "<<it.courant->getLabel()<<"\n"<<"note1 : "<<it.courant->getIdNote1()<<"\n"<<"note 2 : "<<it.courant->getIdNote2<<"\n";);
+		it++;
+	} while(it!=end);
+	}
+}

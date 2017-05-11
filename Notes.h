@@ -20,8 +20,7 @@ class Note //Class car on veut tout en privé
     tm dateCrea; //normalement tm est un type struct de la bibli ctime
     bool active;
     bool supprime;
-    Version **versions;  //faire un tableau ou une pile(FILO) serait encore mieux
-    
+    Version **versions;  //faire un tableau
     Note();
     ~Note();
     editer();
@@ -34,9 +33,9 @@ class Note //Class car on veut tout en privé
     bool getActive(){return active;}
     bool getStatutSupp(){return supprime;}
     suppNote();  //à définir dans LO21.cpp  //attention ne supprimer que les archivées + voir autres conditions dans Drive
-    
+    restaurer();   //prendre une ancienne version, décaler les suivantes d'un cran vers la gauche, puis mettre la version en question à la dernière place du tableau
     //Je pense qu'il faut faire comme un VersionManager mais dans Note, en gros implémenter les fonctiosn nécessaires à la gestion du tableau/de la pile
-    Version* getDerniereVersion(); //faire dépiler en gros, ou alors prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau tableau 
+    Version* getDerniereVersion(); //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau tableau 
 };
 
 #endif //NOTES_H_INCLUDED

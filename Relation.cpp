@@ -30,7 +30,7 @@ Relation::Relation& Relation::operator=(const Relation& r){
 
 void Relation::addCouple(const Couple& c){
 	for(unsigned int i=0; i<nb; i++){
-		if (tab[i]->getLabel()==c->getLabel()) throw NoteException("error, creation of an already existent note");
+		if (tab[i]->getLabel()==c.getLabel()) throw NoteException("error, creation of an already existent note");
 	}
 	if (nb==max){
 		Couple** newtab= new Couple*[max+5];

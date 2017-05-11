@@ -34,6 +34,7 @@ class Note //Class car on veut tout en privé
     QString getId(){return id;}
     QString getTitre(){return titre;}
     tm getDate(){return dateCrea;}
+    tm getDateModif()return dateModif;}
     bool getActive(){return active;}
     bool getStatutSupp(){return supprime;}
     suppNote();  //à définir dans LO21.cpp  //attention ne supprimer que les archivées + voir autres conditions dans Drive

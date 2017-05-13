@@ -30,7 +30,7 @@ class Note //Class car on veut tout en privé
         versions[0]=Version(crea);
     }
     ~Note();
-    editer();  //creation d'une nouvelle version
+    editer();  //creation d'une nouvelle version et penser à incrémenter nbVersion
     Note(const Note& n);  //constructeur par recopie
     
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter
@@ -41,9 +41,8 @@ class Note //Class car on veut tout en privé
     bool getActive(){return active;}
     bool getStatutSupp(){return supprime;}
     suppNote();  //à définir dans LO21.cpp  //attention ne supprimer que les archivées + voir autres conditions dans Drive
-    restaurer(Version& v);   //prendre une ancienne version, décaler les suivantes d'un cran vers la gauche, puis mettre la version en question à la dernière place du tableau
-    //Je pense qu'il faut faire comme un VersionManager mais dans Note, en gros implémenter les fonctiosn nécessaires à la gestion du tableau/de la pile
-    Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau tableau 
+    restaurer(Version* v);   //prendre une ancienne version, décaler les suivantes d'un cran vers la gauche, puis mettre la version en question à la dernière place du tableau
+    Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau  
 };
 
 #endif //NOTES_H_INCLUDED

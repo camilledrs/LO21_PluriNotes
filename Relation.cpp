@@ -66,7 +66,7 @@ void Relation::seeRelation(){
 	if(it!=end){
 	do
 	{
-		cout<<"label : "<<it.courant->getLabel()<<"\n"<<"note1 : "<<it.courant->getIdNote1()<<"\n"<<"note 2 : "<<it.courant->getIdNote2<<"\n";);
+		cout<<"label : "<<it.courant->getLabel()<<"\n"<<"note1 : "<<it.courant->getIdNote1()<<"\n"<<"note 2 : "<<it.courant->getIdNote2()<<"\n";);
 		it++;
 	} while(it!=end);
 	}

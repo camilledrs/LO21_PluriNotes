@@ -49,7 +49,7 @@ class Relation{
     const_iterator begin() const {return const_iterator(tab);}
     const_iterator end() const {return const_iterator(tab+nb);}
     
-    public :
+    public :  //mettre tout en private pour que seul RelationManager puisse utiliser les methdes ?
     QString getTitre() const {return titre;}
     QString getDesc() const {return description;}
     bool getOrient()const {return orientee;}

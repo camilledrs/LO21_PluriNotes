@@ -26,9 +26,9 @@ Relation::Relation& Relation::operator=(const Relation& r){
       
 
 
-void Relation::addCouple(const Couple& c){
+void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici qu'on veut la dernière version ?
 	for(unsigned int i=0; i<nb; i++){
-		if (tab[i]->getLabel()==c.getLabel()) throw NoteException("error, creation of an already existent note");
+		if (tab[i]->getLabel()==l) throw NoteException("error, creation of an already existent note");
 	}
 	if (nb==max){
 		Couple** newtab= new Couple*[max+5];
@@ -39,10 +39,24 @@ void Relation::addCouple(const Couple& c){
 		if (old) delete[] old;
 	}
 	//couple[nb++]=c;//attention c'est une compo
-	couple[nb++]= new Couple(c);
+	couple[nb++]= new Couple(n1, n2, l);
 }
 
 
+void Relation::suppCouple(const Couple& c)
+{
+	unsigned int i=0;
+	while(i<nb && tab->getLabel()!=c.getLabel())
+		i++;
+	if (i==nb) throw NoteException("error, the item doesn't exist");
+	else 
+	{
+		delete tab[i];
+		while(i<nb-1) tab[i]=tab[i+1];
+		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
+		nb--;
+	}
+}
 
 
 void Relation::seeRelation(){

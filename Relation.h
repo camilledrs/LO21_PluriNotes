@@ -53,8 +53,8 @@ class Relation{
     QString getTitre() const {return titre;}
     QString getDesc() const {return description;}
     bool getOrient()const {return orientee;}
-    void addCouple(const Couple& c);
-    void suppCouple(const Note& n1, const Note& n2);
+    void addCouple(const Note& n1, const Note& n2); 
+    void suppCouple(const Note& n1, const Note& n2); //pas plutôt const Couple& c en argument ?
     void Editer(); //à voir
     
 

@@ -28,6 +28,9 @@ class Note //Class car on veut tout en privé
     Note(QString id, QString title, tm crea,tm modif):id(id), titre(title),dateCrea(crea), dateModif(modif), active(true), supprime(false), nbVersion(0), nbMaxVersion(0){
         versions=new Version*[5];
         versions[0]=Version(crea);
+        //du coup nbMaxVersion=5;
+        //nbVersion=1; ???
+        
     }
     ~Note();
     editer();  //creation d'une nouvelle version et penser à incrémenter nbVersion

@@ -1,6 +1,8 @@
 #include <ctime>
 #include <QString>
 #include "Relation.h"
+#include "Couple.h"
+#include "NoteManager.h"
 
 
 Relation::Relation(Relation& r):tab(new *Couple[r.max]),nb(r.nb), max(r.max), titre(r.titre), description(r.description), orientee(r.orientee){

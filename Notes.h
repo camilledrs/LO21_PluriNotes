@@ -33,7 +33,7 @@ class Note //Class car on veut tout en privé
         
     }
     ~Note();
-    editer();  //creation d'une nouvelle version et penser à incrémenter nbVersion
+    editer();  //creation d'une nouvelle version et penser à incrémenter nbVersion, verifiee si elle est active
     Note(const Note& n);  //constructeur par recopie
     
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter

@@ -33,7 +33,11 @@ class Note //Class car on veut tout en privé
         
     }
     ~Note();
-    editer();  //creation d'une nouvelle version et penser à incrémenter nbVersion, verifiee si elle est active
+    //editer();  //creation d'une nouvelle version et penser à incrémenter nbVersion, verifiee si elle est active
+    void creerArticle(tm crea, const QString& s);
+    void creerMultimedia(tm crea, const QString& desc, const QString& file, Media t);
+    void creerTache(tm crea, const QString& a, tm dateFin=0, unsigned int prio=0); //j'ai fait trois constructeurs différents pour es trois types de note possibles
+   
     Note(const Note& n);  //constructeur par recopie
     
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter

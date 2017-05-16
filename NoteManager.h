@@ -9,7 +9,7 @@ class NoteManager
     Note** notes;
     unsigned int nbNotes;
     unsigned int nbMaxNotes;
-    void addNote(Note* n);
+   
     
     
     NoteManager();
@@ -19,6 +19,7 @@ delete[] notes; // composition + agrégation
     }
     NoteManager(const NoteManager& m);
     NoteManager& operator=(const NoteManager& m);
+    void addNote(QString id, QString title, tm crea,tm modif);
     
     public :
     class Iterator {

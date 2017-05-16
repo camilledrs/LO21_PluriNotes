@@ -22,7 +22,7 @@ void editer(QString tittle, tm modif){
 	}
 }
 
-void creerArticle(tm crea, const QString& s){
+void creerArticle(tm crea, const QString& text){
 	if (active && !supprime){
 		if (nbVersion==nbMaxVersion){
 			Version ** newVersions= new Version*[nbMaxVersions+5];
@@ -34,6 +34,7 @@ void creerArticle(tm crea, const QString& s){
 			delete[] oldVersions;
 		}
 		versions[nbVersion++]= new Article(crea, s);
+		dateModif=crea;
 	}
 }
 
@@ -50,6 +51,7 @@ void creerMultimedia(tm crea, const QString& desc, const QString& file, Media t)
 			delete[] oldVersions;
 		}
 		versions[nbVersion++]= new Multimedia(crea, desc, file, t);
+	dateModif=crea;
 	}
 }
 
@@ -66,5 +68,6 @@ void creerTache(tm crea, const QString& a, tm dateFin=0, unsigned int prio=0){
 			delete[] oldVersions;
 		}
 		versions[nbVersion++]= new Tache(crea, a, dateFin, pris);
+		dateModif=crea;
 	}
 }

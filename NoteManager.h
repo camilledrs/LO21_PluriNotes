@@ -9,17 +9,18 @@ class NoteManager
     Note** notes;
     unsigned int nbNotes;
     unsigned int nbMaxNotes;
-   
-    
     
     NoteManager();
     ~NoteManager(){
-for(unsigned int i=0; i<nbNotes; i++) delete notes[i]; // composition uniquement
-delete[] notes; // composition + agrégation
+        for(unsigned int i=0; i<nbNotes; i++) delete notes[i]; // composition uniquement
+        delete[] notes; // composition + agrégation
     }
     NoteManager(const NoteManager& m);
     NoteManager& operator=(const NoteManager& m);
     void addNote(QString id, QString title, tm crea,tm modif);
+    void editerArticle(Note* n, QString tittle, tm modif, const QString& text);
+    void editerMultimedia(Note* n, QString tittle, tm modif, const QString& desc, const QString& file, Media t);
+    void editerTache(Note* n, QString tittle, tm modif, const QString& a, tm dateFin=0, unsigned int prio=0)
     
     public :
     class Iterator {

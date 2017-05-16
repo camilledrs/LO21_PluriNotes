@@ -39,3 +39,26 @@ NoteManager::NoteManager& operator=(const NoteManager& m){
 	}
 	return *this;
 }
+
+void NoteManager::editerArticle(Note* n, QString tittle, tm modif, const QString& text){
+	if (tittle)
+		editer(QString tittle, tm modif);
+	if (text)
+		creerArticle(modif, text);
+}
+
+void NoteManager::editerMultimedia(Note* n, QString tittle, tm modif, const QString& desc, const QString& file, Media t){
+	if (tittle)
+		editer(QString tittle, tm modif);
+	if (desc)
+		creerMultimedia(modif, desc, file, t);
+}
+
+void NoteManager::editerTache(Note* n, QString tittle, tm modif, const QString& a, tm dateFin=0, unsigned int prio=0){
+	if (tittle)
+		editer(QString tittle, tm modif);
+	if (a)
+		creerArticle(modif, a, dateFin, prio);
+}	
+	
+	

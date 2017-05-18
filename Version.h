@@ -13,11 +13,12 @@ class Version
         Version(Version&);
         virtual ~Version()=0;
         Version(datetime d):Date(d);
+        virtual Version$ clone()const=0;
         
         // j'ai mis ses méthodes en privée pour qu'elles ne puissent être utilisée que par les classes friend
     
     public :
-        virtual Version$ clone()const=0;
+        
         datetime getDate(){return date;}
 };
 
@@ -27,9 +28,9 @@ class Article : public Version
         QString texte;
         
         Article(datetime d,const QString& s):Version(d),texte(s){} // en privé pour qu'un article ne puisse être construit que par une classe friend
-        
+        Article* clone()const{return new Article(*this);}
     public :
-        Article* clone()const{return new Article(*this);}//a voir si prive ou public
+        
       
 };
 
@@ -43,14 +44,14 @@ class Tache : public Version
         unsigned int priorite;
         
         Tache(datetime dv,const QString a, datetime d=0, unsigned int p=0) :Version(dv),action(a), statut('En attente'), dateTache(d), priorite(p){} // en privé pour qu'une tache ne puisse être construite que par une classe friend
-        
+        Tache* clone()const{return new Tache(*this);}
      public :
         
         QString getAction(){return action;}
         Statut getStatut(){return statut;}
         unsigned int getPriority(){return priorite;}
         datetime getDate() {return dateTache;}
-        Tache* clone()const{return new Tache(*this);}//a voir si prive ou public
+        
 
 };
 
@@ -65,14 +66,14 @@ class Multimedia : public Version
         Media type;
         
         Multimedia(datetime dv,const QString& d, const QString& f, Media t):Version(dv),description(d), fichier(f), type(t){} // en privé pour qu'un multimedia ne puisse être construit que par une classe friend
-     
+        Multimedia* clone()const{return new Multimedia(*this);} 
      public :
         
        
         QString getDescription() {return description;}
         QString getFichier() {return fichier;}
         Media getType() {return type;}
-        Multimedia* clone()const{return new Multimedia(*this);} //a voir si prive ou public
+        
 
 };
 

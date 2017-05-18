@@ -45,11 +45,26 @@ NoteManager::NoteManager& operator=(const NoteManager& m){
 void NoteManager::supprimerNote(RelationManager m, Note& n){
 	Relation& reference=m.RelationManager::getStaticReference;
 	Relation::const_iterator iterator=reference.begin();
-	while (!iterator.isDone() || (n.getId() != iterator.courant.Couple::getIdNote1 && n.getId() != iterator.courant.Couple::getIdNote2))
-		iterator.next();
+	Relation::const_iterator it_end=reference.end();
+	while ((iterator!=it_end) || ((n.getId() != iterator.courant->getIdNote1) && (n.getId() != iterator.courant->getIdNote2()))
+		iterator++;
 		
-	if (!iterator.isDone())
-		n.setActive()=false;
+	if (iterator!=it_end)
+		n.active=false;
 	else
-		n.setSupprime()=true;
+		n.supprime=true;
 }
+
+	
+void NoteManager::viderCorbeille(){
+	NoteManager::Iterator it=getIterator();
+	while(!it.isDone()){
+		if(it.currentN->supprime)
+			supprimerNote(it.currentN);
+		it++;
+	}
+}
+	
+	
+	
+	

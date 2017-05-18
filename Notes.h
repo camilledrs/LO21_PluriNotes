@@ -34,7 +34,7 @@ class Note //Class car on veut tout en privé
         
     }
     ~Note();
-    void editer(QString tittle, tm modif,const Version& v); // edition des attributs de note uniquement 
+    void editer(QString title, tm modif,const Version& v); // edition des attributs de note uniquement 
     //creation d'une nouvelle version et penser à incrémenter nbVersion, verifiee si elle est active
     void creerArticle(tm crea, const QString& s);
     void creerMultimedia(tm crea, const QString& desc, const QString& file, Media t);

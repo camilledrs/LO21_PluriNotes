@@ -7,7 +7,11 @@
 #include <QMessageBox>
 
 
+Relation* RelationManager::Reference = new Relation("Reference", "note1 reference note2");
+
 void RelationManager::addRelation(const Relation& r){
+	//check si on veut ajouter une relation comme reference
+	if(r->getId()==Reference->getId()) throw RelationException("error, Reference already exist");
 	for(unsigned int i=0; i<nbRelations; i++){
 		if (relations[i]->getId()==r->getId()) throw RelationException("error, creation of an already existent Relation");
 	}

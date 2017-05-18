@@ -7,11 +7,12 @@
 class NoteManager
 {
     friend class Note
+    static NoteManager* managN;
     Note** notes;
     unsigned int nbNotes;
     unsigned int nbMaxNotes;
     
-    NoteManager();
+    NoteManager():notes(nullptr), nbNotes(0), nbMaxNotes(0){}
     ~NoteManager(){
         for(unsigned int i=0; i<nbNotes; i++) delete notes[i]; // composition uniquement
         delete[] notes; // composition + agrégation
@@ -22,8 +23,7 @@ class NoteManager
     void editer(Note* n, QString title, tm modif, const Version& v){Note::editer(title, modif, v);}
     void supprimerNote(RelationManager m, Note& n);
     
-    public :
-    class Iterator {
+      class Iterator {
             friend class NoteManager;
             Note** currentN;
             unsigned int nbRemain;
@@ -47,6 +47,16 @@ class NoteManager
     Iterator getIterator() {
             return Iterator(notes,nbNotes);
         }
+    
+    
+    public :
+        static NoteManager& getInstance(){
+            if(!managN) managN=new NoteManager();
+            return managN;
+        }
+    
+        static void liberer_instance(){if (managN) delete managN;}
+
 };
 
 

@@ -53,11 +53,26 @@ void Relation::suppCouple(const Couple& c)
 	if (i==nb) throw NoteException("error, the item doesn't exist");
 	else 
 	{
+		//Note note1=c.getNote1;
+		//Note note2=c.getNote2;
 		delete tab[i];
 		while(i<nb-1) tab[i]=tab[i+1];
 		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
 		nb--;
-	}
+		//if (note1->getActive == 0){
+		//	const_iterator iterator=begin();
+		//	while (iterator*!=end() && (iterator*->getNote1->getId() !=note1->getId() || iterator*->getNote2->getId() !=note1->getId()))
+		//		iterator++;
+		//	if (iterator*== end() && iterator*->getNote1->getId() !=note1->getId())
+		//		// appel à une fonction qui fait apparaitre une fenêtre de dialogue avec l’utilisateur
+		//}
+		//if (note2->getActive == 0){
+		//	const_iterator iterator=begin();
+		//	while (iterator*!=end() &&(iterator*->getNote1->getId() !=note2->getId() || iterator*->getNote2->getId() !=note2->getId()))
+		//		iterator++;
+		//	if (iterator*== end() && iterator*->getNote1->getId() !=note1->getId())
+		//		// appel à une fonction qui fait apparaitre une fenêtre de dialogue avec l’utilisateur
+		//}
 }
 
 

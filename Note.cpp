@@ -15,10 +15,21 @@ void Note::restaurer(Version* v)
     versions[i]=tmp; //on met la version à restaurer au niveau de la dernière case du tableau (versions[nbVersion-1]) 
 }
 
-void Note::editer(QString tittle, tm modif){
+void Note::editer(QString tittle, tm modif, const Version& v){
 	if (active && !supprime){
 		titre=tittle;
 		dateModif= modif;
+		if (nbVersion==nbMaxVersion){
+			Version ** newVersions= new Version*[nbMaxVersions+5];
+			for(unsigned int i=0; i<nbVersion; i++)
+				newVersions[i]=versions[i];
+			Version** oldVersions=versions;
+			versions=newVersions;
+			nbMaxVerions+=5;
+			delete[] oldVersions;
+		}
+		versions[nbVersion++]=v.clone();
+		
 	}
 }
 

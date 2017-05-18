@@ -11,7 +11,7 @@ class RelationManager
     unsigned int nbRelations;
     unsigned int nbMaxRelations;
     void addRelation(Relation* r);
-    
+    void suppRelation(Relation& r);
     
     RelationManager():nbRelations(1),nbMaxRelations(5),relations(new Relation*[5]){}
     ~RelationManager(){

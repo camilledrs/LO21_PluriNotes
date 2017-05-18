@@ -26,49 +26,11 @@ class Note //Class car on veut tout en privé
     int nbVersion;
     int nbMaxVersion;
     
-    Note(QString id, QString title, tm crea,tm modif):id(id), titre(title),dateCrea(crea), dateModif(modif), active(true), supprime(false), nbVersion(0), nbMaxVersion(0){
+    Note(QString id, QString title, tm crea,tm modif, const Version& v):id(id), titre(title),dateCrea(crea), dateModif(modif), active(true), supprime(false), nbVersion(1), nbMaxVersion(5){
         versions=new Version*[5];
-        //versions[0]=Version(crea);
-        nbMaxVersion=5;
+        versions[0]=v.clone();
         
-        //demande a l'utilisateur qu'elle note il veut faire 
-        std::cout<<"quelle type d enote voulez vous editer ( 0 pout article, 1 ppour tache, 2 pour multimedia)";
-        unsigned int r;
-        std::cin>>r
-        switch(r){
-            case 0: {Qstring texte;
-                    std::cout<<"Entrer le texte de l'article";
-                    std::cin>>texte;
-                    versions[0]=Article(crea,texte);
-                     break;
-                    }
-             case 1: {Qstring action;
-                    std::cout<<"Entrer l'action de la tache";
-                    std::cin>>action;
-                      datetime eche;
-                      unsigned int p;
-                       std::cout<<"Entrer la date limite de la tache (0 sinon)";
-                    std::cin>>eche;
-                       std::cout<<"Entrer la priorite de la tache(0 sinon)";
-                    std::cin>>p;
-                    versions[0]=Tache(crea,texte,eche,p);
-                     break;
-                    }
-                
-                case 2: {Qstring texte;
-                    std::cout<<"Entrer la description du multimedia";
-                    std::cin>>texte;
-                      Media type;
-                        std::cout<<"Entrer le type du multimedia (0 pour image, 1 pour audio, 2 pour video)";
-                    std::cin>>type; 
-                         Qstring fichier;
-                         std::cout<<"Entrer le fichier du multimedia";
-                    std::cin>>fichier;
-                    versions[0]=Multimedia(crea,texte,fichier,type);
-                     break;
-                    }
-        }
-        nbVersion=1;
+    
         
     }
     ~Note();

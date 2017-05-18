@@ -22,7 +22,7 @@ class Couple //Class car on veut tout en privé
     int getIdNote2(){return note2->getId;}
     setLabel(int newl){label=newl;}
     Couple(const Note& n1, const Note& n2, int l):label(l), note1(&n1), note2(&n2) {}
-    ~Couple(){delete note1, delete note2;}
+    ~Couple(){delete note1, delete note2;} // ça veut dire que l'on détruit les notes lorsque l'on détruit le couple ?)
     
      
 };

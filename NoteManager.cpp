@@ -39,3 +39,17 @@ NoteManager::NoteManager& operator=(const NoteManager& m){
 	}
 	return *this;
 }
+	
+// Revoir l’itérator de Relation, je ne comprends pas les fonctions utilisées, j’ai fait avec les fonction du cours (isDone(), next(), current…)
+
+void NoteManager::supprimerNote(RelationManager m, Note& n){
+	Relation& reference=m.RelationManager::getStaticReference;
+	Relation::const_iterator iterator=reference.begin();
+	while (!iterator.isDone() || (n.getId() != iterator.courant.Couple::getIdNote1 && n.getId() != iterator.courant.Couple::getIdNote2))
+		iterator.next();
+		
+	if (!iterator.isDone())
+		n.setActive()=false;
+	else
+		n.setSupprime()=true;
+}

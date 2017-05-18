@@ -22,6 +22,7 @@ class Relation{
     QString description;
     bool orientee;
     Relation():orientee(True){} //constructeur sans argument, orientee vrai par défaut
+    Relation(QString t, Qstring d):orientee(True), titre(t), description(d), nb(0), max(0), tab(null){}
     ~Relation() {delete[] tab;}
     void SeeRelation(); 
     Relation(Relation& r);

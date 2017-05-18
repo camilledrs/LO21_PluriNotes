@@ -7,18 +7,17 @@
 class RelationManager
 {
     Relation** relations;
+    static Relation* Reference;
     unsigned int nbRelations;
     unsigned int nbMaxRelations;
     void addRelation(Relation* r);
     
     
-    RelationManager():nbRelations(1),nbMaxRelations(5),relations(new Relation*[5]){
-        relation[0]=new Relation("Reference", "si une note faite reference a une autre");
-    };
+    RelationManager():nbRelations(1),nbMaxRelations(5),relations(new Relation*[5]){}
     ~RelationManager(){
 for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
 delete[] relations; // composition + agrégation
-    };
+    }
     RelationManager(const RelationManager& m);
     RelationManager& operator=(const RelationManager& m);
     

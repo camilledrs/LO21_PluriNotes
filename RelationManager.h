@@ -6,13 +6,14 @@
 
 class RelationManager
 {
+    static RelationManager* managR;
     Relation** relations;
-    static Relation* Reference;
     unsigned int nbRelations;
+    static Relation* Reference;
     unsigned int nbMaxRelations;
     void addRelation(Relation* r);
     void suppRelation(Relation& r);
-    
+    static Relation* getStaticReference(){return Reference;}
     RelationManager():nbRelations(1),nbMaxRelations(5),relations(new Relation*[5]){}
     ~RelationManager(){
 for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
@@ -22,7 +23,6 @@ delete[] relations; // composition + agrégation
     RelationManager& operator=(const RelationManager& m);
     static Relation* getStaticReference(){return Reference;}
     
-    public :
     class Iterator {
             friend class RelationManager;
             Relation** currentR;
@@ -47,6 +47,16 @@ delete[] relations; // composition + agrégation
     Iterator getIterator() {
             return Iterator(relations,nbRelations);//0
         }
+
+    
+    public :
+    
+    static RelationManager& getInstance(){
+        if(!managR) managR= new RelationManager();
+        return *managR;
+    }
+    static void free_instance(){if (managR) delete managR;}
+    
 };
 
 #endif // RELATIONMANAGER_H_INCLUDED

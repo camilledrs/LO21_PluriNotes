@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 
-void RelationManager::addRelation(Relation* r){
+void RelationManager::addRelation(const Relation& r){
 	for(unsigned int i=0; i<nbRelations; i++){
 		if (relations[i]->getId()==r->getId()) throw RelationException("error, creation of an already existent Relation");
 	}
@@ -19,7 +19,7 @@ void RelationManager::addRelation(Relation* r){
 		nbMaxRelations+=5;
 		if (oldRelations) delete[] oldRelations;
 	}
-	relations[nbRelations++]=r;
+	relations[nbRelations++]=new Relation(r);
 }
 
 

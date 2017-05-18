@@ -46,3 +46,22 @@ RelationManager::NoteManager& operator=(const RelationManager& m){
 	}
 	return *this;
 }
+
+	
+void RelationManager::suppRelation(Relation& r){
+	if(this != Reference)
+	{
+		unsigned int i=0;
+		while(i<nbRelations && relations[i]->getId()!=r->getId())
+			i++;
+		if (i==nbRelations) throw RelationException("error, Relation to delete doesn't exist");
+		else{
+			for (unsigned int j=0; j<nbRelations-1; j++)  //on décale les relations dans le tableau pour ne pas laisser de trou
+				relations[j]=relations[j+1];
+		}
+	}
+	else {
+		throw RelationException("error, Reference can't be deleted");
+	}
+
+}

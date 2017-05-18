@@ -12,7 +12,9 @@ class RelationManager
     void addRelation(Relation* r);
     
     
-    RelationManager();
+    RelationManager():nbRelations(1),nbMaxRelations(5),relations(new Relation*[5]){
+        relation[0]=new Relation("Reference", "si une note faite reference a une autre");
+    };
     ~RelationManager(){
 for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
 delete[] relations; // composition + agrégation
@@ -43,7 +45,7 @@ delete[] relations; // composition + agrégation
 };
     
     Iterator getIterator() {
-            return Iterator(relations,nbRelations);
+            return Iterator(relations,nbRelations);//0
         }
 };
 

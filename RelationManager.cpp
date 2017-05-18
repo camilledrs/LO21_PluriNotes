@@ -56,8 +56,12 @@ void RelationManager::suppRelation(Relation& r){
 			i++;
 		if (i==nbRelations) throw RelationException("error, Relation to delete doesn't exist");
 		else{
+			for(unsigned int k=0; k<r.getnb(); k++)  //on supprime tous les couples de la relation à supprimer
+				delete r.tab[k];
+			Relation* tmp=relations[i];
 			for (unsigned int j=0; j<nbRelations-1; j++)  //on décale les relations dans le tableau pour ne pas laisser de trou
 				relations[j]=relations[j+1];
+			delete relations[i];  //on supprime l'espace alloué à la relation
 		}
 	}
 	else {

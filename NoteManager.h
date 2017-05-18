@@ -18,9 +18,7 @@ class NoteManager
     NoteManager(const NoteManager& m);
     NoteManager& operator=(const NoteManager& m);
     void addNote(QString id, QString title, tm crea,tm modif);
-    void editerArticle(Note* n, QString tittle, tm modif, const QString& text);
-    void editerMultimedia(Note* n, QString tittle, tm modif, const QString& desc, const QString& file, Media t);
-    void editerTache(Note* n, QString tittle, tm modif, const QString& a, tm dateFin=0, unsigned int prio=0)
+    void NoteManager::editerNote(Note* n, QString tittle, tm modif, const Version& v){editer(tittle, modif, v);}
     
     public :
     class Iterator {

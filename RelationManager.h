@@ -20,6 +20,7 @@ delete[] relations; // composition + agrégation
     }
     RelationManager(const RelationManager& m);
     RelationManager& operator=(const RelationManager& m);
+    static Relation* getStaticReference(){return Reference;}
     
     public :
     class Iterator {

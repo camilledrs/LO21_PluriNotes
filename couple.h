@@ -18,6 +18,8 @@ class Couple //Class car on veut tout en privé
     public  :            //si on les veut privées alors ça ne sert à rien, à discuter
     
     int getLabel(){return label;}
+    Note* getNote1(){return note1;}
+    Note* getNote2(){return note2;}
     int getIdNote1(){return note1->getId;}
     int getIdNote2(){return note2->getId;}
     setLabel(int newl){label=newl;}

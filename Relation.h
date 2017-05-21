@@ -23,7 +23,10 @@ class Relation{
     bool orientee;
     Relation():orientee(True){} //constructeur sans argument, orientee vrai par défaut
     Relation(QString t, Qstring d):orientee(True), titre(t), description(d), nb(0), max(0), tab(null){}
-    ~Relation() {delete[] tab;}
+    ~Relation() {
+                    for (unsigned int i=0; i<nb; i++) delete tab[i]; 
+                    delete[] tab;
+                }
     void SeeRelation(); 
     Relation(Relation& r);
     Relation& operator=(Relation& r);

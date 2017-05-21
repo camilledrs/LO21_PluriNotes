@@ -63,15 +63,23 @@ void Relation::suppCouple(const Couple& c)
 		//	const_iterator iterator=begin();
 		//	while (iterator*!=end() && (iterator*->getNote1->getId() !=note1->getId() || iterator*->getNote2->getId() !=note1->getId()))
 		//		iterator++;
-		//	if (iterator*== end() && iterator*->getNote1->getId() !=note1->getId())
-		//		// appel à une fonction qui fait apparaitre une fenêtre de dialogue avec l’utilisateur
+		//	if (iterator*== end() && (iterator*->getNote1->getId() !=note1->getId() && iterator*->getNote2->getId() !=note1->getId()))
+		//		int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+		//		if(reponse == QMessageBox::Yes)
+		//			delete note1;
+		//			//appel à la fonction de suppression de la note
+		// 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
 		//}
 		//if (note2->getActive == 0){
 		//	const_iterator iterator=begin();
-		//	while (iterator*!=end() &&(iterator*->getNote1->getId() !=note2->getId() || iterator*->getNote2->getId() !=note2->getId()))
+		//	while (iterator*!=end() && (iterator*->getNote1->getId() !=note2->getId() || iterator*->getNote2->getId() !=note2->getId()))
 		//		iterator++;
-		//	if (iterator*== end() && iterator*->getNote1->getId() !=note1->getId())
-		//		// appel à une fonction qui fait apparaitre une fenêtre de dialogue avec l’utilisateur
+		//	if (iterator*== end() && (iterator*->getNote1->getId() !=note2->getId() && iterator*->getNote2->getId() !=note2->getId()))
+		//		int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+		//		if(reponse == QMessageBox::Yes)
+		//			delete note2;
+		//			//appel à la fonction de suppression de la note
+		// 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
 		//}
 }
 

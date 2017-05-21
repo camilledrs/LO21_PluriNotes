@@ -29,7 +29,7 @@ class Relation{
     Relation& operator=(Relation& r);
     setTitre(QString newt){titre=newt;}
     setDesc(QString newd){description=newd;}
-    
+    void Editer(); //à voir
  /*J'ai mis la classe const_iterator en privée car je ne veux qu'on y ai accès que 
  grâce à la méthode public seeRelation()
  A discuter */
@@ -56,7 +56,6 @@ class Relation{
     bool getOrient()const {return orientee;}
     void addCouple(const Note& n1, const Note& n2, int l); 
     void suppCouple(const Couple& c); //pas plutôt const Couple& c en argument ?
-    void Editer(); //à voir
     int getnb(){return nb;}
     
 

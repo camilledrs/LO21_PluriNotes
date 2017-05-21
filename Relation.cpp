@@ -96,3 +96,26 @@ void Relation::seeRelation(){
 	} while(it!=end);
 	}
 }
+	
+	
+	
+void Relation::editer(){
+	unsigned int rep;
+	QString titre, desc;
+	cout<<"changer titre ? 1 pour oui\n";
+	cin<<rep;
+	if (rep==1)
+	{
+		cout<<"donner le titre voulu\n";
+		cin<<titre;
+		setTitre(titre);
+	}
+	cout<<"changer la description\n";
+	cin<<rep;
+	if(rep==1)
+	{
+		cout<<"donner la nouvelle description \n";
+		cin<<desc;
+		setDesc(desc);
+	}
+}

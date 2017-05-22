@@ -64,7 +64,7 @@ void NoteManager::viderCorbeille(){
 	}
 }
 
-Note* NoteManager::getNote(int id){
+Note* NoteManager::getNote(QString id){
 	unsigned int i=0;
 	while(i<nbNotes && notes[i]->getId()!=id)
 		i++;

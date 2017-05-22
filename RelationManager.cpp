@@ -69,3 +69,19 @@ void RelationManager::suppRelation(Relation& r){
 	}
 
 }
+	
+bool RelationManager::verifNoteRef(const Note* n)  //renvoie 1 si la note est encore couplée dans une des relations, 0 sinon (dans ce cas on peut proposer de la supprimer
+{
+	RelationManager::Iterator it=getIterator();
+	while(!it.isDone())  //on parcours l'ensemble des relations
+	      {
+		      Relation* curr=it.currentR;
+		      Relation::const_iterator itr=begin();
+		      Relation::const_iterator end=end();
+		      while (itr!=end && itr->getIdNote1()!=n->getId() && itr->getIdNote2() != n->getId())
+			      itr++;
+		      if (itr!=end) return 1; //la note est bien relationnée ailleurs
+		      it++;  //sinon on passe à la prochaine relation
+	      }
+	return 0;  //on a pas trouvé de couple avec n
+}

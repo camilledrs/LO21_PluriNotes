@@ -15,9 +15,9 @@ void Note::restaurer(Version* v)
     versions[i]=tmp; //on met la version à restaurer au niveau de la dernière case du tableau (versions[nbVersion-1]) 
 }
 
-void Note::editer(QString tittle, tm modif, const Version& v){
+void Note::editer(QString title, tm modif, const Version& v){
 	if (active && !supprime){
-		titre=tittle;
+		titre=title;
 		dateModif= modif;
 		if (nbVersion==nbMaxVersion){
 			Version ** newVersions= new Version*[nbMaxVersions+5];

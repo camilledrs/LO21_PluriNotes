@@ -29,9 +29,25 @@ Relation::Relation& Relation::operator=(const Relation& r){
 
 
 void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici qu'on veut la dernière version ?
+	if(!*this.getOrient()) //relation pas orientee, faire 2 couples
+	{
+		int l2= std::cin<<"quel nouveau label pour le couple miroir ?\n";
+		for(unsigned int i=0; i<nb; i++){
+		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent note");
+		}
+		if (nb==max){
+			Couple** newtab= new Couple*[max+5];
+			for(unsigned int i=0; i<nb; i++) newtab[i]=couple[i];
+			Couple** old=couple;
+			couple=newtab;
+			max+=5;
+			if (old) delete[] old;
+		}
+		couple[nb++]= new Couple(n2, n1, l2);
+	}
 	for(unsigned int i=0; i<nb; i++){
 		if (tab[i]->getLabel()==l) throw NoteException("error, creation of an already existent note");
-	}
+		}
 	if (nb==max){
 		Couple** newtab= new Couple*[max+5];
 		for(unsigned int i=0; i<nb; i++) newtab[i]=couple[i];
@@ -39,11 +55,12 @@ void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici
 		couple=newtab;
 		max+=5;
 		if (old) delete[] old;
-	}
-	//couple[nb++]=c;//attention c'est une compo
+		}
+		//couple[nb++]=c;//attention c'est une compo
 	couple[nb++]= new Couple(n1, n2, l);
 	if (this.orientee==false)
 		couple[nb++]= new Couple(n2, n1, l);
+	}
 }
 
 

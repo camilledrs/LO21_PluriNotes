@@ -50,33 +50,58 @@ void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici
 void Relation::suppCouple(const Couple& c)
 {
 	unsigned int i=0;
-	while(i<nb && tab->getLabel()!=c.getLabel())
+	while(i<nb && tab[i]->getLabel()!=c.getLabel())
 		i++;
 	if (i==nb) throw NoteException("error, the item doesn't exist");
+
 	else 
 	{
-		//Note* note1=c.getNote1;
-		//Note* note2=c.getNote2;
+		//Note* note1=c.getNote1();
+		//Note* note2=c.getNote2();
+		/*if(c.getOrient() == false) //besoin de supprimer aussi la relation "miroir" (y,x)
+		{
+			unsigned int j=0;
+			while(j<nb && ((tab[j]->getIdNote1() != note2->getId()) || (tab[j]->getIdNote2()!= note1->getId())))
+				j++;
+			if (j==nb) throw NoteException("error, the mirror item doesn't exist\n");
+			int inij=j;
+			else  //on supprime le couple miroir (y,x)
+			{
+				delete tab[j];
+				while(j<nb-1) 
+				{
+					tab[j]=tab[j+1];
+					j++;
+				}
+				tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
+				nb--;
+				if (i>inij)  //on a décalé du coup, et le i initial doit être décrémenté de 1 si on veut accéder au bon couple
+				{
+					i--;
+				}
+			}
+		}*/
+		//maitenant on supprime le couple (x,y)
 		delete tab[i];
 		while(i<nb-1) tab[i]=tab[i+1];
 		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
 		nb--;
-		//if (note1.getActive == 0){
-		//	const_iterator iterator=begin();
-		//	while (iterator*!=end() && (iterator*->getNote1->getId() !=note1->getId() || iterator*->getNote2->getId() !=note1->getId()))
+		//if (note1->getActive() == False){
+		//	Relation::const_iterator iterator=begin();
+		//	while (iterator!=end() && (*iterator->getIdNote1() != note1->getId() || *iterator->getIdNote2() !=note1->getId()))
 		//		iterator++;
-		//	if (iterator*== end() && (iterator*->getNote1->getId() !=note1->getId() && iterator*->getNote2->getId() !=note1->getId()))
+		//	if (iterator== end() && (*iterator->getIdNote1() !=note1->getId() && *iterator*->getIdNote2() !=note1->getId()))
 		//		int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
 		//		if(reponse == QMessageBox::Yes)
 		//			delete note1;
 		//			//appel à la fonction de suppression de la note
 		// 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
 		//}
-		//if (note2->getActive == 0){
+		//if (note2->getActive() == false){
 		//	const_iterator iterator=begin();
-		//	while (iterator*!=end() && (iterator*->getNote1->getId() !=note2->getId() || iterator*->getNote2->getId() !=note2->getId()))
+		//	while (iterator!=end() && (*iterator->getIdNote1() != note2->getId() || *iterator->getIdNote2() != note2->getId()))
 		//		iterator++;
-		//	if (iterator*== end() && (iterator*->getNote1->getId() !=note2->getId() && iterator*->getNote2->getId() !=note2->getId()))
+		//	if (iterator== end() && (*iterator->getIdNote1() !=note2->getId() && *iterator->getIdNote2() !=note2->getId()))
 		//		int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
 		//		if(reponse == QMessageBox::Yes)
 		//			delete note2;
@@ -86,6 +111,7 @@ void Relation::suppCouple(const Couple& c)
 }
 
 
+	
 void Relation::seeRelation(){
 	std::cout<<"titre = "<<titre<<"\n"<<"description = "<<description<<"\n"<<"orientation = "<<orientee<<"\n";
 	Relation::const_iterator it=begin();

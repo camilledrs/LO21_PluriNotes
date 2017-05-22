@@ -20,7 +20,7 @@ class NoteManager
     NoteManager(const NoteManager& m);
     NoteManager& operator=(const NoteManager& m);
     void addNote(QString id, QString title, tm crea,tm modif);
-    void editer(Note* n, QString title, tm modif, const Version& v){n->editer(title, modif, v);}
+    void editer(Note* n, QString title, tm modif, const Version& v);
     void supprimerNote(Note& n);
     
       class Iterator {

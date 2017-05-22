@@ -23,10 +23,6 @@ class NoteManager
     void editer(Note* n, QString title, tm modif, const Version& v){n->editer(title, modif, v);}
     void supprimerNote(Note& n);
     
-    unsigned int getNbNotes(){return nbNotes;}
-    unsigned int getNbMaxNotes(){return nbMaxNotes;}
-    Note* getNote(QString id);
-    
       class Iterator {
             friend class NoteManager;
             Note** currentN;
@@ -60,7 +56,10 @@ class NoteManager
         }
     
         static void liberer_instance(){if (managN) delete managN;}
-
+        
+        unsigned int getNbNotes(){return nbNotes;}
+        unsigned int getNbMaxNotes(){return nbMaxNotes;}
+        Note* getNote(QString id);
 };
 
 

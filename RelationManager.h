@@ -14,7 +14,7 @@ class RelationManager
     void addRelation(Relation* r);
     void suppRelation(Relation& r);
     static Relation* getStaticReference(){return Reference;}
-    RelationManager():nbRelations(1),nbMaxRelations(5),relations(new Relation*[5]){}
+    RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]){}
     ~RelationManager(){
 for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
 delete[] relations; // composition + agrégation

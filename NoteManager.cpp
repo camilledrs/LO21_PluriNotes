@@ -18,6 +18,8 @@ void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Vers
 		if (oldNotes) delete[] oldNotes;
 	}
 	notes[nbNotes++]=new Note(id, title, crea, modif,v);
+	//verifRef(notes[nbNotes] , tittle);
+	/*
 	if(title.contains("\ref{")){
 		QChar *data = str.data();
 		while(*data!= '\\')
@@ -32,7 +34,7 @@ void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Vers
 		      while( notes[i]->getId()!=idy) i++;
 		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
 		RelationManager::Reference.addCouple(notes[nbNotes],notes[i],l2);
-	}
+	}*/
 }
 
 NoteManager::NoteManager(const NoteManager& m):notes(new Note*[m.nbNotes]),nbNotes(m.nbNotes), nbMaxNotes(m .nbMaxNotes){
@@ -91,6 +93,8 @@ Note* NoteManager::getNote(QString id){
 
 void NoteManager::editer(Note* n, QString title, tm modif, const Version& v){
 	n->editer(title, modif, v);
+	//verifRef(n , tittle);
+	/*
 	if(title.contains("\ref{")){
 		QChar *data = str.data();
 		while(*data!= '\\')
@@ -105,7 +109,7 @@ void NoteManager::editer(Note* n, QString title, tm modif, const Version& v){
 		      while( notes[i]->getId()!=idy) i++;
 		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
 		RelationManager::Reference.addCouple(n,notes[i],l2);
-	}
+	}*/
 }	       
 /*
 void verifRef(const Note* n , const Qstring s){

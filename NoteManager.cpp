@@ -88,3 +88,22 @@ Note* NoteManager::getNote(QString id){
 	else
 		throw NoteException("error, search of an inexistent note");
 }
+
+void NoteManager::editer(Note* n, QString title, tm modif, const Version& v){
+	n->editer(title, modif, v);
+	if(title.contains("\ref{")){
+		QChar *data = str.data();
+		while(*data!= '\\')
+		      data++;
+		for (unsigned int i=0, i<5, i++) data++;
+		Qstring idy;
+		      while(*data!='}')
+		      {idy.append(*data);
+		       data++;
+		      }
+		 unsigned int i=0;
+		      while( notes[i]->getId()!=idy) i++;
+		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
+		RelationManager::Reference.addCouple(n,notes[i],l2);
+	}
+}	       

@@ -107,3 +107,24 @@ void NoteManager::editer(Note* n, QString title, tm modif, const Version& v){
 		RelationManager::Reference.addCouple(n,notes[i],l2);
 	}
 }	       
+/*
+void verifRef(const Note* n , const Qstring s){
+if(s.contains("\ref{")){
+		QChar *data = s.data();
+		while(*data!= '\\')
+		      data++;
+		for (unsigned int i=0, i<5, i++) data++;
+		Qstring idy;
+		      while(*data!='}')
+		      {idy.append(*data);
+		       data++;
+		      }
+		NoteManager::Iterator it=getIterator();
+	while(it->getId()!=idy){
+		it++;
+	}
+		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
+		RelationManager::Reference.addCouple(n,it,l2);
+	}
+
+}	   */  

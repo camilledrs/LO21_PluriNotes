@@ -28,17 +28,15 @@ class Note //Class car on veut tout en privé
     
     Note(QString id, QString title, tm crea,tm modif, const Version& v):id(id), titre(title),dateCrea(crea), dateModif(modif), active(true), supprime(false), nbVersion(1), nbMaxVersion(5){
         versions=new Version*[5];
-        versions[0]=v.clone();
-        
-    
-        
+        versions[0]=v.clone();   
     }
+    Note();
     ~Note();
     void editer(QString title, tm modif,const Version& v); // edition des attributs de note uniquement 
     //creation d'une nouvelle version et penser à incrémenter nbVersion, verifiee si elle est active
-    void creerArticle(tm crea, const QString& s);
-    void creerMultimedia(tm crea, const QString& desc, const QString& file, Media t);
-    void creerTache(tm crea, const QString& a, tm dateFin=0, unsigned int prio=0); //j'ai fait trois constructeurs différents pour es trois types de note possibles
+    //void creerArticle(tm crea, const QString& s);
+    //void creerMultimedia(tm crea, const QString& desc, const QString& file, Media t);
+    //void creerTache(tm crea, const QString& a, tm dateFin=0, unsigned int prio=0); //j'ai fait trois constructeurs différents pour es trois types de note possibles
    
     Note(const Note& n);  //constructeur par recopie
     

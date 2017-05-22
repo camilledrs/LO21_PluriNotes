@@ -42,6 +42,8 @@ void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici
 	}
 	//couple[nb++]=c;//attention c'est une compo
 	couple[nb++]= new Couple(n1, n2, l);
+	if (this.orientee==false)
+		couple[nb++]= new Couple(n2, n1, l);
 }
 
 
@@ -53,13 +55,13 @@ void Relation::suppCouple(const Couple& c)
 	if (i==nb) throw NoteException("error, the item doesn't exist");
 	else 
 	{
-		//Note note1=c.getNote1;
-		//Note note2=c.getNote2;
+		Note* note1=c.getNote1;
+		Note* note2=c.getNote2;
 		delete tab[i];
 		while(i<nb-1) tab[i]=tab[i+1];
 		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
 		nb--;
-		//if (note1->getActive == 0){
+		//if (note1.getActive == 0){
 		//	const_iterator iterator=begin();
 		//	while (iterator*!=end() && (iterator*->getNote1->getId() !=note1->getId() || iterator*->getNote2->getId() !=note1->getId()))
 		//		iterator++;

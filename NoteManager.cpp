@@ -20,7 +20,7 @@ void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Vers
 	notes[nbNotes++]=new Note(id, title, crea, modif,v);
 	if(title.contains("\ref{")){
 		QChar *data = str.data();
-		while(*data!= '\ ')
+		while(*data!= '\\')
 		      data++;
 		for (unsigned int i=0, i<5, i++) data++;
 		Qstring idy;

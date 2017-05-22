@@ -5,7 +5,7 @@
 
 
 
-void NoteManager::addNote(QString id, QString title, tm crea,tm modif){
+void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Version& v)){
 	for(unsigned int i=0; i<nbNotes; i++){
 		if (notes[i]->getId()==id) throw NoteException("error, creation of an already existent note");
 	}
@@ -17,17 +17,18 @@ void NoteManager::addNote(QString id, QString title, tm crea,tm modif){
 		nbMaxNotes+=5;
 		if (oldNotes) delete[] oldNotes;
 	}
-	notes[nbNotes++]=new Note(id, title, crea, modif);
+	notes[nbNotes++]=new Note(id, title, crea, modif,v);
 }
 
-NoteManager::NoteManager(const NoteManager& m):notes(new Note[m.nbNotes]),nbNotes(m.nbNotes), nbMaxNotes(m .nbMaxNotes){
-for(unsigned int i=0; i<nbNotes; i++) {
-notes[i]=new Note(*m.notes[i]); // si composition
-//notes[i]=m.notes[i]; // si agrégation }
+NoteManager::NoteManager(const NoteManager& m):notes(new Note*[m.nbNotes]),nbNotes(m.nbNotes), nbMaxNotes(m .nbMaxNotes){
+	for(unsigned int i=0; i<nbNotes; i++) {
+		notes[i]=new Note(*m.notes[i]); // si composition
+		//notes[i]=m.notes[i]; // si agrégation 
+	}
 }
 
 
-NoteManager::NoteManager& operator=(const NoteManager& m){
+NoteManager& NoteManager::operator=(const NoteManager& m){
 	if (this != &m)
 	{
 		nbNotes=m.nbNotes;
@@ -40,8 +41,6 @@ NoteManager::NoteManager& operator=(const NoteManager& m){
 	return *this;
 }
 	
-// Revoir l’itérator de Relation, je ne comprends pas les fonctions utilisées, j’ai fait avec les fonction du cours (isDone(), next(), current…)
-
 void NoteManager::supprimerNote(Note& n){
 	Relation& reference=RelationManager::getInstance().getStaticReference();
 	Relation::const_iterator iterator=reference.begin();

@@ -25,6 +25,7 @@ class NoteManager
     
     unsigned int getNbNotes(){return nbNotes;}
     unsigned int getNbMaxNotes(){return nbMaxNotes;}
+    Note* getNote(int id);
     
       class Iterator {
             friend class NoteManager;

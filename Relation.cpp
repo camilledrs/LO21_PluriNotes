@@ -55,8 +55,8 @@ void Relation::suppCouple(const Couple& c)
 	if (i==nb) throw NoteException("error, the item doesn't exist");
 	else 
 	{
-		Note* note1=c.getNote1;
-		Note* note2=c.getNote2;
+		//Note* note1=c.getNote1;
+		//Note* note2=c.getNote2;
 		delete tab[i];
 		while(i<nb-1) tab[i]=tab[i+1];
 		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau

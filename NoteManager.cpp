@@ -18,6 +18,20 @@ void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Vers
 		if (oldNotes) delete[] oldNotes;
 	}
 	notes[nbNotes++]=new Note(id, title, crea, modif,v);
+	if(title.contains("\ref{")){
+		QChar *data = str.data();
+		while(*data!='\')
+		      data++;
+		for (unsigned int i=0, i<5, i++) data++;
+		Qstring idy;
+		      while(*data!='}')
+		      {idy.append(*data);
+		       data++;
+		      }
+		 unsigned int i=0;
+		      while( notes[i]->getId()!=idy) i++;
+		RelationManager::Reference.addCouple(notes[nbNotes],notes[i],idy);
+	}
 }
 
 NoteManager::NoteManager(const NoteManager& m):notes(new Note*[m.nbNotes]),nbNotes(m.nbNotes), nbMaxNotes(m .nbMaxNotes){

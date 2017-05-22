@@ -63,7 +63,13 @@ void NoteManager::viderCorbeille(){
 		it++;
 	}
 }
-	
-	
-	
-	
+
+Note* NoteManager::getNote(int id){
+	unsigned int i=0;
+	while(i<nbNotes && notes[i]->getId()!=id)
+		i++;
+	if (i<nbNotes)
+		return notes[i];
+	else
+		throw NoteException("error, search of an inexistent note");
+}

@@ -30,7 +30,8 @@ void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Vers
 		      }
 		 unsigned int i=0;
 		      while( notes[i]->getId()!=idy) i++;
-		RelationManager::Reference.addCouple(notes[nbNotes],notes[i],idy);
+		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
+		RelationManager::Reference.addCouple(notes[nbNotes],notes[i],l2);
 	}
 }
 

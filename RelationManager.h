@@ -21,6 +21,7 @@ delete[] relations; // composition + agrégation
     }
     RelationManager(const RelationManager& m);
     RelationManager& operator=(const RelationManager& m);
+    bool RelationManager::verifNoteRef(const Note* n);
     static Relation* getStaticReference(){return Reference;}
     
     class Iterator {

@@ -6,7 +6,7 @@
 
 class NoteManager
 {
-    friend class Note
+    friend class Note;
     static NoteManager* managN;
     Note** notes;
     unsigned int nbNotes;
@@ -20,8 +20,11 @@ class NoteManager
     NoteManager(const NoteManager& m);
     NoteManager& operator=(const NoteManager& m);
     void addNote(QString id, QString title, tm crea,tm modif);
-    void editer(Note* n, QString title, tm modif, const Version& v){Note::editer(title, modif, v);}
-    void supprimerNote(RelationManager m, Note& n);
+    void editer(Note* n, QString title, tm modif, const Version& v){n->editer(title, modif, v);}
+    void supprimerNote(Note& n);
+    
+    unsigned int getNbNotes(){return nbNotes;}
+    unsigned int getNbMaxNotes(){return nbMaxNotes;}
     
       class Iterator {
             friend class NoteManager;

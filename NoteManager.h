@@ -62,5 +62,5 @@ class NoteManager
         Note* getNote(QString id);
 };
 
-
+//void verifRef(const Note* n , const Qstring s);
 #endif // NOTESMANAGER_H_INCLUDED

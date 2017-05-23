@@ -39,8 +39,6 @@ class Note //Class car on veut tout en privé
     //void creerTache(tm crea, const QString& a, tm dateFin=0, unsigned int prio=0); //j'ai fait trois constructeurs différents pour es trois types de note possibles
    
     Note(const Note& n);  //constructeur par recopie
-    
-    public  :            //si on les veut privées alors ça ne sert à rien, à discuter
     QString getId(){return id;}
     QString getTitre(){return titre;}
     tm getDate(){return dateCrea;}

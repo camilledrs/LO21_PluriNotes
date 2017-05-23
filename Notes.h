@@ -52,6 +52,7 @@ class Note //Class car on veut tout en privé
     Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau  
     void verifRef( const Qstring s);
     void sucesseurs(Note** succ, unsigned int* nb);
+    void predecesseurs(Note** pred, unsigned int* nb);
 };
 
 #endif //NOTES_H_INCLUDED

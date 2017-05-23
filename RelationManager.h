@@ -9,11 +9,11 @@ class RelationManager
     static RelationManager* managR;
     Relation** relations;
     unsigned int nbRelations;
-    static Relation* Reference;
+    Relation* Reference;
     unsigned int nbMaxRelations;
     void addRelation(Relation* r);
     void suppRelation(Relation& r);
-    static Relation* getStaticReference(){return Reference;}
+    Relation* getReference(){return Reference;}
     RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]){}
     ~RelationManager(){
 for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
@@ -22,7 +22,6 @@ delete[] relations; // composition + agrégation
     RelationManager(const RelationManager& m);
     RelationManager& operator=(const RelationManager& m);
     bool verifNoteRef(const Note* n);
-    static Relation* getStaticReference(){return Reference;}
     
     class Iterator {
             friend class RelationManager;

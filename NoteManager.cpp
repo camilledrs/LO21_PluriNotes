@@ -58,12 +58,36 @@ void NoteManager::supprimerNote(Note& n){
 	
 void NoteManager::viderCorbeille(){
 	NoteManager::Iterator it=getIterator();
-	while(!it.isDone()){
+	while(!it.isDone()){ //parcours les notes
 		if(it.currentN->supprime)
-			supprimerNote(it.currentN);
-		it++;
+		{
+			RelationManager::Iterator itR=getIterator();  //parcours les relations
+			while(!itR.isDone())  //on parcours l'ensemble des relations
+	      {
+		      Relation* curr=itR.currentR;
+		      Relation::const_iterator itrela=begin();  //parcours les couples de la relation
+		      Relation::const_iterator end=end();
+		      while (itrela!=end)
+		      {
+			      if (itrela.courant->note1==it.currentN || itrela.courant->note2 == it.currentN)  //on doit supprimer le couple
+			      {
+				      Couple* tmp= itrela.courant;  
+			      	      itrela++;
+			      	      delete tmp;
+			      }
+			      else itrela++;  //on passe au couple suivant
+		      		
+		      }
+		      itR++;  //sinon on passe à la prochaine relation
+	      }
+		}	
+		it++; //on passe à la note suivante
 	}
 }
+	       
+
+	       
+	      
 
 Note* NoteManager::getNote(QString id){
 	unsigned int i=0;

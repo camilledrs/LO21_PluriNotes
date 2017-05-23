@@ -72,3 +72,23 @@ RelationManager::Iterator it=getIterator();
 	      }
 *nb=i;
 }
+
+void Note::predecesseurs(Note** pred, unsigned int* nb){
+
+	unsigned int i=0;
+RelationManager::Iterator it=getIterator();
+	while(!it.isDone())  //on parcours l'ensemble des relations
+	      {
+		      Relation* curr=it.currentR;
+		      Relation::const_iterator itr=begin();
+		      Relation::const_iterator end=end();
+		      while (itr!=end)
+		      {if(itr->getIdNote2()==this.getId()) 
+		      		{succ[i]=itr->getNote1();
+				 i++		   
+							   }
+			itr++;}
+		      it++;  //sinon on passe à la prochaine relation
+	      }
+*nb=i;
+}

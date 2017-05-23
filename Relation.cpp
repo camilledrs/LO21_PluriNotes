@@ -147,23 +147,6 @@ void Relation::suppCouple(const Couple& c)
 }
 
 
-bool RelationManager::verifNoteRef(const Note* n)  //renvoie true si la note est encore couplée dans une des relations, false sinon (dans ce cas on peut proposer de la supprimer
-{
-	RelationManager::Iterator it=getIterator();
-	while(!it.isDone())  //on parcours l'ensemble des relations
-	      {
-		      Relation* curr=it.currentR;
-		      Relation::const_iterator itr=begin();
-		      Relation::const_iterator end=end();
-		      while (itr!=end && itr->getIdNote1()!=n->getId() && itr->getIdNote2() != n->getId())
-			      itr++;
-		      if (itr!=end) return True; //la note est bien relationnée ailleurs
-		      it++;  //sinon on passe à la prochaine relation
-	      }
-	return False;  //on a pas trouvé de couple avec n
-}
-
-
 	
 void Relation::seeRelation(){
 	std::cout<<"titre = "<<titre<<"\n"<<"description = "<<description<<"\n"<<"orientation = "<<orientee<<"\n";

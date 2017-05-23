@@ -22,6 +22,7 @@ delete[] relations; // composition + agrégation
     RelationManager(const RelationManager& m);
     RelationManager& operator=(const RelationManager& m);
     bool verifNoteRef(const Note* n);
+    Relation* getRef()[return Reference;}
     
     class Iterator {
             friend class RelationManager;

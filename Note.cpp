@@ -53,3 +53,22 @@ if(s.contains("\ref{")){
 		}
 		RelationManager::Reference.addCouple(*this,*it,l2);
 	}
+void Note::sucesseurs(Note** succ, unsigned int* nb){
+
+	unsigned int i=0;
+RelationManager::Iterator it=getIterator();
+	while(!it.isDone())  //on parcours l'ensemble des relations
+	      {
+		      Relation* curr=it.currentR;
+		      Relation::const_iterator itr=begin();
+		      Relation::const_iterator end=end();
+		      while (itr!=end)
+		      {if(itr->getIdNote1()==this.getId()) 
+		      		{succ[i]=itr->getNote2();
+				 i++		   
+							   }
+			itr++;}
+		      it++;  //sinon on passe à la prochaine relation
+	      }
+*nb=i;
+}

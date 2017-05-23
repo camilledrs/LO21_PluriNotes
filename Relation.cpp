@@ -126,6 +126,7 @@ void Relation::suppCouple(const Couple& c)
 		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
 			}
 		}
+	}
 }
 
 

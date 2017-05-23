@@ -2,7 +2,7 @@
 #define RELATIONMANAGER_H_INCLUDED
 #include <ctime>
 #include <QString>
-
+#include "Relation.h"
 
 class RelationManager
 {

@@ -108,13 +108,20 @@ void Relation::suppCouple(const Couple& c)
 		}
 		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
 		nb--;
-		
-		if (note1->getActive() == False){
-			if(!RelationManager::verifNoteRef(note1)) //la note n'est plus en couple nulle part
+		RelationManager& instance=RelationManager::getInstance();
+		Relation* ref=instance.getRef();
+		if (note2->getActive() == False){  //note archivee, on doit regardee si elle est note2 au moins une fois dans Reference
+			Relation::const_iterator it=begin();
+			Relation::const_iterator end=end();
+			while(it!=end && it.courant->note2 != note2)
 			{
-				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+				it++;
+			}
+			if(it==end) //la note n'est plus en couple nulle part
+			{
+				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
 				if(reponse == QMessageBox::Yes)
-					delete note1;
+					delete note2;
 		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
 			}
 		}
@@ -128,6 +135,23 @@ void Relation::suppCouple(const Couple& c)
 			}
 		}
 	}
+}
+
+
+bool RelationManager::verifNoteRef(const Note* n)  //renvoie true si la note est encore couplée dans une des relations, false sinon (dans ce cas on peut proposer de la supprimer
+{
+	RelationManager::Iterator it=getIterator();
+	while(!it.isDone())  //on parcours l'ensemble des relations
+	      {
+		      Relation* curr=it.currentR;
+		      Relation::const_iterator itr=begin();
+		      Relation::const_iterator end=end();
+		      while (itr!=end && itr->getIdNote1()!=n->getId() && itr->getIdNote2() != n->getId())
+			      itr++;
+		      if (itr!=end) return True; //la note est bien relationnée ailleurs
+		      it++;  //sinon on passe à la prochaine relation
+	      }
+	return False;  //on a pas trouvé de couple avec n
 }
 
 

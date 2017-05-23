@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 
-Relation* RelationManager::Reference = new Relation("Reference", "note1 reference note2");
+//Relation* RelationManager::Reference = new Relation("Reference", "note1 reference note2");
 
 void RelationManager::addRelation(const Relation& r){
 	//check si on veut ajouter une relation comme reference

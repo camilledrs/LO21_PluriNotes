@@ -66,22 +66,24 @@ void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici
 
 void Relation::suppCouple(const Couple& c)
 {
+	
 	unsigned int i=0;
 	while(i<nb && tab[i]->getLabel()!=c.getLabel())
 		i++;
-	if (i==nb) throw NoteException("error, the item doesn't exist");
+	if (i==nb) throw Note::NoteException("error, the item doesn't exist");
 
 	else 
 	{
 		Note* note1=c.getNote1();
 		Note* note2=c.getNote2();
+		if((note1->active==True) && (note2->active==True)){ //on ne peut supprimer que les couples ne contenant aucune note archivée
 		bool orient=c.getOrient();
 		if( orient== false) //besoin de supprimer aussi la relation "miroir" (y,x)
 		{
 			unsigned int j=0;
 			while(j<nb && ((tab[j]->getIdNote1() != note2->getId()) || (tab[j]->getIdNote2()!= note1->getId())))
 				j++;
-			if (j==nb) throw NoteException("error, the mirror item doesn't exist\n");
+			if (j==nb) throw Note::NoteException("error, the mirror item doesn't exist\n");
 			else  //on supprime le couple miroir (y,x)
 			{
 				
@@ -143,7 +145,11 @@ void Relation::suppCouple(const Couple& c)
 			}
 		}
 		}
+				}
+		else  //une au moins des notes est archivées
+		throw Note::NoteException("error, one of the note is archived");
 	}
+
 }
 
 

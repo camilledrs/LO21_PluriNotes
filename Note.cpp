@@ -48,5 +48,8 @@ if(s.contains("\ref{")){
 		it++;
 	}
 		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
+		for(unsigned int i=0; i<nb; i++){
+		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent label");
+		}
 		RelationManager::Reference.addCouple(*this,*it,l2);
 	}

@@ -73,9 +73,9 @@ void Relation::suppCouple(const Couple& c)
 
 	else 
 	{
-		//Note* note1=c.getNote1();
-		//Note* note2=c.getNote2();
-		/*if(c.getOrient() == false) //besoin de supprimer aussi la relation "miroir" (y,x)
+		Note* note1=c.getNote1();
+		Note* note2=c.getNote2();
+		if(c.getOrient() == false) //besoin de supprimer aussi la relation "miroir" (y,x)
 		{
 			unsigned int j=0;
 			while(j<nb && ((tab[j]->getIdNote1() != note2->getId()) || (tab[j]->getIdNote2()!= note1->getId())))
@@ -97,7 +97,7 @@ void Relation::suppCouple(const Couple& c)
 					i--;
 				}
 			}
-		}*/
+		}
 		//maitenant on supprime le couple (x,y)
 		delete tab[i];
 		while(i<nb-1) 
@@ -107,26 +107,25 @@ void Relation::suppCouple(const Couple& c)
 		}
 		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
 		nb--;
-		//if (note1->getActive() == False){
-		//	if(!RelationManager::verifNoteRef(note1)) //la note n'est plus en couple nulle part
-		//	{
-		//		int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
-		//		if(reponse == QMessageBox::Yes)
-		//			delete note1;
-		//			//appel à la fonction de suppression de la note
-		// 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
-		//	}
-		//}
-		//if (note2->getActive() == false){
-		//	if(!RelationManager::verifNoteRef(note2)) //la note n'est plus en couple nulle part
-		//	{
-		//		int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
-		//		if(reponse == QMessageBox::Yes)
-		//			delete note2;
-		//			//appel à la fonction de suppression de la note
-		// 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
-		//	}
-		//}
+		
+		if (note1->getActive() == False){
+			if(!RelationManager::verifNoteRef(note1)) //la note n'est plus en couple nulle part
+			{
+				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+				if(reponse == QMessageBox::Yes)
+					delete note1;
+		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
+			}
+		}
+		if (note2->getActive() == false){
+			if(!RelationManager::verifNoteRef(note2)) //la note n'est plus en couple nulle part
+			{
+				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+				if(reponse == QMessageBox::Yes)
+					delete note2;
+		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
+			}
+		}
 }
 
 

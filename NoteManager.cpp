@@ -43,9 +43,9 @@ NoteManager& NoteManager::operator=(const NoteManager& m){
 }
 	
 void NoteManager::supprimerNote(Note& n){
-	Relation& reference=RelationManager::getInstance().getStaticReference();
-	Relation::const_iterator iterator=reference.begin();
-	Relation::const_iterator it_end=reference.end();
+	Relation* reference=RelationManager::getInstance().getRef();
+	Relation::const_iterator iterator=reference->begin();
+	Relation::const_iterator it_end=reference->end();
 	while ((iterator!=it_end) || ((n.getId() != iterator.courant->getIdNote1) && (n.getId() != iterator.courant->getIdNote2()))
 		iterator++;
 		

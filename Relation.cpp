@@ -81,9 +81,10 @@ void Relation::suppCouple(const Couple& c)
 			while(j<nb && ((tab[j]->getIdNote1() != note2->getId()) || (tab[j]->getIdNote2()!= note1->getId())))
 				j++;
 			if (j==nb) throw NoteException("error, the mirror item doesn't exist\n");
-			int inij=j;
 			else  //on supprime le couple miroir (y,x)
 			{
+				
+				int inij=j;
 				delete tab[j];
 				while(j<nb-1) 
 				{

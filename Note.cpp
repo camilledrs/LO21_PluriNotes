@@ -48,5 +48,5 @@ if(s.contains("\ref{")){
 		it++;
 	}
 		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
-		RelationManager::Reference.addCouple(*this,it,l2);
+		RelationManager::Reference.addCouple(*this,*it,l2);
 	}

@@ -18,7 +18,7 @@ void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Vers
 		if (oldNotes) delete[] oldNotes;
 	}
 	notes[nbNotes++]=new Note(id, title, crea, modif,v);
-	//verifRef(notes[nbNotes] , tittle);
+	//verifRef(notes[nbNotes] , title);
 	/*
 	if(title.contains("\ref{")){
 		QChar *data = str.data();
@@ -93,7 +93,7 @@ Note* NoteManager::getNote(QString id){
 
 void NoteManager::editer(Note* n, QString title, tm modif, const Version& v){
 	n->editer(title, modif, v);
-	//verifRef(n , tittle);
+	//verifRef(n , title);
 	/*
 	if(title.contains("\ref{")){
 		QChar *data = str.data();

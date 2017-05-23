@@ -75,7 +75,8 @@ void Relation::suppCouple(const Couple& c)
 	{
 		Note* note1=c.getNote1();
 		Note* note2=c.getNote2();
-		if(c.getOrient() == false) //besoin de supprimer aussi la relation "miroir" (y,x)
+		bool orient=c.getOrient();
+		if( orient== false) //besoin de supprimer aussi la relation "miroir" (y,x)
 		{
 			unsigned int j=0;
 			while(j<nb && ((tab[j]->getIdNote1() != note2->getId()) || (tab[j]->getIdNote2()!= note1->getId())))
@@ -111,8 +112,8 @@ void Relation::suppCouple(const Couple& c)
 		RelationManager& instance=RelationManager::getInstance();
 		Relation* ref=instance.getRef();
 		if (note2->getActive() == False){  //note archivee, on doit regardee si elle est note2 au moins une fois dans Reference
-			Relation::const_iterator it=begin();
-			Relation::const_iterator end=end();
+			Relation::const_iterator it=ref->begin();
+			Relation::const_iterator end=ref->end();
 			while(it!=end && it.courant->note2 != note2)
 			{
 				it++;
@@ -125,14 +126,22 @@ void Relation::suppCouple(const Couple& c)
 		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
 			}
 		}
-		if (note2->getActive() == false){
-			if(!RelationManager::verifNoteRef(note2)) //la note n'est plus en couple nulle part
+		if (!orient){ //on regarde aussi si note1 n'est plus référencée puisque on a supprimé le couple miroir
+		if (note1->getActive() == false){
+			Relation::const_iterator it=ref->begin();
+			Relation::const_iterator end=ref->end();
+			while(it!=end && it.courant->note2 != note1)
 			{
-				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+				it++;
+			}
+			if(it==end) //la note n'est plus en couple nulle part
+			{
+				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
 				if(reponse == QMessageBox::Yes)
-					delete note2;
+					delete note1;
 		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
 			}
+		}
 		}
 	}
 }

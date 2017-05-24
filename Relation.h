@@ -2,7 +2,6 @@
 #define RELATION_H_INCLUDED
 #include <ctime>
 #include <QString>
-#include "RelationManager.h"
 #include "Couple.h"
 
 class RelationException{

@@ -31,8 +31,11 @@ Relation::Relation& Relation::operator=(const Relation& r){
 void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici qu'on veut la dernière version ?
 	if(!*this.getOrient()) //relation pas orientee, faire 2 couples
 	{
-		QString strl2 = QInputDialog::getText(/*widget parent, fenetre ?*/, "Label couple miroir", "Quel pseudo voulez vous donner au couple miroir ?");
-		int l2=atoi(strl2);
+		QString strl2 = new QInputDialog::getText(this, "Couple miroir", "Quellabel voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);	
+    		if (ok && !strl2.isEmpty())
+    				{
+       					 int l2=atoi(strl2);
+    				}
 		for(unsigned int i=0; i<nb; i++){
 		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent note");
 		}
@@ -176,13 +179,19 @@ void Relation::editer(){
 	int reponse= new QMessageBox::question(???,"Editer titre", "Voulez vous éditer le titre ? ", QMessageBox::Yes | QMessageBox::No);
 	if(reponse == QMessageBox::Yes)
 	{
-		QString titre = QInputDialog::getText(/*widget parent, fenetre ?*/, "Nouveau titre", "Quel titre voulez vous  ?");
-		setTitre(titre);
+		    QString titre = new QInputDialog::getText(this, "Nouveau titre", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);	
+    			if (ok && !titre.isEmpty())
+    				{
+       					 setTitre(titre);
+    				}
 	}
 	int reponse=new QMessageBox::question(???,"Editer description", "Voulez vous éditer la description ?", QMessageBox::Yes | QMessageBox::No);
 	if(reponse == QMessageBox::Yes)
 	{
-		QString desc = QInputDialog::getText(/*widget parent, fenetre ?*/, "Nouvelle description", "Quel description voulez vous ?");
-		setDesc(desc);
+		    QString desc = new QInputDialog::getText(this, "Nouvelle description", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok);	
+    		    if (ok && !desc.isEmpty())
+    				{
+       					 setDesc(desc);
+    				}
 	}
 }

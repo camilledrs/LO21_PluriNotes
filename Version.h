@@ -29,6 +29,7 @@ class Article : public Version
         Article (const Article& );
         Article(datetime d,const QString& s):Version(d),texte(s){} // en privé pour qu'un article ne puisse être construit que par une classe friend
         Article* clone()const{return new Article(*this);}
+        ~Article();
     public :
         
       
@@ -42,6 +43,8 @@ class Tache : public Version
         Statut statut;
         datetime dateTache;
         unsigned int priorite;
+        
+        ~Tache();
         Tache(const Tache& );
         Tache(datetime dv,const QString a, datetime d=0, unsigned int p=0) :Version(dv),action(a), statut('En attente'), dateTache(d), priorite(p){} // en privé pour qu'une tache ne puisse être construite que par une classe friend
         Tache* clone()const{return new Tache(*this);}
@@ -64,6 +67,8 @@ class Multimedia : public Version
         QString description;
         QString fichier;
         Media type;
+        
+        ~Multimedia();
         Multimedia(const Multimedia& );
         Multimedia(datetime dv,const QString& d, const QString& f, Media t):Version(dv),description(d), fichier(f), type(t){} // en privé pour qu'un multimedia ne puisse être construit que par une classe friend
         Multimedia* clone()const{return new Multimedia(*this);} 

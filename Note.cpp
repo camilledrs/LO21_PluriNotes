@@ -47,7 +47,8 @@ if(s.contains("\ref{")){
 	while(it->getId()!=idy){
 		it++;
 	}
-		int l2= std::cin<<"quel nouveau label pour la reférence ?\n";
+		QString strl2=QLineEdit(???,"Label ref", "Quel label voulez vous pour le couple de la reference?").text();
+		int l2=atoi(strl2);
 		for(unsigned int i=0; i<nb; i++){
 		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent label");
 		}

@@ -49,8 +49,8 @@ class Note //Class car on veut tout en privé
     void restaurer(Version* v);   //prendre une ancienne version, décaler les suivantes d'un cran vers la gauche, puis mettre la version en question à la dernière place du tableau
     Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau  
     void verifRef( const Qstring s);
-    void sucesseurs(Note** succ, unsigned int* nb);
-    void predecesseurs(Note** pred, unsigned int* nb);
+    Note** sucesseurs(unsigned int* nb);
+    Note** predecesseurs(unsigned int* nb);
 };
 
 #endif //NOTES_H_INCLUDED

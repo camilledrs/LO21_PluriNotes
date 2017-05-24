@@ -31,7 +31,7 @@ Relation::Relation& Relation::operator=(const Relation& r){
 void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici qu'on veut la dernière version ?
 	if(!*this.getOrient()) //relation pas orientee, faire 2 couples
 	{
-		QString strl2=QLineEdit(???,"Label couple miroir :", /*widget parent, fenetre ?*/).text();
+		QString strl2= new QLineEdit(???,"Label couple miroir :", /*widget parent, fenetre ?*/).text();
 		int l2=atoi(strl2);
 		for(unsigned int i=0; i<nb; i++){
 		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent note");
@@ -123,7 +123,7 @@ void Relation::suppCouple(const Couple& c)
 			}
 			if(it==end) //la note n'est plus en couple nulle part
 			{
-				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+				int reponse= new QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
 				if(reponse == QMessageBox::Yes)
 					delete note2;
 		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
@@ -139,7 +139,7 @@ void Relation::suppCouple(const Couple& c)
 			}
 			if(it==end) //la note n'est plus en couple nulle part
 			{
-				int reponse=QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
+				int reponse= new QMessageBox::question(???,"Supprimer de note", "La note " note1->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?");
 				if(reponse == QMessageBox::Yes)
 					delete note1;
 		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur
@@ -173,16 +173,16 @@ void Relation::seeRelation(){
 void Relation::editer(){
 	unsigned int rep;
 	QString titre, desc;
-	int reponse=QMessageBox::question(???,"Editer titre", "Voulez vous éditer le titre ? ");
+	int reponse= new QMessageBox::question(???,"Editer titre", "Voulez vous éditer le titre ? ");
 	if(reponse == QMessageBox::Yes)
 	{
-		QString titre=QLineEdit("Nouveau titre :", ???/*widgetparent fenetre ?*/).text();
+		QString titre= new QLineEdit("Nouveau titre :", ???/*widgetparent fenetre ?*/).text();
 		setTitre(titre);
 	}
-	int reponse=QMessageBox::question(???,"Editer description", "Voulez vous éditer la description ?");
+	int reponse=new QMessageBox::question(???,"Editer description", "Voulez vous éditer la description ?");
 	if(reponse == QMessageBox::Yes)
 	{
-		QString desc=QLineEdit("Nouvelle description", ???/*widgetparent fenetre ?*/).text();
+		QString desc= new QLineEdit("Nouvelle description", ???/*widgetparent fenetre ?*/).text();
 		setDesc(desc);
 	}
 }

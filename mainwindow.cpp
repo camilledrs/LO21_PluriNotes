@@ -101,7 +101,16 @@ void MainWindow::Creer()
 
 }
 
-
+void MainWindow::ajouterCouple()
+{
+    //QString id1 = new QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok1);
+    //while ((iterator!=it_end) || /*((n.getId() != iterator.courant->getIdNote1) && */(n.getId() != iterator.courant->getIdNote2())//)
+	//	iterator++;
+    //if (iterator!=it_end)
+    //QString id2 = new QInputDialog::getText(this, "ID Note2 :", "Entrez l'id de la deuxième note à mettre dans le couple", QLineEdit::Normal, QString(), &ok2);
+    
+    
+}
 
 void MainWindow::Recherche(){
 

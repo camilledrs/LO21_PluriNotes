@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     QWidget* zoneCentrale = new QWidget;
@@ -41,10 +43,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 
 /*
-    
+    //Je pense qu'il faudrait faire une deuxième MainWindow, pour que ça fasse vraiment 2 parties d'interface différentes..
+    QWidget *ongletRel = new QTabWidget(this);  //je ne sais pas où le mettred ans les layout de la mainWindow.... utiliser ..layout->addTab(ongletRel)
+    //connect pour dire qu'on ouvre la fenetre Relation
+    QObject::connect(ongletRel,SIGNAL(clicked() ??),Relation,SLOT(show()));  //pas sure...
     QWidget* Relation = new QWidget;
-    QWidget* zoneCentraleRel = new QWidget(&Relation);
-    QDockWidget* zoneGauche = new QDockWidget;
+    QWidget* zoneCentraleRel = new QWidget(Relation);  //pour dire qu'on ne veut pas les mettre dans la main window mais bien dans la fenetre relation...
+    QDockWidget* zoneGaucheRel = new QDockWidget(Relation);
+    zoneGaucheRel->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    //zoneGaucheRel->setWidget();
+    addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
     
     QLineEdit* Titre = new QLineEdit;
     QLineEdit* Desc = new QLineEdit;
@@ -63,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QPushButton* boutonEnrichir = new QPushButton("Enrichir une note");
     QHBox* layoutBouttons= new QHBoxLayout;
     layoutBouttons->addWidget(boutonCreer);
-    QObject::connect(boutonCreer,SIGNAL(clicked()),this,SLOT(Relation::Relation(.....))); //mettre des parametres, les récuperer des champs titre et description
+    QObject::connect(boutonCreer,SIGNAL(clicked()),this,SLOT(Creer())); //mettre des parametres, les récuperer des champs titre et description
     layoutBouttons->addWidget(boutonEditer);
     QObject::connect(boutonEditer,SIGNAL(clicked()),this,SLOT(Relation::Editer()));
     layoutBouttons->addWidget(boutonSupprimer);
@@ -79,6 +87,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     zoneCentraleRel->setLayout(layoutPrincipalRel)
     
 */
+
+void MainWindow::Creer()
+{
+    
+    QString titre = new QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok1);
+    QString desc = new QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok2);
+    			if (ok1 && ok2 && !titre.isEmpty() && !desc.isEmpty())
+    				{
+       					 Relation::Relation(titre, desc);
+                         QMessageBox::information(this, "Confirmation creation", "La nouvelle relation a bien été créée ! ");
+                    }
+
+}
+
 
 
 void MainWindow::Recherche(){

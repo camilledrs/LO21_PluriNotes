@@ -29,8 +29,8 @@ class Relation{
     void SeeRelation(); 
     Relation(Relation& r);
     Relation& operator=(Relation& r);
-    setTitre(QString newt){titre=newt;}
-    setDesc(QString newd){description=newd;}
+    void setTitre(QString newt){titre=newt;}
+    void setDesc(QString newd){description=newd;}
     void Editer(); //à voir
  /*J'ai mis la classe const_iterator en privée car je ne veux qu'on y ai accès que 
  grâce à la méthode public seeRelation()

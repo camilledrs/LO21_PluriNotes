@@ -31,7 +31,8 @@ Relation::Relation& Relation::operator=(const Relation& r){
 void Relation::addCouple(const Note& n1, const Note& n2, int l){  //verifier ici qu'on veut la dernière version ?
 	if(!*this.getOrient()) //relation pas orientee, faire 2 couples
 	{
-		int l2= std::cin<<"quel nouveau label pour le couple miroir ?\n";
+		QString strl2=QLineEdit(???,"Label couple miroir", "Quel label voulez vous pour le couple miroir ?").text();
+		int l2=atoi(strl2);
 		for(unsigned int i=0; i<nb; i++){
 		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent note");
 		}
@@ -172,7 +173,7 @@ void Relation::seeRelation(){
 void Relation::editer(){
 	unsigned int rep;
 	QString titre, desc;
-	cout<<"changer titre ? 1 pour oui\n";
+	int cout<<"changer titre ? 1 pour oui\n";
 	cin<<rep;
 	if (rep==1)
 	{

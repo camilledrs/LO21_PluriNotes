@@ -11,6 +11,7 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QDockWidget>
+#include <QTabWidget>  //pour les onglet
 
 class MainWindow : public QMainWindow
 {

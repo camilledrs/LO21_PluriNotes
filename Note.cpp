@@ -51,10 +51,11 @@ if(s.contains("\ref{")){
 		for(unsigned int i=0; i<nb; i++){
 		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent label");
 		}
-		RelationManager::Reference.addCouple(*this,*it,l2);
+		RelationManager::getInstance().getRef().addCouple(*this,*it.currentN,l2);
 	}
-void Note::sucesseurs(Note** succ, unsigned int* nb){
-
+	
+Note** Note::sucesseurs( unsigned int* nb){
+Note** succ=new Note*[NoteManager::getInstance().nbNotes];
 	unsigned int i=0;
 RelationManager::Iterator it=getIterator();
 	while(!it.isDone())  //on parcours l'ensemble des relations
@@ -65,16 +66,17 @@ RelationManager::Iterator it=getIterator();
 		      while (itr!=end)
 		      {if(itr->getIdNote1()==this.getId()) 
 		      		{succ[i]=itr->getNote2();
-				 i++		   
+				 i++;		   
 							   }
 			itr++;}
 		      it++;  //sinon on passe à la prochaine relation
 	      }
 *nb=i;
+	return succ;
 }
 
-void Note::predecesseurs(Note** pred, unsigned int* nb){
-
+Note** Note::predecesseurs( unsigned int* nb){
+Note** pred=new Note*[NoteManager::getInstance().nbNotes];
 	unsigned int i=0;
 RelationManager::Iterator it=getIterator();
 	while(!it.isDone())  //on parcours l'ensemble des relations
@@ -85,10 +87,11 @@ RelationManager::Iterator it=getIterator();
 		      while (itr!=end)
 		      {if(itr->getIdNote2()==this.getId()) 
 		      		{succ[i]=itr->getNote1();
-				 i++		   
+				 i++;		   
 							   }
 			itr++;}
 		      it++;  //sinon on passe à la prochaine relation
 	      }
 *nb=i;
+	return pred;
 }

@@ -2,6 +2,7 @@
 #define WINDOWRELATION_H
 
 #include <QApplication>
+#include "Relation.h"
 #include <QMainWindow>
 #include <QWidget>
 #include <QLineEdit>
@@ -23,6 +24,10 @@ class WindowRelation : public QTabWidget
         WindowRelation(QWidget *parent);
  
     public slots:
+        void Creer();
+        void ajouterCouple();
+        void Editer(){Relation::Editer();}
+        void Supprimer(){Relation::~Relation();}
     
  
     private:

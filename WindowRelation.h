@@ -28,6 +28,7 @@ class WindowRelation : public QTabWidget
         void ajouterCouple();
         void Editer(){Relation::Editer();}
         void Supprimer(){Relation::~Relation();}
+        void seeRelation(){Relation::seeRelation();}
     
  
     private:

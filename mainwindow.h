@@ -43,6 +43,9 @@ signals:
 
 public slots:
     void Recherche();
+    void nouvelleFen();
+    void viderLaCorbeille(){NoteManager::getInstance->viderCorbeille();}
+    void quitter();
 };
 
 #endif // MAINWINDOW_H

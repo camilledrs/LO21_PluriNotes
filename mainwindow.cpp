@@ -1,10 +1,21 @@
 #include "mainwindow.h"
+#include "WindowRelation.h"
 
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    QWidget* zoneCentrale = new QWidget;
+    
+	
+    QMenu *menuFichier = menuBar()->addMenu("&Fichier");
+    QAction *nouvelleFen = new QAction("&Nouvelle Fenêtre", this);
+    menuFichier->addAction(nouvelleFen);
+    QAction *actionQuitter = new QAction("&Quitter", this);
+    menuFichier->addAction(actionQuitter);
+     connect(actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
+	
+	
+   QWidget* zoneCentrale = new QWidget;
     QDockWidget* zoneGauche = new QDockWidget;
     zoneGauche->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     //zoneGauche->setWidget();
@@ -88,29 +99,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     
 */
 
-void MainWindow::Creer()
-{
-    
-    QString titre = new QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok1);
-    QString desc = new QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok2);
-    			if (ok1 && ok2 && !titre.isEmpty() && !desc.isEmpty())
-    				{
-       					 Relation::Relation(titre, desc);
-                         QMessageBox::information(this, "Confirmation creation", "La nouvelle relation a bien été créée ! ");
-                    }
 
+ 
+
+ 
+void MainWindow::nouvelleFen()
+{
+ 
+    QMdiArea *zoneCentrale = new QMdiArea;
+ 
+    WindowRelation *ongletRel = new WindowRelation(this);
+    QMdiSubWindow *sousFenetre1 = zoneCentrale->addSubWindow(ongletRel);
+ 
+ 
+    setCentralWidget(zoneCentrale);
+    zoneCentrale->setViewMode(QMdiArea::TabbedView)
+ 
+ 
 }
 
-void MainWindow::ajouterCouple()
-{
-    //QString id1 = new QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok1);
-    //while ((iterator!=it_end) || /*((n.getId() != iterator.courant->getIdNote1) && */(n.getId() != iterator.courant->getIdNote2())//)
-	//	iterator++;
-    //if (iterator!=it_end)
-    //QString id2 = new QInputDialog::getText(this, "ID Note2 :", "Entrez l'id de la deuxième note à mettre dans le couple", QLineEdit::Normal, QString(), &ok2);
-    
-    
-}
+
+
 
 void MainWindow::Recherche(){
 

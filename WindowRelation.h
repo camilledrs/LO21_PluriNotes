@@ -19,9 +19,24 @@
 class WindowRelation : public QTabWidget
 {
         Q_OBJECT
+        
+    QWidget *zoneCentraleRel;
+    QDockWidget *zoneGaucheRel;
+
+    QLineEdit *Titre;
+    QLineEdit *Desc;
+    QPushButton* boutonAfficherRel;
+    QPushButton* boutonCreer;
+    QPushButton* boutonEditer;
+    QPushButton* boutonSupprimer;
+    QPushButton* boutonEnrichir;
+
+    QFormLayout *layoutRel;
+    QVBoxLayout* layoutPrincipalRel
+    QHBox* layoutBouttons;
  
     public:
-        WindowRelation(QWidget *parent);
+        explicit WindowRelation(QWidget *parent=MainWindow);
  
     public slots:
         void Creer();

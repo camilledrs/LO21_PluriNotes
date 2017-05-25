@@ -62,15 +62,44 @@ void WindowRelation::Creer()
 
 }
 
+
+
 void WindowRelation::ajouterCouple()
 {
-    //QString id1 = new QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok1);
-    //while ((iterator!=it_end) || /*((n.getId() != iterator.courant->getIdNote1) && */(n.getId() != iterator.courant->getIdNote2())//)
-	//	iterator++;
-    //if (iterator!=it_end)
-    //QString id2 = new QInputDialog::getText(this, "ID Note2 :", "Entrez l'id de la deuxième note à mettre dans le couple", QLineEdit::Normal, QString(), &ok2);
-    
-    
+    	bool ok=False;
+	while(!ok){
+	NoteManager::Iterator it=getIterator();
+	while(!it.isDone()){ //parcours les notes
+    QString id1 = new QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok1);
+    while ((!it.isDone()) && (id1 != it.currentN->getId()))
+		it++;
+    if (!it.isDone())
+    {
+	Note* n1=iterator.currentN;
+	 ok=True;
+    else 
+	    QMessageBox::critical(this, "Note non existante", "L'id ne correspond à aucune note, ressaisir un nouvel Id");
+    }	
+   ok=False;
+	while(!ok){
+	NoteManager::Iterator it=getIterator();
+	while(!it.isDone()){ //parcours les notes
+    QString id2 = new QInputDialog::getText(this, "ID Note2 :", "Entrez l'id de la seconde note à mettre dans le couple", QLineEdit::Normal, QString(), &ok1);
+    while ((!it.isDone()) && (id2 != it.currentN->getId()))
+		it++;
+    if (!it.isDone())
+    {
+	Note* n2=iterator.currentN;
+	 ok=True;
+    else 
+	    QMessageBox::critical(this, "Note non existante", "L'id ne correspond à aucune note, ressaisir un nouvel Id");
+    }
+   QString strl = new QInputDialog::getText(this, "Couple miroir", "Quellabel voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);	
+    if (ok && !strl.isEmpty())
+    				{
+       					 int l=atoi(strl);
+				}
+    RelationManager::getInstance()->addCouple(*n1, *n2,l);	
 }
 
 

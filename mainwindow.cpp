@@ -12,7 +12,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     menuFichier->addAction(nouvelleFen);
     QAction *actionQuitter = new QAction("&Quitter", this);
     menuFichier->addAction(actionQuitter);
-     connect(actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
+    QAction *actionCorbeille= new QAction("&Vider Corbeille", this);
+    menuFichier->addAction(actionCorbeille);
+    connect(actionQuitter, SIGNAL(triggered()), qApp, SLOT(quitter()));
+    connect(actionQuitter, SIGNAL(triggered()), this, SLOT(nouvelleFen()));
+    connect(actionCorbeille, SIGNAL(triggered()), this, SLOT(viderLaCorbeille()));
 	
 	
    QWidget* zoneCentrale = new QWidget;
@@ -53,55 +57,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 
 
-/*
-    //Je pense qu'il faudrait faire une deuxième MainWindow, pour que ça fasse vraiment 2 parties d'interface différentes..
-    QWidget *ongletRel = new QTabWidget(this);  //je ne sais pas où le mettred ans les layout de la mainWindow.... utiliser ..layout->addTab(ongletRel)
-    //connect pour dire qu'on ouvre la fenetre Relation
-    QObject::connect(ongletRel,SIGNAL(clicked() ??),Relation,SLOT(show()));  //pas sure...
-    QWidget* Relation = new QWidget;
-    QWidget* zoneCentraleRel = new QWidget(Relation);  //pour dire qu'on ne veut pas les mettre dans la main window mais bien dans la fenetre relation...
-    QDockWidget* zoneGaucheRel = new QDockWidget(Relation);
-    zoneGaucheRel->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    //zoneGaucheRel->setWidget();
-    addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
-    
-    QLineEdit* Titre = new QLineEdit;
-    QLineEdit* Desc = new QLineEdit;
-    
-    QFormLayout* layoutRel = new QFormLayout;
-    layoutRel->addRow("Titre :", Titre);
-    layoutRel->addRow("Description :", Desc);
-    QPushButton* boutonAfficherRel = new QPushButton("Afficher une Relation");
-    QObject::connect(boutonAfficherRel,SIGNAL(clicked()),this,SLOT(Relation::SeeRelation()));
-    layoutRel->addWidget(boutonAfficherRel);
-    
-    
-    QPushButton* boutonCreer = new QPushButton("Creer une note");
-    QPushButton* boutonEditer = new QPushButton("Editer une note");
-    QPushButton* boutonSupprimer = new QPushButton("Supprimer une note");
-    QPushButton* boutonEnrichir = new QPushButton("Enrichir une note");
-    QHBox* layoutBouttons= new QHBoxLayout;
-    layoutBouttons->addWidget(boutonCreer);
-    QObject::connect(boutonCreer,SIGNAL(clicked()),this,SLOT(Creer())); //mettre des parametres, les récuperer des champs titre et description
-    layoutBouttons->addWidget(boutonEditer);
-    QObject::connect(boutonEditer,SIGNAL(clicked()),this,SLOT(Relation::Editer()));
-    layoutBouttons->addWidget(boutonSupprimer);
-    QObject::connect(boutonSupprimer,SIGNAL(clicked()),this,SLOT(Relation::~Relation()));
-    layoutBouttons->addWidget(boutonEnrichir);
-    QObject::connect(boutonEnrichir,SIGNAL(clicked()),this,SLOT(ajouterCouple()));
-    //slot à creer, faire choisir 2 notes et un label et faire appel à addcouple()
-    
-    QVBoxLayout* layoutPrincipalRel = new QVBoxLayout;
-    layoutPrincipalRel->addLayout(layoutRel);
-    layoutPrincipalRel->addLayouy(layoutBouttons);
-    
-    zoneCentraleRel->setLayout(layoutPrincipalRel)
-    
-*/
 
-
- 
-
+//SLOTS
  
 void MainWindow::nouvelleFen()
 {
@@ -119,6 +76,13 @@ void MainWindow::nouvelleFen()
 }
 
 
+void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbeille avant de quitter
+{
+	int reponse= new QMessageBox::question(???,"Vidage corbeille", "Voulez vous vider la corbeille avant de quitter ?",QMessageBox::Yes | QMessageBox::No);
+	if(reponse == QMessageBox::Yes)
+		RelationManager::getInstance->viderCorbeille();
+	quit();
+}
 
 
 void MainWindow::Recherche(){

@@ -6,6 +6,7 @@
 #include <QtXml>
 #include <QMessageBox>
 
+RelationManager* RelationManager::managR=0;
 
 //Relation* RelationManager::Reference = new Relation("Reference", "note1 reference note2");
 

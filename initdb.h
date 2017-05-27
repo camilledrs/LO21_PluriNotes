@@ -98,7 +98,7 @@ QSqlError initDb()
         return q.lastError();
       if (!q.exec(QLatin1String("create table multimedias(id integer primary key, date date, description varchar, fichier varchar, type varchar, note integer)")))
         return q.lastError();
-        
+   /*     
     if (!q.prepare(QLatin1String("insert into authors(name, birthdate) values(?, ?)")))
         return q.lastError();
     QVariant asimovId = addAuthor(q, QLatin1String("Isaac Asimov"), QDate(1920, 2, 1));
@@ -129,5 +129,5 @@ QSqlError initDb()
 
     return QSqlError();
 }
-
+*/
 #endif

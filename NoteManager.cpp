@@ -4,6 +4,7 @@
 #include <QMessageBox>
 
 
+NoteManager* NoteManager::managN=0;
 
 void NoteManager::addNote(QString id, QString title, tm crea,tm modif,const Version& v)){
 	for(unsigned int i=0; i<nbNotes; i++){

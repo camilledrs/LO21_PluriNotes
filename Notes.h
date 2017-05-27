@@ -51,6 +51,7 @@ class Note //Class car on veut tout en privé
     void verifRef( const QString s);
     Note** sucesseurs(unsigned int* nb);
     Note** predecesseurs(unsigned int* nb);
+   void arborescence();
 };
 
 #endif //NOTES_H_INCLUDED

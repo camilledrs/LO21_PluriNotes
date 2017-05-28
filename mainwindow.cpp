@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     QLineEdit* idNote = new QLineEdit;
     QPushButton* boutonAfficher = new QPushButton("Afficher une note");
+    
 
 
     QFormLayout* layout = new QFormLayout;
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QVBoxLayout* layoutRecherche = new QVBoxLayout;
     layoutRecherche->addLayout(layout);
     layoutRecherche->addWidget(boutonAfficher);
+    layoutRecherche->addWidget(boutonRestaurer);
 
     QObject::connect(boutonAfficher,SIGNAL(clicked()),this,SLOT(Recherche()));
 
@@ -85,6 +87,14 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
 }
 
 
+
+void MainWindow::RestaurerV(){
+	Note::restaurer(/*chercher la version en question*/);
+	boutonRestaurer->setEnabled(False);
+}
+
+
+
 void MainWindow::Recherche(){
 
     // Recherche de la bonne note avec idNote->text();
@@ -101,6 +111,8 @@ void MainWindow::Recherche(){
 
 //    QLabel *titre= new QLabel("Note");
     QPushButton* enregistrer = new QPushButton("Enregistrer");
+    QPushButton* boutonRestaurer = new QPushButton("Restaurer la note");
+    boutonRestaurer->setEnabled(false);   //par défaut pas dispo, mais si pas dernière version on rend dispo
 
     layoutAffich = new QFormLayout;
     layoutAffich->addRow("Titre", titreNote);
@@ -111,6 +123,11 @@ void MainWindow::Recherche(){
 //    layoutAffichage->addWidget(titre);
     layoutAffichage->addLayout(layoutAffich);
     layoutAffichage->addWidget(enregistrer);
+    layoutAffichage->addWidget(boutonRestaurer);
 
     layoutPrincipal->addLayout(layoutAffichage);
+    if (note->getDerniereVersion()->getDate() != dateCreaNote)  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
+	    boutonRestaurer->setEnabled(True);
+    QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
+    
 }

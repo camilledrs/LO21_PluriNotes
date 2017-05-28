@@ -22,6 +22,7 @@ class NoteManager
     void addNote(QString id, QString title, tm crea,tm modif);
     void editer(Note* n, QString title, tm modif, const Version& v);
     void supprimerNote(Note& n);
+    void restaurerNote(Note* n);
     void viderCorbeille();
     
       class Iterator {

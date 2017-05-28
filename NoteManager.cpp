@@ -56,7 +56,15 @@ void NoteManager::supprimerNote(Note& n){
 		n.supprime=true;
 }
 
-	
+void NoteManager::restaurerNote(Note* n)
+{
+	 if(n->getStatutSupp()==True)
+		 n->supprime=False;
+	if (n->getActive()==False)
+		n->active=True;
+}
+	       
+	       
 void NoteManager::viderCorbeille(){
 	NoteManager::Iterator it=getIterator();
 	while(!it.isDone()){ //parcours les notes

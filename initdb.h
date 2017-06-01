@@ -51,12 +51,11 @@ QVariant addMultimedia(QSqlQuery &q, const Multimedia& m, const QVariant &noteId
     return q.lastInsertId();
 }
 
-QVariant addCouple(QSqlQuery &q, const Couple& c,const QVariant &relationId )
+QVariant addCouple(QSqlQuery &q, const Couple& c )
 {
     q.addBindValue(c.label);
     q.addBindValue(c.note1);
     q.addBindValue(c.note2);
-    q.addBindValue(relatinId);
     q.exec();
     return q.lastInsertId();
 }
@@ -68,6 +67,13 @@ QVariant addRelation(QSqlQuery &q, const Relation& r)
     q.addBindValue(r.max);
     q.addBindValue(r.description);
     q.addBindValue(r.orientee);
+    q.exec();
+    return q.lastInsertId();
+}
+QVariant addEnRelation(const QVariant &relationId,const QVariant &coupleId)
+{
+    q.addBindValue(relationID);
+    q.addBindValue(coupleID);
     q.exec();
     return q.lastInsertId();
 }
@@ -90,7 +96,7 @@ QSqlError initDb()
         return q.lastError();
     if (!q.exec(QLatin1String("create table relations(id integer primary key, titre varchar, nb integer, max integer,description varchar, orientee bool)")))
         return q.lastError();
-    if (!q.exec(QLatin1String("create table couples(id integer primary key, label varchar, note1 integer, note2 integer, relation integer)")))
+    if (!q.exec(QLatin1String("create table couples(id integer primary key, label varchar, note1 integer, note2 integer)")))
         return q.lastError();
     if (!q.exec(QLatin1String("create table taches(id integer primary key, date date, action varchar, statut varchar, datetache date, priorite integer, note integer)")))
         return q.lastError();
@@ -98,9 +104,12 @@ QSqlError initDb()
         return q.lastError();
       if (!q.exec(QLatin1String("create table multimedias(id integer primary key, date date, description varchar, fichier varchar, type varchar, note integer)")))
         return q.lastError();
-   /*     
-    if (!q.prepare(QLatin1String("insert into authors(name, birthdate) values(?, ?)")))
+    if (!q.exec(QLatin1String("create table enrelation(id integer primary key, relation integer, couple integer)")))
         return q.lastError();
+   /*     
+    if (!q.prepare(QLatin1String("insert into notes(titre, datecrea, datemodif, active, supprime, nbversion, nbmaxversion) values(?, ?, ?,?,?,?,?)")))
+        return q.lastError();
+        
     QVariant asimovId = addAuthor(q, QLatin1String("Isaac Asimov"), QDate(1920, 2, 1));
     QVariant greeneId = addAuthor(q, QLatin1String("Graham Greene"), QDate(1904, 10, 2));
     QVariant pratchettId = addAuthor(q, QLatin1String("Terry Pratchett"), QDate(1948, 4, 28));

@@ -49,8 +49,9 @@ if(s.contains("\ref{")){
 	}
 		QString strl2=QLineEdit(???,"Label ref", "Quel label voulez vous pour le couple de la reference?").text();
 		int l2=atoi(strl2);
-		for(unsigned int i=0; i<nb; i++){
-		if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent label");
+		
+		for(unsigned int i=0; i<RelationManager::getInstance().getRef().nb; i++){
+		if (RelationManager::getInstance().getRef().tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent label");
 		}
 		RelationManager::getInstance().getRef().addCouple(*this,*it.currentN,l2);
 	}

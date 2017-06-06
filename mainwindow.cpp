@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     menuFichier->addAction(actionQuitter);
     QAction *actionCorbeille= new QAction("&Vider Corbeille", this);
     menuFichier->addAction(actionCorbeille);
-    connect(actionQuitter, SIGNAL(triggered()), qApp, SLOT(quitter()));
+    connect(actionQuitter, SIGNAL(triggered()), this, SLOT(quitter()));
     connect(actionQuitter, SIGNAL(triggered()), this, SLOT(nouvelleFen()));
     connect(actionCorbeille, SIGNAL(triggered()), this, SLOT(viderLaCorbeille()));
 

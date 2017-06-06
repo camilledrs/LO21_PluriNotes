@@ -139,7 +139,7 @@ class Tache : public Version
                                    stream.writeStartElement("tache");
                                    stream.writeTextElement("date version",getDate().toString());
                                    stream.writeTextElement("action",action );
-                                   //stream.writeTextElement("statut",statut );
+                                   stream.writeTextElement("statut",QString::number(statut));
                                    stream.writeTextElement("date tache",dateTache.toString() );
                                    stream.writeTextElement("priorite",QString::number(priorite) );
                               }
@@ -217,7 +217,7 @@ class Multimedia : public Version
                                    stream.writeTextElement("date version",getDate().toString());
                                    stream.writeTextElement("description",description );
                                    stream.writeTextElement("fichier",fichier );
-                                   //stream.writeTextElement("type",type );
+                                   stream.writeTextElement("type",QString::number(type) );
                               }
 
 public :

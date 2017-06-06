@@ -38,12 +38,13 @@ class Relation{
     
         class const_iterator {
         friend class Relation;
-        const Couple * courant;
-        const_iterator(const Couple* deb):courant(deb){}
+        const Couple ** courant;
+        const_iterator(const Couple** deb):courant(deb){}
         
       public :
         const_iterator():courant(0){}
-        const Couple& operator*() const {return *courant;}
+        const Couple* elementCourant() const {return *courant;}
+        const Couple& operator*() const {return **courant;}
         const_iterator& operator++(){++courant; return *this;}
         const_it operator operator++(int) {const_iterator old=*this; ++courant; return old;}
         bool operator==(const_iterator it) const {return courant==it.courant;}

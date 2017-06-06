@@ -15,6 +15,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QMdiArea>
+#include <QDateTimeEdit>
 #include "notemanager.h"
 #include "windowrelation.h"
 #include "note.h"

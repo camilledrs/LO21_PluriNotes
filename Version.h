@@ -82,7 +82,11 @@ class Article : public Version
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const;
+    void save(QFile* f) const {QXmlStreamWriter stream(f);
+                               stream.writeStartElement("article");
+                               stream.writeTextElement("date version",getDate().toString());
+                               stream.writeTextElement("texte",texte );
+                              }
 
 };
 
@@ -131,7 +135,14 @@ class Tache : public Version
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const;
+    void save(QFile* f) const {    QXmlStreamWriter stream(f);
+                                   stream.writeStartElement("tache");
+                                   stream.writeTextElement("date version",getDate().toString());
+                                   stream.writeTextElement("action",action );
+                                   //stream.writeTextElement("statut",statut );
+                                   stream.writeTextElement("date tache",dateTache.toString() );
+                                   stream.writeTextElement("priorite",QString::number(priorite) );
+                              }
 
 public :
     /**
@@ -201,7 +212,13 @@ class Multimedia : public Version
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const;
+    void save(QFile* f) const {    QXmlStreamWriter stream(f);
+                                   stream.writeStartElement("multimedia");
+                                   stream.writeTextElement("date version",getDate().toString());
+                                   stream.writeTextElement("description",description );
+                                   stream.writeTextElement("fichier",fichier );
+                                   //stream.writeTextElement("type",type );
+                              }
 
 public :
     /**
@@ -223,28 +240,6 @@ public :
 };
 
 
-void Article::save(QFile* f) const{
-    QXmlStreamWriter stream(f);
-    stream.writeStartElement("article");
-    stream.writeTextElement("date version",getDate().toString());
-    stream.writeTextElement("texte",texte );
-}
-void Tache::save(QFile* f) const{
-    QXmlStreamWriter stream(f);
-    stream.writeStartElement("tache");
-    stream.writeTextElement("date version",getDate().toString());
-    stream.writeTextElement("action",action );
-    //stream.writeTextElement("statut",statut );
-    stream.writeTextElement("date tache",dateTache.toString() );
-    stream.writeTextElement("priorite",QString::number(priorite) );
-}
-void Multimedia::save(QFile* f) const{
-    QXmlStreamWriter stream(f);
-    stream.writeStartElement("multimedia");
-    stream.writeTextElement("date version",getDate().toString());
-    stream.writeTextElement("description",description );
-    stream.writeTextElement("fichier",fichier );
-    //stream.writeTextElement("type",type );
-}
+
 
 #endif // VERSION_H

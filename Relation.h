@@ -21,7 +21,7 @@ class Relation{
     QString description;
     bool orientee;
     Relation():orientee(true){} //constructeur sans argument, orientee vrai par défaut
-    Relation(QString t, Qstring d):orientee(true), titre(t), description(d), nb(0), max(0), tab(null){}
+    Relation(QString t, Qstring d):orientee(true), titre(t), description(d), nb(0), max(0), tab(nullptr){}
     ~Relation() {
                     for (unsigned int i=0; i<nb; i++) delete tab[i]; 
                     delete[] tab;

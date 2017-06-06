@@ -99,6 +99,7 @@ class Note
      * en privé pour que l'utilisateur de Note ne puisse pas y avoir accès
      */
     Note(const Note& n);
+    void setActive(){ active=true;}
 
 public  :
     /**
@@ -174,6 +175,8 @@ public  :
     Note** predecesseurs(unsigned int* nb);
 
     Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau
+        
+    }
 };
 
 #endif // NOTE_H

@@ -12,6 +12,8 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QDockWidget>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QTabWidget> //pour les onglet
 
 

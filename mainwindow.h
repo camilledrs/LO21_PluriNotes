@@ -52,6 +52,7 @@ public slots:
     void nouvelleFen();
     void viderLaCorbeille(){NoteManager::getInstance().viderCorbeille();}
     void quitter();
+    void Restaurer();
 };
 
 #endif // MAINWINDOW_H

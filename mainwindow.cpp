@@ -1,6 +1,4 @@
 #include "mainwindow.h"
-#include "notemanager.h"
-#include "note.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -60,7 +58,7 @@ void MainWindow::nouvelleFen()
 
 
     setCentralWidget(zoneCentrale);
-    zoneCentrale->setViewMode(QMdiArea::TabbedView)
+    zoneCentrale->setViewMode(QMdiArea::TabbedView);
 }
 
 void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbeille avant de quitter

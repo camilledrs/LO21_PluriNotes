@@ -12,6 +12,8 @@
 #include <QPushButton>
 #include <QDockWidget>
 #include <QTabWidget>
+#include "notemanager.h"
+#include "note.h"
 
 class MainWindow : public QMainWindow
 {

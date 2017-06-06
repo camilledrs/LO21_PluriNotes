@@ -119,6 +119,6 @@ void MainWindow::Recherche()
 
     layoutPrincipal->addLayout(layoutAffichage);
     if (note->getDerniereVersion().getDate() != dateCreaNote)  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
-        boutonRestaurer->setEnabled(True);
+        boutonRestaurer->setEnabled(true);
     QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
 }

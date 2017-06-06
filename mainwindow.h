@@ -45,7 +45,7 @@ signals:
 public slots:
     void Recherche();
     void nouvelleFen();
-    void viderLaCorbeille(){NoteManager::getInstance.viderCorbeille();}
+    void viderLaCorbeille(){NoteManager::getInstance().viderCorbeille();}
     void quitter();
 };
 

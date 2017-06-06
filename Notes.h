@@ -104,7 +104,10 @@ public  :
     /**
      @brief destructeur de Note
       celui par défault suffit */
-   ~Note();
+   ~Note(){
+    for (unsigned int i=0; i<nbVersion; i++) delete versions[i];
+    delete[] versions;
+    }
     /**
      * @brief accesseur getId
      * @return l'ID de la note, un QString

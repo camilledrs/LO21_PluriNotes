@@ -10,12 +10,17 @@
 #include <QLabel>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QDockWidget>
+#include <QTabWidget>
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
     QWidget *zoneCentrale;
+    QDockWidget *zoneGauche;
+    QDockWidget *zoneDroite;
+
     QLineEdit *titreNote;
     QLineEdit *dateCreaNote;
     QTextEdit *contenuNote;
@@ -37,6 +42,9 @@ signals:
 
 public slots:
     void Recherche();
+    void nouvelleFen();
+    void viderLaCorbeille(){NoteManager::getInstance->viderCorbeille();}
+    void quitter();
 };
 
 #endif // MAINWINDOW_H

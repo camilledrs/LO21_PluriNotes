@@ -176,7 +176,6 @@ public  :
 
     Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau
         
-    }
 };
 
 #endif // NOTE_H

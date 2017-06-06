@@ -74,7 +74,7 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
 void MainWindow::RestaurerV()
 {
     Note::restaurer(/*chercher la version en question*/);
-    boutonRestaurer->setEnabled(False);
+    boutonRestaurer->setEnabled(false);
 }
 
 void MainWindow::Recherche()

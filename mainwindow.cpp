@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     idNote = new QLineEdit;
     boutonAfficher = new QPushButton("Afficher une note");
+    boutonRestaurer = new QPushButton("Restaurer la version");
 
     layout = new QFormLayout;
     layout->addRow("Id", idNote);

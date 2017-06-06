@@ -2,6 +2,7 @@
 #include <QTextCodec>
 #include <QtXml>
 #include <QMessageBox>
+#include "NoteManager.h"
 
 
 NoteManager* NoteManager::managN=0;

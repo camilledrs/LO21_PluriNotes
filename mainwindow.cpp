@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "notemanager.h"
+#include "note.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -30,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     idNote = new QLineEdit;
     boutonAfficher = new QPushButton("Afficher une note");
     boutonRestaurer = new QPushButton("Restaurer la version");
-
     layout = new QFormLayout;
     layout->addRow("Id", idNote);
 
@@ -64,18 +65,25 @@ void MainWindow::nouvelleFen()
 
 void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbeille avant de quitter
 {
-    int reponse= new QMessageBox::question(???,"Vidage corbeille", "Voulez vous vider la corbeille avant de quitter ?",QMessageBox::Yes | QMessageBox::No);
+
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Vidage corbeille", "Voulez vous vider la corbeille avant de quitter ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
-        RelationManager::getInstance->viderCorbeille();
-    quit();
+        NoteManager::getInstance().viderCorbeille();
+    QApplication::quit();
 }
 
 
 
-void MainWindow::RestaurerV()
+/*void MainWindow::RestaurerV()
 {
     Note::restaurer(/*chercher la version en question*/);
-    boutonRestaurer->setEnabled(false);
+    boutonRestaurer->setEnabled(False);
+}*/
+    
+void MainWindow::Restaurer()
+{
+    
 }
 
 void MainWindow::Recherche()
@@ -86,7 +94,7 @@ void MainWindow::Recherche()
     Note* note = NoteManager::getInstance().getNote(idNote->text());
 
     titreNote = new QLineEdit;
-    dateCreaNote = new QLineEdit;
+    dateCreaNote = new QDateTimeEdit;
     contenuNote = new QTextEdit;
 
     //titreNote->setText(note->getTitre);
@@ -110,7 +118,7 @@ void MainWindow::Recherche()
     layoutAffichage->addWidget(boutonRestaurer);
 
     layoutPrincipal->addLayout(layoutAffichage);
-    if (note->getDerniereVersion()->getDate() != dateCreaNote)  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
+    if (note->getDerniereVersion().getDate() != dateCreaNote)  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
         boutonRestaurer->setEnabled(True);
     QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
 }

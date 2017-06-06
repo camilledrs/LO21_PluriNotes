@@ -12,7 +12,11 @@
 #include <QPushButton>
 #include <QDockWidget>
 #include <QTabWidget>
+#include <QMenu>
+#include <QAction>
+#include <QMdiArea>
 #include "notemanager.h"
+#include "windowrelation.h"
 #include "note.h"
 
 class MainWindow : public QMainWindow

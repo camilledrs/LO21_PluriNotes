@@ -1,63 +1,143 @@
-#ifndef RELATIONMANAGER_H_INCLUDED
-#define RELATIONMANAGER_H_INCLUDED
+#ifndef RELATIONMANAGER_H
+#define RELATIONMANAGER_H
+
 #include <ctime>
 #include <QString>
-#include "Relation.h"
+#include "relation.h"
 
+/**
+ * @brief la classe RelationManager
+ * gère l'ensemble des objets Relation
+ */
 class RelationManager
 {
-    static RelationManager* managR;
-    Relation** relations;
-    unsigned int nbRelations;
-    Relation* Reference;
-    unsigned int nbMaxRelations;
-    void addRelation(Relation* r);
-    void suppRelation(Relation& r);
-    Relation* getReference(){return Reference;}
-    RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]), Reference(new Relation("Reference", "note1 reference note2")){}
+    static RelationManager* managR; /**< pointeur sur l'unique instance */
+    Relation** relations; /**< tableau de l'ensemble des relations */
+    unsigned int nbRelations; /**< entier, nombre de relations stockées dans relations */
+    Relation* Reference; /**< pointeur sur la relation spéciale Reference */
+    unsigned int nbMaxRelations; /**< entier, capacité actuelle du tableau relations */
+    /**
+     * @brief constructeur sans argument de RelationManager
+     */
+    RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]){}
+    /**
+      @brief destructeur de RelationManager
+      détruit l'ensemble des objets Relation, et libère
+      l'espace mémoire alloué au tableau relations
+      */
     ~RelationManager(){
         for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
         delete[] relations; // composition + agrégation
     }
+    /**
+     * @brief constructeur de recopie de RelationManager
+     * en privé car on ne veut pas qu'il puisse être utilisé
+     */
     RelationManager(const RelationManager& m);
+    /**
+     * @brief operateur d'affectation de RelationManager
+     * en privé car on ne veut pas qu'il puisse être utilisé
+     */
     RelationManager& operator=(const RelationManager& m);
-    bool verifNoteRef(const Note* n);
-    
-    class Iterator {
-            friend class RelationManager;
-            Relation** currentR;
-            unsigned int nbRemain;
-            Iterator(Relation** r, unsigned nb):currentR(r),nbRemain(nb){}
-        public:
-            Iterator():nbRemain(0),currentR(nullptr){}
-            bool isDone() const { return nbRemain==0; }
-            void next() {
-                if (isDone())
-                    throw NoteException("error, next on an iterator which is done");
-                nbRemain--;
-                currentR++;
-            }
-            Relation& current() const {
-                if (isDone())
-                    throw NoteException("error, indirection on an iterator which is done");
-                return **currentR;
-            }
-};
-    
-    Iterator getIterator() {
-            return Iterator(relations,nbRelations);//0
-        }
 
-    
-    public :
-    
-    static RelationManager& getInstance(){
-        if(!managR) managR= new RelationManager();
+
+public :
+    /**
+     * @brief methode editerRelation
+     * @param r pointeur sur la Relation à éditer
+     */
+    void editerRelation(Relation* r){r->editer();}
+    /**
+     * @brief methode suppRelation
+     * @param r, reference sur l'objet relation à supprimer
+     */
+    void suppRelation(Relation& r);
+    /**
+     * @brief methode addRelation
+     * @param r reference sur la relation à ajouter
+     */
+    void addRelation(Relation& r);
+
+    /**
+     * @brief La classe Iterator de RelationManager
+     */
+    class Iterator
+    {
+        friend class RelationManager;
+        Relation** currentR; /**< le tableau d'objets Relation dans lequel itérer */
+        unsigned int nbRemain; /**< entier, nombre de relations à parcourir avant d'atteindre la fin du tableau */
+        /**
+         * @brief constructeur de Iterator
+         * @param r tableau de pointeurs d'objets Reference
+         * @param nb entier, nombre d'objets Référence à parcourir avant d'atteindre la fin du tableau
+         */
+        Iterator(Relation** r, unsigned nb):currentR(r),nbRemain(nb){}
+
+    public:
+        /**
+         * @brief constructeur sans argument de Iterator
+         */
+        Iterator():nbRemain(0),currentR(nullptr){}
+        /**
+         * @brief methode isDone
+         * @return true si on a atteint la fin du tableau, false sinon
+         */
+        bool isDone() const { return nbRemain==0; }
+        /**
+         * @brief methode next
+         * passe à la relation suivante dans le tableau
+         */
+        void next()
+        {
+            if (isDone())
+                throw NoteException("error, next on an iterator which is done");
+            nbRemain--;
+            currentR++;
+        }
+        /**
+         * @brief methode current
+         * @return une reference sur la Relation actuellement pointée
+         */
+        Relation& current() const
+        {
+            if (isDone())
+                throw NoteException("error, indirection on an iterator which is done");
+            return **currentR;
+        }
+    };
+
+    /**
+     * @brief methode getIterator
+     * @return un iterateur sur la debut du tableau relations
+     */
+    Iterator getIterator() {return Iterator(relations,nbRelations);/*0*/}
+    /**
+     * @brief methode statique getInstance
+     * créé l'unique instance de RelationManager si elle n'existe pas déjà
+     * @return une reference sur l'unique instance de RelationManager
+     */
+    static RelationManager& getInstance()
+    {
+        if(!managR)
+            managR= new RelationManager();
         return *managR;
     }
+    /**
+     * @brief methode statique free_instance
+     */
     static void free_instance(){if (managR) delete managR;}
-    Relation* getRef()[return Reference;}
-    
+    /**
+     * @brief methode getRef
+     * @return un pointeur sur la relation spéciale Reference
+     */
+    Relation* getRef(){return Reference;}
+    /**
+     * @brief methode verifNoteRef
+     * @param n un pointeur sur une note
+     * @return true si la note est référencée, false sinon
+     */
+    bool verifNoteRef(const Note* n);
 };
 
-#endif // RELATIONMANAGER_H_INCLUDED
+
+#endif // RELATIONMANAGER_H

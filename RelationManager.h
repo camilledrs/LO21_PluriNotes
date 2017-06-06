@@ -16,13 +16,12 @@ class RelationManager
     Relation* getReference(){return Reference;}
     RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]), Reference(new Relation("Reference", "note1 reference note2")){}
     ~RelationManager(){
-for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
-delete[] relations; // composition + agrégation
+        for(unsigned int i=0; i<nbRelations; i++) delete relations[i]; // composition uniquement
+        delete[] relations; // composition + agrégation
     }
     RelationManager(const RelationManager& m);
     RelationManager& operator=(const RelationManager& m);
     bool verifNoteRef(const Note* n);
-    Relation* getRef()[return Reference;}
     
     class Iterator {
             friend class RelationManager;
@@ -57,6 +56,7 @@ delete[] relations; // composition + agrégation
         return *managR;
     }
     static void free_instance(){if (managR) delete managR;}
+    Relation* getRef()[return Reference;}
     
 };
 

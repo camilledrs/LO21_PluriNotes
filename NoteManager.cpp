@@ -36,7 +36,7 @@ NoteManager& NoteManager::operator=(const NoteManager& m){
 	{
 		nbNotes=m.nbNotes;
 		nbMaxNotes=m.nbMaxNotes;
-		newtab= new Note[nbMaxNotes];
+		Note** newtab= new Note[nbMaxNotes];
 		for(unisgned int i=0; i<nb; i++) newtab[i]=m.notes[i];
 		delete[] notes;
 		notes=newtab;
@@ -46,12 +46,11 @@ NoteManager& NoteManager::operator=(const NoteManager& m){
 	
 void NoteManager::supprimerNote(Note& n){
 	Relation* reference=RelationManager::getInstance().getRef();
-	Relation::const_iterator iterator=reference->begin();
+	Relation::const_iterator it=reference->begin();
 	Relation::const_iterator it_end=reference->end();
-	while ((iterator!=it_end) || /*((n.getId() != iterator.courant->getIdNote1) && */(n.getId() != iterator.courant->getIdNote2())//)
-		iterator++;
-		
-	if (iterator!=it_end)
+	while ((it!=it_end) || /*((n.getId() != iterator.courant->getIdNote1) && */(n.getId() != it.elementCourant()->getIdNote2())//)
+		it++;
+	if (it!=it_end)
 		n.active=false;
 	else
 		n.supprime=true;
@@ -59,39 +58,39 @@ void NoteManager::supprimerNote(Note& n){
 
 void NoteManager::restaurerNote(Note* n)
 {
-	 if(n->getStatutSupp()==True)
-		 n->supprime=False;
-	if (n->getActive()==False)
-		n->active=True;
+	 if(n->getStatutSupp()==true)
+		 n->supprime=false;
+	if (n->getActive()==false)
+		n->active=true;
 }
 	       
 	       
 void NoteManager::viderCorbeille(){
 	NoteManager::Iterator it=getIterator();
-	while(!it.isDone()){ //parcours les notes
+	while(!it.isDone()) //parcours les notes
+	{
 		if(it.currentN->supprime)
 		{
-			RelationManager::Iterator itR=getIterator();  //parcours les relations
+			RelationManager::Iterator itR=RelationManager::getInstance()->getIterator();  //parcours les relations
 			while(!itR.isDone())  //on parcours l'ensemble des relations
-	      {
-		      Relation* curr=itR.currentR;
-		      Relation::const_iterator itrela=begin();  //parcours les couples de la relation
-		      Relation::const_iterator end=end();
-		      while (itrela!=end)
-		      {
-			      if (itrela.courant->note1==it.currentN || itrela.courant->note2 == it.currentN)  //on doit supprimer le couple
-			      {
-				      Couple* tmp= itrela.courant;  
-			      	      itrela++;
-			      	      delete tmp;
-			      }
-			      else itrela++;  //on passe au couple suivant
-		      		
-		      }
-		      itR++;  //sinon on passe à la prochaine relation
-	      }
+	      		{
+		      		//Relation* curr=itR.currentR;
+			      	Relation::const_iterator itrela=begin();  //parcours les couples de la relation
+			      	Relation::const_iterator end=end();
+			      	while (itrela!=end)
+			      	{
+			      		if (itrela.elementCourant()->getIdNote1()==it.current().getId() || itrela.elementCourant()->getIdNote2() == it.current().getId())  //on doit supprimer le couple
+			      		{
+						const Couple* tmp= itrela.courant;  
+			      	      		itrela++;
+			      	      		delete tmp;
+			      		}
+			      		else itrela++;  //on passe au couple suivant
+		      		}
+		      		itR.next();  //sinon on passe à la prochaine relation
+	      		}
 		}	
-		it++; //on passe à la note suivante
+		it.next(); //on passe à la note suivante
 	}
 }
 	       

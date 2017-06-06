@@ -80,7 +80,7 @@ void Relation::suppCouple(const Couple& c)
 	{
 		Note* note1=c.getNote1();
 		Note* note2=c.getNote2();
-		if((note1->active==True) && (note2->active==True)){ //on ne peut supprimer que les couples ne contenant aucune note archivée
+		if((note1->active==true) && (note2->active==true)){ //on ne peut supprimer que les couples ne contenant aucune note archivée
 		bool orient=c.getOrient();
 		if( orient== false) //besoin de supprimer aussi la relation "miroir" (y,x)
 		{
@@ -98,7 +98,7 @@ void Relation::suppCouple(const Couple& c)
 					tab[j]=tab[j+1];
 					j++;
 				}
-				tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
+				tab[nb-1]=nullptr; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
 				nb--;
 				if (i>inij)  //on a décalé du coup, et le i initial doit être décrémenté de 1 si on veut accéder au bon couple
 				{
@@ -113,11 +113,11 @@ void Relation::suppCouple(const Couple& c)
 			tab[i]=tab[i+1];
 			i++;
 		}
-		tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
+		tab[nb-1]=nullptr; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
 		nb--;
 		RelationManager& instance=RelationManager::getInstance();
 		Relation* ref=instance.getRef();
-		if (note2->getActive() == False){  //note archivee, on doit regardee si elle est note2 au moins une fois dans Reference
+		if (note2->getActive() == false){  //note archivee, on doit regardee si elle est note2 au moins une fois dans Reference
 			Relation::const_iterator it=ref->begin();
 			Relation::const_iterator end=ref->end();
 			while(it!=end && it.courant->note2 != note2)
@@ -126,7 +126,7 @@ void Relation::suppCouple(const Couple& c)
 			}
 			if(it==end) //la note n'est plus en couple nulle part
 			{
-				int reponse= new QMessageBox::question(???,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes | QMessageBox::No);
+				int reponse= QMessageBox::question(fenetre,"Supprimer de note", "La note " note2->getId() " est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes | QMessageBox::No);
 				if(reponse == QMessageBox::Yes)
 					delete note2;
 		 		// fait apparaitre une fenêtre de dialogue avec l’utilisateur

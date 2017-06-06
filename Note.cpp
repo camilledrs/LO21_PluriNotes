@@ -32,68 +32,78 @@ void Note::editer(QString title, tm modif, const Version& v){
 		
 	}
 }
-void Note::verifRef( const Qstring s){
-if(s.contains("\ref{")){
-		QChar *data = s.data();
-		while(*data!= '\\')
-		      data++;
-		for (unsigned int i=0, i<5, i++) data++;
+void Note::verifRef( const QString s){
+	if(s.contains("\ref{")){
+		const QChar *data = s.data();
+		while(*data!= '\\') data++;
+		for (unsigned int i=0; i<5; i++) data++;
 		Qstring idy;
-		      while(*data!='}')
-		      {idy.append(*data);
-		       data++;
-		      }
+		while(*data!='}')
+		{
+			idy.append(*data);
+			data++;
+		}
 		NoteManager::Iterator it=getIterator();
-	while(it->getId()!=idy){
-		it++;
-	}
-		QString strl2=QLineEdit(???,"Label ref", "Quel label voulez vous pour le couple de la reference?").text();
+		while(it->getId()!=idy)
+		{
+			it++;
+		}
+		QString strl2=QLineEdit(fenetre,"Label ref", "Quel label voulez vous pour le couple de la reference?").text();
 		int l2=atoi(strl2);
-		
+
 		for(unsigned int i=0; i<RelationManager::getInstance().getRef().nb; i++){
-		if (RelationManager::getInstance().getRef().tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent label");
+			if (RelationManager::getInstance().getRef().tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent label");
 		}
 		RelationManager::getInstance().getRef().addCouple(*this,*it.currentN,l2);
 	}
+}
 	
-Note** Note::sucesseurs( unsigned int* nb){
-Note** succ=new Note*[NoteManager::getInstance().nbNotes];
+Note** Note::sucesseurs( unsigned int* nb)
+{
+	Note** succ=new Note*[NoteManager::getInstance().nbNotes];
 	unsigned int i=0;
-RelationManager::Iterator it=getIterator();
+	RelationManager::Iterator it=getIterator();
 	while(!it.isDone())  //on parcours l'ensemble des relations
+      	{
+	      Relation* curr=it.currentR;
+	      Relation::const_iterator itr=begin();
+	      Relation::const_iterator end=end();
+	      while (itr!=end)
 	      {
-		      Relation* curr=it.currentR;
-		      Relation::const_iterator itr=begin();
-		      Relation::const_iterator end=end();
-		      while (itr!=end)
-		      {if(itr->getIdNote1()==this.getId()) 
-		      		{succ[i]=itr->getNote2();
-				 i++;		   
-							   }
-			itr++;}
-		      it++;  //sinon on passe à la prochaine relation
+	      		if(itr->getIdNote1()==this.getId()) 
+			{
+				succ[i]=itr->getNote2();
+		 		i++;		   
+		   	}
+			itr++;
 	      }
-*nb=i;
+	      it++;  //sinon on passe à la prochaine relation
+      	}
+	*nb=i;
 	return succ;
 }
 
-Note** Note::predecesseurs( unsigned int* nb){
-Note** pred=new Note*[NoteManager::getInstance().nbNotes];
+Note** Note::predecesseurs( unsigned int* nb)
+{
+	Note** pred=new Note*[NoteManager::getInstance().nbNotes];
 	unsigned int i=0;
-RelationManager::Iterator it=getIterator();
+	RelationManager::Iterator it=getIterator();
 	while(!it.isDone())  //on parcours l'ensemble des relations
+     	{
+	      Relation* curr=it.currentR;
+	      Relation::const_iterator itr=begin();
+	      Relation::const_iterator end=end();
+	      while (itr!=end)
 	      {
-		      Relation* curr=it.currentR;
-		      Relation::const_iterator itr=begin();
-		      Relation::const_iterator end=end();
-		      while (itr!=end)
-		      {if(itr->getIdNote2()==this.getId()) 
-		      		{succ[i]=itr->getNote1();
-				 i++;		   
-							   }
-			itr++;}
-		      it++;  //sinon on passe à la prochaine relation
+		      if(itr->getIdNote2()==this.getId()) 
+		      {
+			      succ[i]=itr->getNote1();
+			      i++;		   
+		      }
+		      itr++;
 	      }
-*nb=i;
+		it++;  //sinon on passe à la prochaine relation
+      	}
+	*nb=i;
 	return pred;
 }

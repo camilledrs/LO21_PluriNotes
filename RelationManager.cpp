@@ -27,31 +27,6 @@ void RelationManager::addRelation(Relation& r)
 }
 
 
-RelationManager::RelationManager(const RelationManager& m):relations(new Relation*[m.nbRelations]),nbRelations(m.nbRelations), nbMaxRelations(m.nbMaxRelations)
-{
-    for(unsigned int i=0; i<nbRelations; i++)
-    {
-        relations[i]=new Relation(*m.relations[i]); // si composition
-        //relations[i]=m.relations[i]; // si agrégation
-    }
-}
-
-
-RelationManager& RelationManager::operator=(const RelationManager& m)
-{
-    if (this != &m)
-    {
-        nbRelations=m.nbRelations;
-        nbMaxRelations=m.nbMaxRelations;
-        Relation** newtab= new Relation*[nbMaxRelations];
-        for(unsigned int i=0; i<m.nbRelations; i++) newtab[i]=m.relations[i];
-        delete[] relations;
-        relations=newtab;
-    }
-    return *this;
-}
-
-
 void RelationManager::suppRelation(Relation& r)
 {
     if(&r != RelationManager::getInstance().getRef())

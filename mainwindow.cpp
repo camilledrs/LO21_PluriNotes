@@ -4,7 +4,8 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    QMenu *menuFichier = menuBar()->addMenu("&Fichier");
+
+    QMenu *menuFichier = menuBar()->addMenu(tr("&Fichier"));
     QAction *nouvelleFen = new QAction("&Nouvelle Fenêtre", this);
     menuFichier->addAction(nouvelleFen);
     QAction *actionQuitter = new QAction("&Quitter", this);
@@ -75,15 +76,15 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
 
 
 
-/*void MainWindow::RestaurerV()
-{
-    Note::restaurer(/*chercher la version en question*/);
-    boutonRestaurer->setEnabled(False);
-}*/
-    
+//void MainWindow::RestaurerV()
+//{
+  //  Note::restaurer(/*chercher la version en question*/);
+   // boutonRestaurer->setEnabled(False);
+//}
+
 void MainWindow::Restaurer()
 {
-    
+
 }
 
 void MainWindow::Recherche()
@@ -118,7 +119,7 @@ void MainWindow::Recherche()
     layoutAffichage->addWidget(boutonRestaurer);
 
     layoutPrincipal->addLayout(layoutAffichage);
-    if (note->getDerniereVersion().getDate() != dateCreaNote)  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
+    if (note->getDerniereVersion().getDate() != dateCreaNote->dateTime())  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
         boutonRestaurer->setEnabled(true);
     QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
 }

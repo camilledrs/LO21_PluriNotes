@@ -34,6 +34,7 @@ class MainWindow : public QMainWindow
 
     QLineEdit *idNote ;
     QPushButton *boutonAfficher;
+    QPushButton *boutonRestaurer;
 
     QFormLayout *layoutAffich;
     QVBoxLayout *layoutAffichage;

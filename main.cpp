@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "fensecondaire.h"
 
 int main(int argc, char *argv[])
 {

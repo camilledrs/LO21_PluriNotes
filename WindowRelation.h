@@ -2,7 +2,8 @@
 #define WINDOWRELATION_H
 
 #include <QApplication>
-#include "Relation.h"
+#include "relationmanager.h"
+#include "notemanager.h"
 #include <QMainWindow>
 #include <QWidget>
 #include <QLineEdit>
@@ -18,10 +19,10 @@
 
 
 
-class WindowRelation : public QTabWidget
+class WindowRelation : public QMainWindow //public QTabWidget
 {
         Q_OBJECT
-        
+
     QWidget *zoneCentraleRel;
     QDockWidget *zoneGaucheRel;
 
@@ -34,24 +35,39 @@ class WindowRelation : public QTabWidget
     QPushButton* boutonEnrichir;
 
     QFormLayout *layoutRel;
-    QVBoxLayout* layoutPrincipalRel
-    QHBox* layoutBouttons;
- 
+    QVBoxLayout* layoutPrincipalRel;
+    QHBoxLayout* layoutBouttons;
+
     public:
-        explicit WindowRelation(QWidget *parent=MainWindow);
- 
+        explicit WindowRelation(QWidget *parent = 0);
+
     public slots:
         void Creer();
-        void ajouterCouple();
-        void Editer(){Relation::Editer();}
-        void Supprimer(){Relation::~Relation();}
-        void seeRelation(){Relation::seeRelation();}
-    
- 
+        void ajouterCouple(Relation* r);
+        void Editer(Relation *r)
+        {
+            //RelationManager manag = getInstance();
+            RelationManager::getInstance().editerRelation(r);
+        }
+        void Supprimer(Relation* r)
+        {
+            //RelationManager manag = getInstance();
+            RelationManager::getInstance().suppRelation(*r);
+        }
+        void seeRelation(Relation* r)
+        {
+            //RelationManager manag = getInstance();
+            RelationManager::Iterator it= RelationManager::getInstance().getIterator();
+            while(!it.isDone() && (it.current().getTitre() != r->getTitre()))
+                it.next();
+            it.current().SeeRelation();
+        }
+
+
     private:
         //(...)
- 
- 
+
+
 };
 
 

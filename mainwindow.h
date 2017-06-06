@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QLineEdit>
+#include <QDateTimeEdit>
 #include <QFormLayout>
 #include <QLayout>
 #include <QLabel>
@@ -13,9 +14,9 @@
 #include <QDockWidget>
 #include <QTabWidget>
 #include <QMenu>
+#include <QMenuBar>
 #include <QAction>
 #include <QMdiArea>
-#include <QDateTimeEdit>
 #include "notemanager.h"
 #include "windowrelation.h"
 #include "note.h"
@@ -29,7 +30,7 @@ class MainWindow : public QMainWindow
     QDockWidget *zoneDroite;
 
     QLineEdit *titreNote;
-    QLineEdit *dateCreaNote;
+    QDateTimeEdit *dateCreaNote;
     QTextEdit *contenuNote;
     QPushButton *enregistrer;
 

@@ -115,4 +115,3 @@ Note** Note::predecesseurs( unsigned int* nb)
     *nb=i;
     return pred;
 }
-

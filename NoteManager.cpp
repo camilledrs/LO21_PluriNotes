@@ -2,7 +2,7 @@
 
 NoteManager* NoteManager::managN = new NoteManager();
 
-void NoteManager::addNote(QString id, QString title, QDateTime crea,QDateTime modif, const Version& v)
+void NoteManager::addNote(QString id, QString title, QDateTime crea, QDateTime modif, const Version& v)
 {
     for(unsigned int i=0; i<nbNotes; i++)
     {
@@ -18,6 +18,25 @@ void NoteManager::addNote(QString id, QString title, QDateTime crea,QDateTime mo
         if (oldNotes) delete[] oldNotes;
     }
     notes[nbNotes++]=new Note(id, title, crea, modif, v);
+    notes[nbNotes]->verifRef(title);
+}
+
+void NoteManager::addNote(QString id, QString title)
+{
+    for(unsigned int i=0; i<nbNotes; i++)
+    {
+        if (notes[i]->getId()==id) throw NoteException("error, creation of an already existent note");
+    }
+    if (nbNotes==nbMaxNotes)
+    {
+        Note** newNotes= new Note*[nbMaxNotes+5];
+        for(unsigned int i=0; i<nbNotes; i++) newNotes[i]=notes[i];
+        Note** oldNotes=notes;
+        notes=newNotes;
+        nbMaxNotes+=5;
+        if (oldNotes) delete[] oldNotes;
+    }
+    notes[nbNotes++]=new Note(id, title);
     notes[nbNotes]->verifRef(title);
 }
 
@@ -37,15 +56,6 @@ void NoteManager::addNoteXML(QString id, QString title, QDateTime crea,QDateTime
     }
     notes[nbNotes++]=new Note(id, title, crea, modif,act,supp,nbV,nbMV, v);
     //notes[nbNotes]->verifRef(title);
-}
-
-NoteManager::NoteManager(const NoteManager& m):notes(new Note*[m.nbNotes]),nbNotes(m.nbNotes), nbMaxNotes(m.nbMaxNotes)
-{
-        for(unsigned int i=0; i<nbNotes; i++)
-    {
-        notes[i] = new Note::Note(*m.notes[i]); // si composition
-        //notes[i]=m.notes[i]; // si agrégation
-    }
 }
 
 NoteManager& NoteManager::operator=(const NoteManager& m)
@@ -246,7 +256,6 @@ void NoteManager::load() {
                             dateMod.fromString(xml.text().toString());
                             qDebug()<<"dateModif="<<dateMod<<"\n";
                         }
-
                          }
                          }
                         // We've found versions
@@ -274,4 +283,3 @@ void NoteManager::load() {
     xml.clear();
     qDebug()<<"fin load\n";
 }
-

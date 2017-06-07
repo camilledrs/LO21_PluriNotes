@@ -64,6 +64,7 @@ class Note
         versions=new Version*[5];
         versions[0]=v.clone();
     }
+    Note(QString id, QString title):id(id), titre(title){}
     /**
      * @brief constructeur de Note
      * constructeur en privé car on veut que seul NoteManager puisse créer des Notes
@@ -99,7 +100,7 @@ class Note
      * en privé pour que l'utilisateur de Note ne puisse pas y avoir accès
      */
     Note(const Note& n);
-    void setActive(){ active=true;}
+    void setActive(){active=true;}
 
 public  :
     /**
@@ -175,7 +176,7 @@ public  :
     Note** predecesseurs(unsigned int* nb);
 
     Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau
-        
+
 };
 
 #endif // NOTE_H

@@ -286,7 +286,7 @@ void MainWindow::Recherche()
     QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
 }
 
-void MainWindow::afficherNote(QListWidgetItem* item)
+/*void MainWindow::afficherNote(QListWidgetItem* item)
 {
     //if (item->text() == "Note référencée")
     //{
@@ -297,6 +297,18 @@ void MainWindow::afficherNote(QListWidgetItem* item)
         //dateCreaNote->setText("16/09/2017");
         contenuNote->setText("Plein de texte car c'est une note et on verra le reste plus tard"); //à voir
     //}
+}*/
+
+void MainWindow::afficherNote(QListWidgetItem* item)
+{
+    QString id=item->text();
+    NoteManager::Iterator it=NoteManager::getInstance().getIterator();
+    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    Note& n=it.current();
+    titreNote->setText(n.getTitre());
+    dateCreaNote->setDateTime(n.getDate());
+    contenuNote->setText(n.getDerniereVersion().afficher());
+
 }
 
 fenetreCreationNote::fenetreCreationNote()

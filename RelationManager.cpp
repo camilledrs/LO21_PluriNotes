@@ -4,14 +4,15 @@
 //Relation* RelationManager::Reference = new Relation("Reference", "note1 reference note2");
 RelationManager* RelationManager::managR = new RelationManager();
 
-void RelationManager::addRelation(Relation& r)
+void RelationManager::addRelation(QString& t, QString& d, bool orient)
 {
     //check si on veut ajouter une relation comme reference
-    if(r.getTitre()==Reference->getTitre())
+
+    if(Reference && t==Reference->getTitre())
         throw RelationException("error, Reference already exist");
     for(unsigned int i=0; i<nbRelations; i++)
     {
-        if (relations[i]->getTitre()==r.getTitre())
+        if (relations[i]->getTitre()==t)
             throw RelationException("error, creation of an already existent Relation");
     }
     if (nbRelations==nbMaxRelations)
@@ -23,7 +24,32 @@ void RelationManager::addRelation(Relation& r)
         nbMaxRelations+=5;
         if (oldRelations) delete[] oldRelations;
     }
-    relations[nbRelations++]=new Relation(r);
+    relations[nbRelations++]=new Relation(t, d, orient);
+}
+
+
+RelationManager::RelationManager(const RelationManager& m):relations(new Relation*[m.nbRelations]),nbRelations(m.nbRelations), nbMaxRelations(m.nbMaxRelations)
+{
+    for(unsigned int i=0; i<nbRelations; i++)
+    {
+        relations[i]=new Relation(*m.relations[i]); // si composition
+        //relations[i]=m.relations[i]; // si agrégation
+    }
+}
+
+
+RelationManager& RelationManager::operator=(const RelationManager& m)
+{
+    if (this != &m)
+    {
+        nbRelations=m.nbRelations;
+        nbMaxRelations=m.nbMaxRelations;
+        Relation** newtab= new Relation*[nbMaxRelations];
+        for(unsigned int i=0; i<m.nbRelations; i++) newtab[i]=m.relations[i];
+        delete[] relations;
+        relations=newtab;
+    }
+    return *this;
 }
 
 

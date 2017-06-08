@@ -34,9 +34,9 @@ class WindowRelation : public QMainWindow //public QTabWidget
     QPushButton* boutonSupprimer;
     QPushButton* boutonEnrichir;
 
-    QFormLayout *layoutRel;
+    //QFormLayout *layoutRel;
     QVBoxLayout* layoutPrincipalRel;
-    QHBoxLayout* layoutBouttons;
+    //QHBoxLayout* layoutBouttons;
 
     public:
         explicit WindowRelation(QWidget *parent = 0);

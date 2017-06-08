@@ -101,15 +101,18 @@ class CreateNoteWidget : public QWidget {
 private:
     /* Labels */
     QLabel *id_l;
+    QLabel *titre_l;
     QLabel *type_l;
     /* Zones de saisies */
     QLineEdit *id_t;
+    QLineEdit *titre_t;
     QComboBox *type_t;
     /* Boutons */
     QPushButton *ok_b;
     QPushButton *cancel_b;
     /* Layouts */
     QHBoxLayout *id_hbox;
+    QHBoxLayout *titre_hbox;
     QHBoxLayout *type_hbox;
     QHBoxLayout *buttons_hbox;
     QVBoxLayout *fenetre_vbox;

@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow
     QLineEdit *titreNote;
     QDateTimeEdit *dateCreaNote;
     QTextEdit *contenuNote;
+    QListWidget *NoteList;
 
 
     /*QTextEdit *texteNote;
@@ -79,7 +80,7 @@ public slots:
     void viderLaCorbeille(){NoteManager::getInstance().viderCorbeille();}
     void quitter();
     void Restaurer();
-    void afficherNote();
+    void afficherNote(QListWidgetItem* item);
     void creerNote();
     void supprimerNote();
     void editerNote();
@@ -119,6 +120,7 @@ private:
 
 public:
     CreateNoteWidget();
+    QString getId()const {return id_l->text();}
 
 public slots:
     void createNote();

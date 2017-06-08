@@ -56,7 +56,7 @@ public :
      * @brief methode addRelation
      * @param r reference sur la relation à ajouter
      */
-    void addRelation(Relation& r);
+    void addRelation(QString& t, QString& d, bool orient=true);
 
     /**
      * @brief La classe Iterator de RelationManager

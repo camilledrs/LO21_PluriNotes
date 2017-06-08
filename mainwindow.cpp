@@ -170,6 +170,7 @@ CreateNoteWidget::CreateNoteWidget()
     buttons_hbox->addWidget(cancel_b);
 
     fenetre_vbox->addLayout(id_hbox);
+    fenetre_vbox->addLayout(titre_hbox);
     fenetre_vbox->addLayout(type_hbox);
     fenetre_vbox->addLayout(buttons_hbox);
 

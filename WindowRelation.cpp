@@ -10,13 +10,14 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
 
     Titre = new QLineEdit;
     Desc = new QLineEdit;
+    RelationList = new QListWidget(zoneGaucheRel);
+    addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
 
     QFormLayout *layoutRel = new QFormLayout;
     layoutRel->addRow("Titre :", Titre);
     layoutRel->addRow("Description :", Desc);
-    boutonAfficherRel = new QPushButton("Afficher une Relation");
-    QObject::connect(boutonAfficherRel,SIGNAL(clicked()),this,SLOT(SeeRelation()));
-    layoutRel->addWidget(boutonAfficherRel);
+    QObject::connect(RelationList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(seeRelation(QListWidgetItem*)));
+    //QObject::connect(boutonAfficherRel,SIGNAL(clicked()),this,SLOT(SeeRelation()));
 
 
     boutonCreer = new QPushButton("Creer une Relation");
@@ -53,21 +54,30 @@ void WindowRelation::Creer()
 {
     bool ok1=false;
     bool ok2=false;
+    bool orient=true;
     QString titre = QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok1);
     QString desc = QInputDialog::getText(this, "Titre :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok2);
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Orientation", "La relation est elle orientee ?",QMessageBox::Yes | QMessageBox::No);
+    if(reponse == QMessageBox::No)
+        orient=false;
     if (ok1 && ok2 && !titre.isEmpty() && !desc.isEmpty())
     {
-        Relation *rel=new Relation(titre, desc);
-        RelationManager::getInstance().addRelation(*rel);
-        //RelationManager::addRelation(titre, desc);
+
+        RelationManager::getInstance().addRelation(titre, desc, orient);
         QMessageBox::information(this, "Confirmation creation", "La nouvelle relation a bien été créée ! ");
     }
+        RelationList->addItem(titre);
 }
 
-/*
 
-void WindowRelation::ajouterCouple(QListWidgetItem* i)
+
+void WindowRelation::ajouterCouple()
 {
+    QString titre= Titre->text();
+    RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
+    while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
+    Relation& r=itr.current();
     bool ok=false;
     Note* n1;
     Note* n2;
@@ -101,7 +111,20 @@ void WindowRelation::ajouterCouple(QListWidgetItem* i)
     if (ok && !strl.isEmpty()){
         const char* c= strl.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
         int l=atoi(c);
-        r->addCouple(*n1,*n2,l);
+        r.addCouple(*n1,*n2,l);
     }
     }
-}*/
+}
+
+
+void WindowRelation::seeRelation(QListWidgetItem* i)
+{
+    QMessageBox::information(this, "Confirmation affichage"," ");
+    //RelationManager manag = getInstance();
+    RelationManager::Iterator it= RelationManager::getInstance().getIterator();
+    while(!it.isDone() && (it.current().getTitre() != i->text()))
+        it.next();
+    Relation& r=it.current();
+    Titre->setText(r.getTitre());
+    Desc->setText(r.getDesc());
+}

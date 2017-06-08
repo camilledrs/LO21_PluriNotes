@@ -144,21 +144,26 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 CreateNoteWidget::CreateNoteWidget()
 {
     id_l = new QLabel("ID : ");
+    titre_l = new QLabel("Titre : ");
     type_l = new QLabel("Type : ");
 
     id_t = new QLineEdit();
+    titre_t = new QLineEdit();
     type_t = new QComboBox();
 
     ok_b = new QPushButton("OK");
     cancel_b = new QPushButton("Annuler");
 
     id_hbox = new QHBoxLayout();
+    titre_hbox = new QHBoxLayout();
     type_hbox = new QHBoxLayout();
     buttons_hbox = new QHBoxLayout();
     fenetre_vbox = new QVBoxLayout();
 
     id_hbox->addWidget(id_l);
     id_hbox->addWidget(id_t);
+    titre_hbox->addWidget(titre_l);
+    titre_hbox->addWidget(titre_t);
     type_hbox->addWidget(type_l);
     type_hbox->addWidget(type_t);
     buttons_hbox->addWidget(ok_b);
@@ -186,7 +191,7 @@ void CreateNoteWidget::createNote()
     if(id_t->text()!="") {
         try
         {
-            NoteManager::getInstance().addNote(id_t->text(),type_t->currentText());
+            NoteManager::getInstance().addNote(id_t->text(),titre_t->text());
             QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
             //MainWindow::getMainWindow().openNote(id_t->text());
             close();

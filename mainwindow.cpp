@@ -172,8 +172,8 @@ CreateNoteWidget::CreateNoteWidget()
 
     type_t->addItem("Article");
     type_t->addItem("Image");
-    type_t->addItem("Audio");
-    type_t->addItem("Video");
+    type_t->addItem("Tache");
+    type_t->addItem("Média");
 
     QObject::connect(ok_b,SIGNAL(clicked()),this,SLOT(createNote()));
     QObject::connect(cancel_b,SIGNAL(clicked()),this,SLOT(close()));

@@ -19,10 +19,10 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     layoutRel->addWidget(boutonAfficherRel);
 
 
-    boutonCreer = new QPushButton("Creer une note");
-    boutonEditer = new QPushButton("Editer une note");
-    boutonSupprimer = new QPushButton("Supprimer une note");
-    boutonEnrichir = new QPushButton("Enrichir une note");
+    boutonCreer = new QPushButton("Creer une Relation");
+    boutonEditer = new QPushButton("Editer une Relation");
+    boutonSupprimer = new QPushButton("Supprimer une Relation");
+    boutonEnrichir = new QPushButton("Enrichir une Relation");
 
     QHBoxLayout *layoutBouttons = new QHBoxLayout;
     layoutBouttons= new QHBoxLayout;
@@ -39,9 +39,10 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     layoutPrincipalRel->addLayout(layoutRel);
     layoutPrincipalRel->addLayout(layoutBouttons);
 
-    this->setLayout(layoutPrincipalRel);
+    //this->setLayout(layoutPrincipalRel);
 
     zoneCentraleRel->setLayout(layoutPrincipalRel);
+    setCentralWidget(zoneCentraleRel);
 
 }
 
@@ -63,9 +64,9 @@ void WindowRelation::Creer()
     }
 }
 
+/*
 
-
-void WindowRelation::ajouterCouple(Relation *r)
+void WindowRelation::ajouterCouple(QListWidgetItem* i)
 {
     bool ok=false;
     Note* n1;
@@ -103,4 +104,4 @@ void WindowRelation::ajouterCouple(Relation *r)
         r->addCouple(*n1,*n2,l);
     }
     }
-}
+}*/

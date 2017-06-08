@@ -29,7 +29,8 @@ class WindowRelation : public QMainWindow //public QTabWidget
 
     QLineEdit *Titre;
     QLineEdit *Desc;
-    QPushButton* boutonAfficherRel;
+    QListWidget *RelationList;
+
     QPushButton* boutonCreer;
     QPushButton* boutonEditer;
     QPushButton* boutonSupprimer;
@@ -44,8 +45,9 @@ class WindowRelation : public QMainWindow //public QTabWidget
 
     public slots:
         void Creer();
+
+        void ajouterCouple();
         /*il faudra faire une QListWidget comme pour les notes
-        void ajouterCouple(QListWidgetItem* i);
         void Editer(QListWidgetItem* i)
         {
             //RelationManager manag = getInstance();
@@ -55,15 +57,9 @@ class WindowRelation : public QMainWindow //public QTabWidget
         {
             //RelationManager manag = getInstance();
             RelationManager::getInstance().suppRelation(*r);
-        }
-        void seeRelation(QListWidgetItem* i)
-        {
-            //RelationManager manag = getInstance();
-            RelationManager::Iterator it= RelationManager::getInstance().getIterator();
-            while(!it.isDone() && (it.current().getTitre() != r->getTitre()))
-                it.next();
-            it.current().SeeRelation();
         }*/
+        void seeRelation(QListWidgetItem* i);
+
 
 
     private:

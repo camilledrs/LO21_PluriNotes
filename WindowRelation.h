@@ -5,6 +5,7 @@
 #include "relationmanager.h"
 #include "notemanager.h"
 #include <QMainWindow>
+#include <QListWidgetItem>
 #include <QWidget>
 #include <QLineEdit>
 #include <QFormLayout>
@@ -43,25 +44,26 @@ class WindowRelation : public QMainWindow //public QTabWidget
 
     public slots:
         void Creer();
-        void ajouterCouple(Relation* r);
-        void Editer(Relation *r)
+        /*il faudra faire une QListWidget comme pour les notes
+        void ajouterCouple(QListWidgetItem* i);
+        void Editer(QListWidgetItem* i)
         {
             //RelationManager manag = getInstance();
             RelationManager::getInstance().editerRelation(r);
         }
-        void Supprimer(Relation* r)
+        void Supprimer(QListWidgetItem* i)
         {
             //RelationManager manag = getInstance();
             RelationManager::getInstance().suppRelation(*r);
         }
-        void seeRelation(Relation* r)
+        void seeRelation(QListWidgetItem* i)
         {
             //RelationManager manag = getInstance();
             RelationManager::Iterator it= RelationManager::getInstance().getIterator();
             while(!it.isDone() && (it.current().getTitre() != r->getTitre()))
                 it.next();
             it.current().SeeRelation();
-        }
+        }*/
 
 
     private:

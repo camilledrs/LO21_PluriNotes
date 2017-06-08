@@ -55,9 +55,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     titreNote = new QLineEdit;
     dateCreaNote = new QDateTimeEdit(QDateTime::currentDateTime());
     contenuNote = new QTextEdit;
+    NoteList = new QListWidget(zoneGauche);
 
     dateCreaNote->setReadOnly(true);
-    
+
     creer = new QPushButton("Créer");
     QObject::connect(creer,SIGNAL(clicked()),this,SLOT(creerNote()));
     supprimer = new QPushButton("Supprimer");
@@ -94,11 +95,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     layoutPrincipal->addLayout(layoutAffichage);
     layoutPrincipal->addWidget(boutonQuitter);
 
-    QListWidget *NoteList = new QListWidget(zoneGauche);
-
     //Note note1 = NoteManager::getInstance().addNote("Nouvelle note","quelquechose",QDateTime(),QDateTime(),const Version(QDateTime()));
 
-    NoteManager::Iterator it = NoteManager::getInstance().getIterator();
+    /*NoteManager::Iterator it = NoteManager::getInstance().getIterator();
     while (!it.isDone())
     {
         NoteList->addItem(it.current().getId());
@@ -109,7 +108,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
                         << "Note1"
                         << "Note1");
 
-    NoteList->addItem("Note référencée");
+    NoteList->addItem("Note référencée");*/
 
     QObject::connect(NoteList,SIGNAL(itemEntered(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
 
@@ -126,19 +125,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     boutonRestaurer = new QPushButton("Restaurer la version");
     layout = new QFormLayout;
     layout->addRow("Id", idNote);
-
     layoutRecherche = new QVBoxLayout;
     layoutRecherche->addLayout(layout);
     layoutRecherche->addWidget(boutonAfficher);
     layoutRecherche->addWidget(boutonRestaurer);
-
     QObject::connect(boutonAfficher,SIGNAL(clicked()),this,SLOT(Recherche()));
-
     layoutPrincipal = new QVBoxLayout;
     layoutPrincipal->addLayout(layoutRecherche);
-
     zoneCentrale->setLayout(layoutPrincipal);
-
     setCentralWidget(zoneCentrale);*/
 }
 
@@ -188,6 +182,7 @@ CreateNoteWidget::CreateNoteWidget()
     this->setWindowModality(Qt::ApplicationModal);
 }
 
+
 void CreateNoteWidget::createNote()
 {
     if(id_t->text()!="") {
@@ -214,7 +209,6 @@ void CreateNoteWidget::createNote()
     texteNote = new QTextEdit;
     layoutAffich->addRow("Texte", texteNote);
 }
-
 void MainWindow::tacheNote()
 {
     actionNote = new QLineEdit;
@@ -299,7 +293,6 @@ void MainWindow::Recherche()
     //{
     QMessageBox::StandardButton reponse;
     reponse= QMessageBox::question(this,"OK", "ça marche",QMessageBox::Yes | QMessageBox::No);
-
         titreNote->setText("Note référencée");
         //dateCreaNote->setText("16/09/2017");
         contenuNote->setText("Plein de texte car c'est une note et on verra le reste plus tard"); //à voir
@@ -308,14 +301,14 @@ void MainWindow::Recherche()
 
 void MainWindow::afficherNote(QListWidgetItem* item)
 {
-    QString id=item->text();
+    QString id= item->text();
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
+    QMessageBox::information(this, "OK", "ok");
     while(it.current().getId() != id) it.next(); //on a trouvé la note
     Note& n=it.current();
     titreNote->setText(n.getTitre());
     dateCreaNote->setDateTime(n.getDate());
     contenuNote->setText(n.getDerniereVersion().afficher());
-
 }
 
 fenetreCreationNote::fenetreCreationNote()
@@ -343,7 +336,8 @@ void MainWindow::creerNote()
     //QMessageBox::StandardButton reponse= QMessageBox::question(this,"OK", "ça marche",QMessageBox::Yes | QMessageBox::No);
     CreateNoteWidget *cw = new CreateNoteWidget();
     cw->show();
-
+    QString id=cw->getId();
+    NoteList->addItem(id);
 }
 
 void MainWindow::supprimerNote()

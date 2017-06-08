@@ -2,28 +2,30 @@
 //#include "mainwindow.h"
 
 WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWidget(parent)
-    QWidget* zoneCentraleRel = new QWidget;
-    QDockWidget* zoneGaucheRel = new QDockWidget;
+    zoneCentraleRel = new QWidget;
+    zoneGaucheRel = new QDockWidget;
     zoneGaucheRel->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     //zoneGaucheRel->setWidget();
     addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
 
-    QLineEdit* Titre = new QLineEdit;
-    QLineEdit* Desc = new QLineEdit;
+    Titre = new QLineEdit;
+    Desc = new QLineEdit;
 
-    QFormLayout* layoutRel = new QFormLayout;
+    QFormLayout *layoutRel = new QFormLayout;
     layoutRel->addRow("Titre :", Titre);
     layoutRel->addRow("Description :", Desc);
-    QPushButton* boutonAfficherRel = new QPushButton("Afficher une Relation");
+    boutonAfficherRel = new QPushButton("Afficher une Relation");
     QObject::connect(boutonAfficherRel,SIGNAL(clicked()),this,SLOT(SeeRelation()));
     layoutRel->addWidget(boutonAfficherRel);
 
 
-    QPushButton* boutonCreer = new QPushButton("Creer une note");
-    QPushButton* boutonEditer = new QPushButton("Editer une note");
-    QPushButton* boutonSupprimer = new QPushButton("Supprimer une note");
-    QPushButton* boutonEnrichir = new QPushButton("Enrichir une note");
-    QHBoxLayout* layoutBouttons= new QHBoxLayout;
+    boutonCreer = new QPushButton("Creer une note");
+    boutonEditer = new QPushButton("Editer une note");
+    boutonSupprimer = new QPushButton("Supprimer une note");
+    boutonEnrichir = new QPushButton("Enrichir une note");
+
+    QHBoxLayout *layoutBouttons = new QHBoxLayout;
+    layoutBouttons= new QHBoxLayout;
     layoutBouttons->addWidget(boutonCreer);
     QObject::connect(boutonCreer,SIGNAL(clicked()),this,SLOT(Creer())); //mettre des parametres, les récuperer des champs titre et description
     layoutBouttons->addWidget(boutonEditer);
@@ -33,11 +35,14 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     layoutBouttons->addWidget(boutonEnrichir);
     QObject::connect(boutonEnrichir,SIGNAL(clicked()),this,SLOT(ajouterCouple()));
 
-    QVBoxLayout* layoutPrincipalRel = new QVBoxLayout;
+    layoutPrincipalRel = new QVBoxLayout;
     layoutPrincipalRel->addLayout(layoutRel);
     layoutPrincipalRel->addLayout(layoutBouttons);
 
+    this->setLayout(layoutPrincipalRel);
+
     zoneCentraleRel->setLayout(layoutPrincipalRel);
+
 }
 
 
@@ -48,7 +53,7 @@ void WindowRelation::Creer()
     bool ok1=false;
     bool ok2=false;
     QString titre = QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok1);
-    QString desc = QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok2);
+    QString desc = QInputDialog::getText(this, "Titre :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok2);
     if (ok1 && ok2 && !titre.isEmpty() && !desc.isEmpty())
     {
         Relation *rel=new Relation(titre, desc);

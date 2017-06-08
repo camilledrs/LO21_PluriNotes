@@ -77,6 +77,7 @@ public slots:
 
     void Recherche();
     void nouvelleFen();
+    void fenRelation();
     void viderLaCorbeille(){NoteManager::getInstance().viderCorbeille();}
     void quitter();
     void Restaurer();
@@ -95,6 +96,7 @@ class fenetreCreationNote : public QWidget
     QDateTimeEdit *dateCreaNote;
 public:
     fenetreCreationNote();
+    QString getId(){return idNote->text();}
 };
 
 class CreateNoteWidget : public QWidget {
@@ -120,10 +122,10 @@ private:
 
 public:
     CreateNoteWidget();
-    QString getId()const {return id_l->text();}
+    QString getId()const {return id_t->text();}
 
 public slots:
-    void createNote();
+    QString createNote();
 };
 
 #endif // MAINWINDOW_H

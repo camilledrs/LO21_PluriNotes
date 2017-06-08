@@ -53,9 +53,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     idNote = new QLineEdit;
     titreNote = new QLineEdit;
-    dateCreaNote = new QDateTimeEdit;
+    dateCreaNote = new QDateTimeEdit(QDateTime::currentDateTime());
     contenuNote = new QTextEdit;
 
+    dateCreaNote->setReadOnly(true);
+    
     creer = new QPushButton("Créer");
     QObject::connect(creer,SIGNAL(clicked()),this,SLOT(creerNote()));
     supprimer = new QPushButton("Supprimer");
@@ -177,7 +179,6 @@ CreateNoteWidget::CreateNoteWidget()
     this->setLayout(fenetre_vbox);
 
     type_t->addItem("Article");
-    type_t->addItem("Image");
     type_t->addItem("Tache");
     type_t->addItem("Média");
 

@@ -79,7 +79,7 @@ public slots:
     void viderLaCorbeille(){NoteManager::getInstance().viderCorbeille();}
     void quitter();
     void Restaurer();
-    void afficherNote(QListWidgetItem* item);
+    void afficherNote();
     void creerNote();
     void supprimerNote();
     void editerNote();

@@ -1,6 +1,27 @@
 #include "windowrelation.h"
 //#include "mainwindow.h"
 
+void WindowRelation::readSettingsRel()  //A utiliser dans le constructeur de MainWindow()
+{
+    QSettings settings("Equipe2", "Programme Relation");
+
+    settings.beginGroup("WindowRelation");
+    resize(settings.value("size", QSize(400, 400)).toSize());
+    move(settings.value("pos", QPoint(200, 200)).toPoint());
+    settings.endGroup();
+}
+
+
+void WindowRelation::writeSettingsRel()  //je dirais à mettre quand on quitte l’application pour sauvegarder
+{
+    QSettings settings("Equipe2", "Programme Relation");
+
+    settings.beginGroup("WindowRelation");
+    settings.setValue("size", size());
+    settings.setValue("pos", pos());
+    settings.endGroup();
+}
+
 WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWidget(parent)
     zoneCentraleRel = new QWidget;
     zoneGaucheRel = new QDockWidget;
@@ -35,15 +56,20 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     QObject::connect(boutonSupprimer,SIGNAL(clicked()),this,SLOT(Supprimer()));
     layoutBouttons->addWidget(boutonEnrichir);
     QObject::connect(boutonEnrichir,SIGNAL(clicked()),this,SLOT(ajouterCouple()));
+    boutonQuitter = new QPushButton("Quitter");
+    //QObject::connect(boutonQuitter,SIGNAL(clicked()),this,SLOT(quitter()));
 
     layoutPrincipalRel = new QVBoxLayout;
     layoutPrincipalRel->addLayout(layoutRel);
     layoutPrincipalRel->addLayout(layoutBouttons);
+    layoutPrincipalRel->addWidget(boutonQuitter);
 
     //this->setLayout(layoutPrincipalRel);
 
     zoneCentraleRel->setLayout(layoutPrincipalRel);
     setCentralWidget(zoneCentraleRel);
+
+    readSettingsRel();
 
 }
 
@@ -178,3 +204,11 @@ void WindowRelation::Editer()
 
 
 }
+
+/*
+void WindowRelation::quitter()
+{
+    writeSettingsRel();
+    close()
+}
+*/

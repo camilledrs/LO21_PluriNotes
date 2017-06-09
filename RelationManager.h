@@ -46,7 +46,7 @@ public :
      * @brief methode editerRelation
      * @param r pointeur sur la Relation à éditer
      */
-    void editerRelation(Relation* r){r->editer();}
+    void editerRelation(Relation* r, QString& t, QString& d){r->editer(t,d);}
     /**
      * @brief methode suppRelation
      * @param r, reference sur l'objet relation à supprimer

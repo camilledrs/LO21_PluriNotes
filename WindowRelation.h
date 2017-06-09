@@ -56,6 +56,8 @@ class WindowRelation : public QMainWindow //public QTabWidget
 
         void seeRelation(QListWidgetItem* i);
 
+        void Editer();
+
 
 
     private:

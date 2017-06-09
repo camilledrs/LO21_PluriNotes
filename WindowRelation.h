@@ -47,17 +47,13 @@ class WindowRelation : public QMainWindow //public QTabWidget
         void Creer();
 
         void ajouterCouple();
-        /*il faudra faire une QListWidget comme pour les notes
-        void Editer(QListWidgetItem* i)
+        /*void Editer(QListWidgetItem* i)
         {
             //RelationManager manag = getInstance();
             RelationManager::getInstance().editerRelation(r);
-        }
-        void Supprimer(QListWidgetItem* i)
-        {
-            //RelationManager manag = getInstance();
-            RelationManager::getInstance().suppRelation(*r);
         }*/
+        void Supprimer();
+
         void seeRelation(QListWidgetItem* i);
 
 

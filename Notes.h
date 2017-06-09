@@ -8,6 +8,8 @@
 #include <QDateTime>
 
 
+
+
 /**
  * @brief La classe NoteException
  */
@@ -64,6 +66,7 @@ class Note
         versions=new Version*[5];
         versions[0]=v.clone();
     }
+    
     Note(QString id, QString title):id(id), titre(title){}
     /**
      * @brief constructeur de Note
@@ -100,6 +103,9 @@ class Note
      * en privé pour que l'utilisateur de Note ne puisse pas y avoir accès
      */
     Note(const Note& n);
+    /**
+     * @brief methode qui met l'attribut active à true
+     */
     void setActive(){active=true;}
 
 public  :
@@ -174,7 +180,11 @@ public  :
      * @return un tableau de pointeurs des notes prédecessurs de la note traitée
      */
     Note** predecesseurs(unsigned int* nb);
-
+    
+    /**
+     * @brief methode getDerniereVersion
+     * @return le dernier element du tableau, qui est la version active
+     */
     Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau
 
 };

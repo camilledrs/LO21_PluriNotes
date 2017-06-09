@@ -108,10 +108,24 @@ private:
     QLabel *id_l;
     QLabel *titre_l;
     QLabel *type_l;
+    QLabel *texte_l;
+    QLabel *action_l;
+    QLabel *dateTache_l;
+    QLabel *priorite_l;
+    QLabel *description_l;
+    QLabel *typeV_l;
+    QLabel *fichier_l;
     /* Zones de saisies */
     QLineEdit *id_t;
     QLineEdit *titre_t;
     QComboBox *type_t;
+    QLineEdit *texte_t;
+    QLineEdit *action_t;
+    QDateEdit *dateTache_t;
+    QLineEdit *priorite_t;
+    QLineEdit *description_t;
+    QComboBox *typeV_t;
+    QLineEdit *fichier_t;
     /* Boutons */
     QPushButton *ok_b;
     QPushButton *cancel_b;
@@ -119,6 +133,13 @@ private:
     QHBoxLayout *id_hbox;
     QHBoxLayout *titre_hbox;
     QHBoxLayout *type_hbox;
+    QHBoxLayout *texte_hbox;
+    QHBoxLayout *action_hbox;
+    QHBoxLayout *dateTache_hbox;
+    QHBoxLayout *priorite_hbox;
+    QHBoxLayout *description_hbox;
+    QHBoxLayout *typeV_hbox;
+    QHBoxLayout *fichier_hbox;
     QHBoxLayout *buttons_hbox;
     QVBoxLayout *fenetre_vbox;
 

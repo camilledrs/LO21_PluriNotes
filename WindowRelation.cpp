@@ -138,9 +138,43 @@ void WindowRelation::Supprimer()
     reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la relation ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
        { RelationManager::getInstance().suppRelation(r);
-    delete RelationList->currentItem();  
+    delete RelationList->currentItem();
     Titre->setText("");
     Desc->setText("");
     }
+
+}
+
+
+void WindowRelation::Editer()
+{
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
+    QString titre=Titre->text();
+    QString desc=Desc->text();
+    if(reponse == QMessageBox::Yes)
+    {
+        bool ok;
+        titre=QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !titre.isEmpty())
+        Titre->setText(titre);
+    }
+    QMessageBox::StandardButton reponse2;
+    reponse2= QMessageBox::question(this,"Modifier Description", "Voulez vous modifier la description ?",QMessageBox::Yes | QMessageBox::No);
+    if(reponse == QMessageBox::Yes)
+    {
+        bool ok;
+        desc = QInputDialog::getText(this, "Description :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !desc.isEmpty())
+        Desc->setText(desc);
+    }
+    QListWidgetItem* i= RelationList->currentItem();
+    RelationManager::Iterator it = RelationManager::getInstance().getIterator();
+    while(it.current().getTitre() != i->text())
+        it.next();
+    Relation& r=it.current();
+    RelationManager::getInstance().editerRelation(&r,titre, desc);
+    i->setText(titre);
+
 
 }

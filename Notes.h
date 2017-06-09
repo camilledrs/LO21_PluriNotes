@@ -66,7 +66,7 @@ class Note
         versions=new Version*[5];
         versions[0]=v.clone();
     }
-    
+
     Note(QString id, QString title):id(id), titre(title){}
     /**
      * @brief constructeur de Note
@@ -180,7 +180,7 @@ public  :
      * @return un tableau de pointeurs des notes prédecessurs de la note traitée
      */
     Note** predecesseurs(unsigned int* nb);
-    
+
     /**
      * @brief methode getDerniereVersion
      * @return le dernier element du tableau, qui est la version active

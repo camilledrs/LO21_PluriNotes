@@ -158,8 +158,12 @@ void Relation::SeeRelation()
     }
 }
 
-
-void Relation::editer()
+void Relation::editer(QString& t, QString& d)
+{
+    setTitre(t);
+    setDesc(d);
+}
+/*void Relation::editer()
 {
     unsigned int rep;
     std::string titre, desc;
@@ -179,4 +183,4 @@ void Relation::editer()
         std::cin>>desc;
         setDesc(QString::fromStdString(desc));
     }
-}
+}*/

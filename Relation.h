@@ -179,6 +179,9 @@ public :
      * @param l labe du couple
      */
     void addCouple(Note& n1,Note& n2, int l);
+    /**
+      @brief destructeur de Relation
+      */
     ~Relation()
     {
         for (unsigned int i=0; i<nb; i++) delete tab[i];

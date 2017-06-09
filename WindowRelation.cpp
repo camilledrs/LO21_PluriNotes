@@ -119,12 +119,28 @@ void WindowRelation::ajouterCouple()
 
 void WindowRelation::seeRelation(QListWidgetItem* i)
 {
-    QMessageBox::information(this, "Confirmation affichage"," ");
-    //RelationManager manag = getInstance();
     RelationManager::Iterator it= RelationManager::getInstance().getIterator();
     while(!it.isDone() && (it.current().getTitre() != i->text()))
         it.next();
     Relation& r=it.current();
     Titre->setText(r.getTitre());
     Desc->setText(r.getDesc());
+    RelationList->setCurrentItem(i); //plus facile pour les autres methodes ensuite
+}
+
+void WindowRelation::Supprimer()
+{
+    QString titre= Titre->text();
+    RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
+    while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
+    Relation& r=itr.current();
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la relation ?",QMessageBox::Yes | QMessageBox::No);
+    if(reponse == QMessageBox::Yes)
+       { RelationManager::getInstance().suppRelation(r);
+    delete RelationList->currentItem();  
+    Titre->setText("");
+    Desc->setText("");
+    }
+
 }

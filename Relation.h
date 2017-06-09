@@ -136,9 +136,11 @@ public :
     void setDesc(QString newd){description=newd;}
     /**
      * @brief methode editer
+     * @param t le titre que l'on veut
+     * @param d la description que l'on souhaite
      * permet de modifier le titre et/ou la description
      */
-    void editer(); //à voir
+    void editer(QString& t, QString& d); //à voir
     /**
      * @brief methode suppCouple
      * @param c reference sur le couple à supprimer

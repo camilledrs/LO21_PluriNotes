@@ -50,6 +50,11 @@ public :
      */
     virtual Version* clone()const=0;
 
+    /**
+     * @brief methode afficher
+     * methode virtuelle pure, utilisée pour l'affichage d'une note
+     * @return un QString composé de l'ensemble des valeurs des attributs particuliers à chaque classe héritant de Version
+     */
     virtual QString afficher() const=0;
 };
 
@@ -75,6 +80,10 @@ class Article : public Version
       */
     ~Article();
 public :
+    /**
+     * @brief accesseur getText
+     * @return le texte de l'Article
+     */
     QString& getText(){return texte;}
     /**
      * @brief methode clone
@@ -91,6 +100,10 @@ public :
                                stream.writeTextElement("texte",texte );
                               }
 
+    /**
+     * @brief methode virtuelle afficher
+     * @return un QString& composé du texte de l'article
+     */
     QString afficher() const {
         std::stringstream s;
         s<<"Texte : "<<this->clone()->getText().toStdString();
@@ -184,6 +197,10 @@ public :
      */
     QDateTime getDateT() const{return dateTache;}
 
+    /**
+     * @brief methode virtuelle afficher
+     * @return un QString& affichant l'action, le statut, la date et la priorité de la tache
+     */
     QString afficher() const {
         std::stringstream s;
         s<<"Action : "<<this->clone()->getAction().toStdString()<<"\n";
@@ -273,6 +290,10 @@ public :
         }
     }
 
+    /**
+     * @brief methode virtuelle afficher
+     * @return un QString composé de la description, du nom de fichier et du type du Multimedia
+     */
     QString afficher() const {
         std::stringstream s;
         s<<"Description : "<<this->clone()->getDescription().toStdString()<<"\n";

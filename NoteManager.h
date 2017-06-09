@@ -155,6 +155,12 @@ public :
      * @param v une reference sur un objet version
      */
     void addNote(QString id, QString title, QDateTime crea,QDateTime modif, const Version& v);
+    
+    /**
+     * @brief methode addNote
+     * @param id l'id desiré de la note à ajouter
+     * @param title le titre de la note à ajouter
+     */
     void addNote(QString id, QString title);
     /**
      * @brief methode addNoteXML

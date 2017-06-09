@@ -45,6 +45,8 @@ public :
     /**
      * @brief methode editerRelation
      * @param r pointeur sur la Relation à éditer
+     * @param t le titre que l'on souhaite donner 
+     * @param d la description que l'on souhaite attribuer à la relation
      */
     void editerRelation(Relation* r, QString& t, QString& d){r->editer(t,d);}
     /**
@@ -54,7 +56,9 @@ public :
     void suppRelation(Relation& r);
     /**
      * @brief methode addRelation
-     * @param r reference sur la relation à ajouter
+     * @param t un QString& correspondant au titre que l'on souhaite donner
+     * @param d QString& correspondant à la description de la Relation à ajouter
+     * @param orient bool mis à true par défaut
      */
     void addRelation(QString& t, QString& d, bool orient=true);
 

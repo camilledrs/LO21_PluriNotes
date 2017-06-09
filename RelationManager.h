@@ -45,7 +45,7 @@ public :
     /**
      * @brief methode editerRelation
      * @param r pointeur sur la Relation à éditer
-     * @param t le titre que l'on souhaite donner 
+     * @param t le titre que l'on souhaite donner
      * @param d la description que l'on souhaite attribuer à la relation
      */
     void editerRelation(Relation* r, QString& t, QString& d){r->editer(t,d);}

@@ -213,7 +213,7 @@ CreateNoteWidget::CreateNoteWidget()
 }
 
 /////
-QString CreateNoteWidget::createContenuNote(QString type)
+void CreateNoteWidget::createContenuNote(QString type)
 {
     if (type == "Article")
     {
@@ -330,7 +330,7 @@ QString CreateNoteWidget::createNote(QString type)
         {
             if (type == "Article")
             {
-                NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Article(QDateTime::currentDateTime(),texte_t->toPlainText()()));
+                NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Article(QDateTime::currentDateTime(),texte_t->toPlainText()));
                 QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
                 //MainWindow::getMainWindow().openNote(id_t->text());
                 close();
@@ -338,14 +338,16 @@ QString CreateNoteWidget::createNote(QString type)
             else
                 if (type == "Tache")
                 {
-                    NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action_t->text(), dateTache_t->dateTime(), priorite_t->text()) );
+                    bool ok = false;
+                    int nombre = priorite_t->text().toInt(&ok, 10);
+                    NoteManager::getInstance().addNote(id_t->text(), titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action_t->text(), dateTache_t->dateTime(),nombre) );
                     QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
                     //MainWindow::getMainWindow().openNote(id_t->text());
                     close();
                 }
-                else
+                else  //faire des radiobutton pour avoir le type de multimedia, sinon c'est trop compliqué
                     {
-                        NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(), fichier_t->text(), typeM_t->currentText()));
+                        NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(), fichier_t->text(),typeM_t->currentText()));
                         QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
                         //MainWindow::getMainWindow().openNote(id_t->text());
                         close();

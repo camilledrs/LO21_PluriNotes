@@ -35,6 +35,7 @@ class WindowRelation : public QMainWindow //public QTabWidget
     QPushButton* boutonEditer;
     QPushButton* boutonSupprimer;
     QPushButton* boutonEnrichir;
+    QPushButton *boutonQuitter;
 
     //QFormLayout *layoutRel;
     QVBoxLayout* layoutPrincipalRel;
@@ -42,6 +43,8 @@ class WindowRelation : public QMainWindow //public QTabWidget
 
     public:
         explicit WindowRelation(QWidget *parent = 0);
+        void readSettingsRel();
+        void writeSettingsRel();
 
     public slots:
         void Creer();
@@ -57,6 +60,7 @@ class WindowRelation : public QMainWindow //public QTabWidget
         void seeRelation(QListWidgetItem* i);
 
         void Editer();
+        //void quitter();
 
 
 

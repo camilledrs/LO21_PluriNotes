@@ -2,6 +2,27 @@
 #include "notemanager.h"
 #include "note.h"
 
+
+void MainWindow::readSettings()  //A utiliser dans le constructeur de MainWindow()
+{
+    QSettings settings("Equipe", "Programme");
+
+    settings.beginGroup("MainWindow");
+    resize(settings.value("size", QSize(400, 400)).toSize());
+    move(settings.value("pos", QPoint(200, 200)).toPoint());
+    settings.endGroup();
+}
+
+void MainWindow::writeSettings()  //je dirais à mettre quand on quitte l’application pour sauvegarder
+{
+    QSettings settings("Equipe", "Programme");
+
+    settings.beginGroup("MainWindow");
+    settings.setValue("size", size());
+    settings.setValue("pos", pos());
+    settings.endGroup();
+}
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 
@@ -98,6 +119,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     layoutPrincipal->addLayout(layoutAffichage);
     layoutPrincipal->addWidget(boutonQuitter);
 
+
+
     //Note note1 = NoteManager::getInstance().addNote("Nouvelle note","quelquechose",QDateTime(),QDateTime(),const Version(QDateTime()));
 
     /*NoteManager::Iterator it = NoteManager::getInstance().getIterator();
@@ -137,6 +160,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     layoutPrincipal->addLayout(layoutRecherche);
     zoneCentrale->setLayout(layoutPrincipal);
     setCentralWidget(zoneCentrale);*/
+
+    ///////PARAMETRAGE///////////////////////
+    readSettings();
+
 }
 
 
@@ -238,6 +265,7 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
     reponse= QMessageBox::question(this,"Vidage corbeille", "Voulez vous vider la corbeille avant de quitter ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
         NoteManager::getInstance().viderCorbeille();
+    writeSettings();
     QApplication::quit();
 }
 

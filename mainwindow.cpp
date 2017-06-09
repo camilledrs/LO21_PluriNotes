@@ -218,6 +218,7 @@ QString CreateNoteWidget::createNote()
     if(id_t->text()!="") {
         try
         {
+            // nouvelle fenêtre pour demander le reste des infos selon le type ? Rajout d'atribut + une fonction de construction
             NoteManager::getInstance().addNote(id_t->text(),titre_t->text());
             QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
             //MainWindow::getMainWindow().openNote(id_t->text());

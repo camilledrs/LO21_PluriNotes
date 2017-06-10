@@ -150,7 +150,7 @@ public  :
      * @brief methode setSuppFalse
      * Met l'attribut supprime à false pour rendre la note à nouveau active
      */
-    void setSuppFalse(supprime=false;)
+    void setSuppFalse(){supprime=false;}
     /**
      * @brief accesseur getNbVersion
      * @return le nombre de versions de la note

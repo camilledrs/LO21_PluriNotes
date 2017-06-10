@@ -23,6 +23,12 @@ void MainWindow::writeSettings()  //je dirais à mettre quand on quitte l’appl
     settings.endGroup();
 }
 
+
+
+//Pour l'affichage il faut, dans le dock gauche, 3 parties différentes avec chacune une QLIstWidget
+// 1) NoteList  (on peut trier par id grace a sortItems(Qt::SortOrder order = Qt::AscendingOrder) )
+// 2) TacheList (trié par ordre de priorité)
+// 3) NoteListArchive
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 
@@ -408,6 +414,7 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
    // boutonRestaurer->setEnabled(False);
 //}
 
+
 void MainWindow::Restaurer()
 {
 
@@ -449,6 +456,7 @@ void MainWindow::Recherche()
         boutonRestaurer->setEnabled(true);
     QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
 }
+
 
 
 void MainWindow::afficherNote(QListWidgetItem* item)
@@ -495,22 +503,47 @@ void MainWindow::creerNote()
 
 void MainWindow::supprimerNote()
 {
-
+    //retrouver le QListWidgetItem i correspondant dans NoteListe grace à l'id
+    //mettre l'attribut supprime à true
+    //delete i
 }
 
 void MainWindow::editerNote()
 {
-
+    //voir comment j'ai fait pour editerRelation
 }
+
 
 void MainWindow::restaurerNote()
 {
-
+    /*
+    bool ok;
+    QString id = QInputDialog::getText(this, "ID Note a restaurer :", "Entrez l'id de la note à restaurer", QLineEdit::Normal, QString(), &ok);
+        NoteManager::Iterator it= NoteManager::getInstance().getIterator();
+        while((it.current().getId() != id) && !it.isDone()) it.next();
+        if(it.isDone()) throw NotesException("Note non existante");
+        else if(it.current().getActive() && !it.current().getStatutSupp()) throw NotesException("Note deja active");
+        else if(it.current().getStatutSupp())
+        {
+            it.current().setSuppFalse();
+            NoteList->addItem(id);
+         }
+        else //note archivee
+        {
+            it.current().setActive();
+            NoteList->addItem(id);
+            QListWidgetItem* i= NoteListArchive->//trouver moyen de recuperer le QListWidgetItem grace a l'id;
+            delete i;
+        }
+        */
 }
 
 void MainWindow::archiverNote()
 {
-
+    //retrouver le QListWidgetItem i correspondant dans NoteListe grace à l'id
+    //mettre active à false
+    //delete i
+    //NoteListeArchive->addItem(id)
 }
 
 void MainWindow::fenRelation()

@@ -165,6 +165,7 @@ void NoteManager::save() const {
     newfile.close();
 }
 
+/*
 void NoteManager::load() {
     QFile fin("notes.xml");
     // If we can't open it, let's show an error message.
@@ -193,7 +194,7 @@ void NoteManager::load() {
                 QDateTime dateMod;
                 bool act;
                 bool supp;
-                Version** v;
+                Version** v= new  Version*[1];
                 unsigned int nbV;
                 unsigned int nbMV;
                 QXmlStreamAttributes attributes = xml.attributes();
@@ -249,25 +250,35 @@ void NoteManager::load() {
                             nbMV=(xml.text().toString()).toInt();
                             qDebug()<<"nbMaxVersion="<<nbMV<<"\n";
                         }
-                        /*
-                         while(!(xml.tokenType() == QXmlStreamReader::EndElement && (xml.name() == "article"||xml.name() == "tache"||xml.name() == "multimedia"))) {
-                         if(xml.tokenType() == QXmlStreamReader::StartElement) {
-                        // We've found dateversion
-                        if(xml.name() == "date version") {
+                         if(xml.name() == "article") {
+                             qDebug()<<"new article\n";
+                             QDateTime dateV;
+                             QString texte;
+                             QXmlStreamAttributes attributesV = xml.attributes();
+                             xml.readNext();
+                             while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "article")) {
+                             if(xml.tokenType() == QXmlStreamReader::StartElement) {
+                                // We've found dateversion
+                            if(xml.name() == "date version") {
+                                xml.readNext();
+                                dateV.fromString(xml.text().toString());
+                                qDebug()<<"date="<<dateV<<"\n";
+                        }
+                        // We've found texte article
+                        if(xml.name() == "texte") {
                             xml.readNext();
-                            dateMod.fromString(xml.text().toString());
-                            qDebug()<<"dateModif="<<dateMod<<"\n";
+                            texte=xml.text().toString();
+                            qDebug()<<"texte="<<texte<<"\n";
+
                         }
                          }
+                             xml.readNext();
                          }
-                        // We've found versions
-                        if(xml.name() == "nb max version") {
-                            xml.readNext();
-                            nbMV=xml.text().toString();
-                            qDebug()<<"nbMaxVersion="<<nbMV<<"\n";
-                        }
-                        // A COMPLETER POUR REMPLIR VERSION
-                        */
+                             qDebug()<<"ajout version "<<dateV<<"\n";
+                             editer()
+
+                         }
+
                     }
                     // ...and next...
                     xml.readNext();
@@ -285,3 +296,4 @@ void NoteManager::load() {
     xml.clear();
     qDebug()<<"fin load\n";
 }
+*/

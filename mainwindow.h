@@ -208,6 +208,8 @@ private:
     /* Boutons */
     QPushButton *ok_b;
     QPushButton *cancel_b;
+    QPushButton *ok2_b;
+    QPushButton *cancel2_b;
     /* Layouts */
     QHBoxLayout *id_hbox;
     QHBoxLayout *titre_hbox;
@@ -221,7 +223,11 @@ private:
     QHBoxLayout *typeM_hbox;
     QHBoxLayout *fichier_hbox;
     QHBoxLayout *buttons_hbox;
+    QHBoxLayout *buttons2_hbox;
     QVBoxLayout *fenetre_vbox;
+    QVBoxLayout *fenetre_contenubox;
+
+    QWidget *fenetre;
 
 public:
     /**
@@ -240,12 +246,12 @@ public slots:
      * @param type un QString correspondant au type de la note
      * @return le texte rentré dans le champ id_t
      */
-    QString createNote(QString type);
+    QString createNote();
     /**
      * @brief slot createContenuNote
      * @param type QString correspondant au type de note à créer
      */
-    void createContenuNote(QString type);
+    void createContenuNote();
 };
 
 #endif // MAINWINDOW_H

@@ -344,7 +344,7 @@ QString CreateNoteWidget::createNote()
     //if(id_t->text()!="") {
         try
         {
-            QString type=typeM_t->currentText();
+            QString type=type_t->currentText();
             if (type == "Article")
             {
                 NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Article(QDateTime::currentDateTime(),texte_t->toPlainText()));
@@ -364,11 +364,11 @@ QString CreateNoteWidget::createNote()
                 }
                 else  //faire des radiobutton pour avoir le type de multimedia, sinon c'est trop compliqué
                     {
-                        if (type_t->currentText() == "Image")
+                        if (typeM_t->currentText() == "Image")
                             NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(),fichier_t->text(),image));
-                        if (type_t->currentText() == "Vidéo")
+                        if (typeM_t->currentText() == "Vidéo")
                             NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(),fichier_t->text(),video));
-                        if (type_t->currentText() == "Audio")
+                        if (typeM_t->currentText() == "Audio")
                             NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(),fichier_t->text(),audio));
                         QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
                         //MainWindow::getMainWindow().openNote(id_t->text());

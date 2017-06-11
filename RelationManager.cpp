@@ -90,3 +90,25 @@ bool RelationManager::verifNoteRef(const Note* n)  //renvoie true si la note est
           }
     return false;  //on a pas trouvé de couple avec n
 }
+
+void RelationManager::save() const {
+    QFile newfile("relations.xml");
+    if (!newfile.open(QIODevice::WriteOnly | QIODevice::Text))
+        throw RelationException(QString("erreur sauvegarde relation : ouverture fichier xml"));
+    QXmlStreamWriter stream(&newfile);
+    stream.setAutoFormatting(true);
+    stream.writeStartDocument();
+    stream.writeStartElement("relations");
+    for(unsigned int i=0; i<nbRelations; i++){
+        stream.writeStartElement("relation");
+        relations[i]->save(&newfile);
+     stream.writeEndElement();
+    }
+        stream.writeStartElement("refrence");
+        Reference->save(&newfile);
+        stream.writeEndElement();
+    }
+    stream.writeEndElement();
+    stream.writeEndDocument();
+    newfile.close();
+}

@@ -141,6 +141,14 @@ public :
      * @return true si la note est référencée, false sinon
      */
     bool verifNoteRef(const Note* n);
+     /**
+     * @brief sauve les relations dans un fichier xml
+     */
+    void save() const;
+    /**
+     * @brief telecharge les relations depuis un fichier xml
+     */
+    void load();
 };
 
 

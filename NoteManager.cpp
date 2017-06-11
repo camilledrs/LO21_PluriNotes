@@ -135,6 +135,7 @@ void NoteManager::editer(Note* n, QString title, QDateTime modif, const Version&
    n->verifRef(title);
 }
 
+
 void NoteManager::save() const {
     QFile newfile("notes.xml");
     if (!newfile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -155,6 +156,7 @@ void NoteManager::save() const {
         stream.writeTextElement("nb max version",QString::number(notes[i]->getNbMaxVersion()));
         for(unsigned int j=0; j<notes[i]->getNbVersion(); j++){
             notes[i]->versions[j]->save(&newfile);
+             stream.writeEndElement();
         }
         stream.writeEndElement();
     }

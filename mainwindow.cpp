@@ -212,34 +212,37 @@ CreateNoteWidget::CreateNoteWidget()
     type_t->addItem("Tache");
     type_t->addItem("Média");
 
-    QObject::connect(ok_b,SIGNAL(clicked()),this,SLOT(createContenuNote(type_t->currentText())));
+    QObject::connect(ok_b,SIGNAL(clicked()),this,SLOT(createContenuNote()));
     QObject::connect(cancel_b,SIGNAL(clicked()),this,SLOT(close()));
 
     this->setWindowModality(Qt::ApplicationModal);
 }
 
 /////
-void CreateNoteWidget::createContenuNote(QString type)
+void CreateNoteWidget::createContenuNote()
 {
+    close();
+    fenetre = new QWidget();
+    QString type=type_t->currentText();
     if (type == "Article")
     {
         texte_l = new QLabel("Texte :");
         texte_t = new QTextEdit();
 
-        ok_b = new QPushButton("OK");
-        cancel_b = new QPushButton("Annuler");
+        ok2_b = new QPushButton("OK");
+        cancel2_b = new QPushButton("Annuler");
 
         texte_hbox = new QHBoxLayout();
-        buttons_hbox = new QHBoxLayout();
-        fenetre_vbox = new QVBoxLayout();
+        buttons2_hbox = new QHBoxLayout();
+        fenetre_contenubox = new QVBoxLayout();
 
         texte_hbox->addWidget(texte_l);
         texte_hbox->addWidget(texte_t);
-        buttons_hbox->addWidget(ok_b);
-        buttons_hbox->addWidget(cancel_b);
+        buttons2_hbox->addWidget(ok2_b);
+        buttons2_hbox->addWidget(cancel2_b);
 
-        fenetre_vbox->addLayout(texte_hbox);
-        fenetre_vbox->addLayout(buttons_hbox);
+        fenetre_contenubox->addLayout(texte_hbox);
+        fenetre_contenubox->addLayout(buttons2_hbox);
     }
     else
         if (type == "Tache")
@@ -254,15 +257,15 @@ void CreateNoteWidget::createContenuNote(QString type)
             priorite_t = new QLineEdit();
             dateTache_t = new QDateTimeEdit();
 
-            ok_b = new QPushButton("OK");
-            cancel_b = new QPushButton("Annuler");
+            ok2_b = new QPushButton("OK");
+            cancel2_b = new QPushButton("Annuler");
 
             statut_hbox = new QHBoxLayout();
             action_hbox = new QHBoxLayout();
             priorite_hbox = new QHBoxLayout();
             dateTache_hbox = new QHBoxLayout();
-            buttons_hbox = new QHBoxLayout();
-            fenetre_vbox = new QVBoxLayout();
+            buttons2_hbox = new QHBoxLayout();
+            fenetre_contenubox = new QVBoxLayout();
 
             statut_hbox->addWidget(statut_l);
             statut_hbox->addWidget(statut_t);
@@ -272,14 +275,18 @@ void CreateNoteWidget::createContenuNote(QString type)
             priorite_hbox->addWidget(priorite_t);
             dateTache_hbox->addWidget(dateTache_l);
             dateTache_hbox->addWidget(dateTache_t);
-            buttons_hbox->addWidget(ok_b);
-            buttons_hbox->addWidget(cancel_b);
+            buttons2_hbox->addWidget(ok2_b);
+            buttons2_hbox->addWidget(cancel2_b);
 
-            fenetre_vbox->addLayout(statut_hbox);
-            fenetre_vbox->addLayout(action_hbox);
-            fenetre_vbox->addLayout(priorite_hbox);
-            fenetre_vbox->addLayout(dateTache_hbox);
-            fenetre_vbox->addLayout(buttons_hbox);
+            fenetre_contenubox->addLayout(statut_hbox);
+            fenetre_contenubox->addLayout(action_hbox);
+            fenetre_contenubox->addLayout(priorite_hbox);
+            fenetre_contenubox->addLayout(dateTache_hbox);
+            fenetre_contenubox->addLayout(buttons2_hbox);
+
+            statut_t->addItem("En cours");
+            statut_t->addItem("En attente");
+            statut_t->addItem("Terminée");
         }
         else
             if (type == "Média")
@@ -292,14 +299,14 @@ void CreateNoteWidget::createContenuNote(QString type)
                 fichier_t = new QLineEdit();
                 typeM_t = new QComboBox();
 
-                ok_b = new QPushButton("OK");
-                cancel_b = new QPushButton("Annuler");
+                ok2_b = new QPushButton("OK");
+                cancel2_b = new QPushButton("Annuler");
 
                 description_hbox = new QHBoxLayout();
                 fichier_hbox = new QHBoxLayout();
                 typeM_hbox = new QHBoxLayout();
-                buttons_hbox = new QHBoxLayout();
-                fenetre_vbox = new QVBoxLayout();
+                buttons2_hbox = new QHBoxLayout();
+                fenetre_contenubox = new QVBoxLayout();
 
                 description_hbox->addWidget(description_l);
                 description_hbox->addWidget(description_t);
@@ -307,33 +314,37 @@ void CreateNoteWidget::createContenuNote(QString type)
                 fichier_hbox->addWidget(fichier_t);
                 typeM_hbox->addWidget(typeM_l);
                 typeM_hbox->addWidget(typeM_t);
-                buttons_hbox->addWidget(ok_b);
-                buttons_hbox->addWidget(cancel_b);
+                buttons2_hbox->addWidget(ok2_b);
+                buttons2_hbox->addWidget(cancel2_b);
 
-                fenetre_vbox->addLayout(description_hbox);
-                fenetre_vbox->addLayout(fichier_hbox);
-                fenetre_vbox->addLayout(typeM_hbox);
-                fenetre_vbox->addLayout(buttons_hbox);
+                fenetre_contenubox->addLayout(description_hbox);
+                fenetre_contenubox->addLayout(fichier_hbox);
+                fenetre_contenubox->addLayout(typeM_hbox);
+                fenetre_contenubox->addLayout(buttons2_hbox);
 
                 typeM_t->addItem("Image");
                 typeM_t->addItem("Audio");
-                typeM_t->addItem("Video");
+                typeM_t->addItem("Vidéo");
             }
 
-    this->setLayout(fenetre_vbox);
+    fenetre->setLayout(fenetre_contenubox);
+    fenetre->show();
 
-    QObject::connect(ok_b,SIGNAL(clicked()),this,SLOT(createNote(type)));
-    QObject::connect(cancel_b,SIGNAL(clicked()),this,SLOT(close()));
+    QObject::connect(ok2_b,SIGNAL(clicked()),this,SLOT(createNote()));
+    QObject::connect(cancel_b,SIGNAL(clicked()),fenetre,SLOT(close()));
 
-    this->setWindowModality(Qt::ApplicationModal);
+    //fenetre->setWindowModality(Qt::ApplicationModal);
 }
 ///////
 
-QString CreateNoteWidget::createNote(QString type)
+QString CreateNoteWidget::createNote()
 {
-    if(id_t->text()!="") {
+    QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
+    fenetre->close();
+    //if(id_t->text()!="") {
         try
         {
+            QString type=typeM_t->currentText();
             if (type == "Article")
             {
                 NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Article(QDateTime::currentDateTime(),texte_t->toPlainText()));
@@ -346,27 +357,36 @@ QString CreateNoteWidget::createNote(QString type)
                 {
                     bool ok = false;
                     int nombre = priorite_t->text().toInt(&ok, 10);
-                    NoteManager::getInstance().addNote(id_t->text(), titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action_t->text(), dateTache_t->dateTime(),nombre) );
+                    NoteManager::getInstance().addNote(id_t->text(), titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action_t->text(),dateTache_t->dateTime(),nombre));
                     QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
                     //MainWindow::getMainWindow().openNote(id_t->text());
                     close();
                 }
                 else  //faire des radiobutton pour avoir le type de multimedia, sinon c'est trop compliqué
                     {
-                        NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(), fichier_t->text(),typeM_t->currentText()));
+                        if (type_t->currentText() == "Image")
+                            NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(),fichier_t->text(),image));
+                        if (type_t->currentText() == "Vidéo")
+                            NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(),fichier_t->text(),video));
+                        if (type_t->currentText() == "Audio")
+                            NoteManager::getInstance().addNote(id_t->text(),titre_t->text(),QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description_t->text(),fichier_t->text(),audio));
                         QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
                         //MainWindow::getMainWindow().openNote(id_t->text());
                         close();
                     }
+            /*NoteManager::getInstance().addNote(id_t->text(),titre_t->text());
+            QMessageBox::information(this, "OK", "ID ok,"+type_t->currentText());
+            //MainWindow::getMainWindow().openNote(id_t->text());
+            close();*/
         }
         catch (NoteException& e)
         {
             QMessageBox::information(this,"Erreur",e.getInfo());
         }
-       return id_t->text();
-    }
+        return id_t->text();
+    /*}
     else
-        QMessageBox::information(this, "Erreur", "Vous devez entrer un id !");
+        QMessageBox::information(this, "Erreur", "Vous devez entrer un id !");*/
 }
 
 
@@ -496,8 +516,9 @@ void MainWindow::creerNote()
         //if (item=="Article")*/
     //QMessageBox::StandardButton reponse= QMessageBox::question(this,"OK", "ça marche",QMessageBox::Yes | QMessageBox::No);
     CreateNoteWidget *cw = new CreateNoteWidget();
-    NoteList->addItem(cw->getId());
     cw->show();
+    NoteList->addItem(cw->getId());
+    //On crée bien un nouvel item mais l'id n'est pas récupéré
 }
 
 

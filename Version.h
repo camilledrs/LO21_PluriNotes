@@ -7,7 +7,7 @@
 #include <QFile>
 #include <QTextCodec>
 #include <sstream>
-//#include "note.h"
+//#include "notemanager.h"
 
 /**
  * @brief la Classe Version
@@ -16,7 +16,7 @@
 class Version
 {
     QDateTime date; /**< attribut de type QDateTime */
-    friend class Note;
+    friend class NoteManager;
     /**
      * @brief constructeur par recopie de Version
      */
@@ -37,7 +37,8 @@ public :
     /**
      * @brief destructeur virtuel pur de ~Version
      */
-    virtual ~Version()=0;
+    //virtual ~Version()=0;
+    ~Version(){}
     /**
      * @brief methode save
      * methode virtuelle pure, utile pour le design pattern factory method
@@ -64,22 +65,25 @@ public :
  */
 class Article : public Version
 {
+    //friend class CreateNoteWidget;
     QString texte; /**< Attribut texte de type QString */
+    /**
+     * @brief constructeur par recopie de Article
+     */
+    Article(const Article& a):Version(a.getDate()),texte(a.texte){}
+public:
     /**
      * @brief constructeur de Article
      * @param d de type QDateTime, date de création de l'article
      * @param s de type QString
      */
     Article(QDateTime d,const QString& s):Version(d),texte(s){}
-    /**
-     * @brief constructeur par recopie de Article
-     */
-    Article(const Article&);
+    //friend NoteManager Article(QDateTime d,const QString& s):Version(d),texte(s){}
     /**
       @brief destructeur de Article
       */
-    ~Article();
-public :
+    ~Article(){}
+//public :
     /**
      * @brief accesseur getText
      * @return le texte de l'Article
@@ -127,27 +131,16 @@ enum Statut{EnAttente, /**< Enum value EnAttente. */
  */
 class Tache : public Version
 {
+    //friend class CreateNoteWidget;
     QString action; /**< attribut de type QString */
     Statut statut; /**< statut de la tache, de type enum Statut*/
     QDateTime dateTache; /**< attribut QDateTime de la date de la tache */
     unsigned int priorite; /**< entier, priorité de la tache */
-    /**
-      @brief destructeur de Tache
-      */
-    ~Tache();
-    /**
-     * @brief constructeur de Tache
-     * Une tache est initialement en attente
-     * @param dv un QDateTime (date de création de la version)
-     * @param a Qstring (action)
-     * @param d QdateTime(date de la tache)
-     * @param p entier (priorité)
-     */
-    Tache(QDateTime dv,const QString a, QDateTime d, unsigned int p=0) :Version(dv),action(a), statut(EnAttente), dateTache(d), priorite(p){} // en privé pour qu'une tache ne puisse être construite que par une classe friend
+
     /**
      * @brief constructeur par recopie de Tache
      */
-    Tache(const Tache&);
+    Tache(const Tache& t):Version(t.getDate()),action(t.action),statut(EnAttente),dateTache(t.dateTache),priorite(t.priorite){}
     /**
      * @brief methode clone
      * @return un pointeur de Tache sur le clone de la tache
@@ -167,6 +160,21 @@ class Tache : public Version
                               }
 
 public :
+////////////////////////
+    /**
+      @brief destructeur de Tache
+      */
+    ~Tache(){}
+    /**
+     * @brief constructeur de Tache
+     * Une tache est initialement en attente
+     * @param dv un QDateTime (date de création de la version)
+     * @param a Qstring (action)
+     * @param d QdateTime(date de la tache)
+     * @param p entier (priorité)
+     */
+    Tache(QDateTime dv,const QString a, QDateTime d, unsigned int p=0) :Version(dv),action(a), statut(EnAttente), dateTache(d), priorite(p){} // en privé pour qu'une tache ne puisse être construite que par une classe friend
+//////////////////////
     /**
      * @brief accesseur getAction
      * @return un QString, l'action de la tache
@@ -178,12 +186,15 @@ public :
      */
     std::string getStatut() {
         switch(statut){
-                           case EnAttente : return "EnAttente";
-                            break;
-                            case EnCours : return "EnCours";
-                            break;
-                            case Terminee : return "Terminee";
-                            break;
+            case EnAttente :
+                return "EnAttente";
+                break;
+            case EnCours :
+                return "EnCours";
+                break;
+            case Terminee :
+                return "Terminee";
+                break;
         }
     }
     /**
@@ -228,25 +239,14 @@ enum Media {image, /**< Enum value image.*/
  */
 class Multimedia : public Version
 {
+    //friend class CreateNoteWidget;
     QString description; /**< attribut QString, description du multimedia */
     QString fichier; /**< QString, nom du fichier */
     Media type; /**< de type enum Media, type de multimedia */
     /**
-      @brief destructeur de Multimedia
-      */
-    ~Multimedia();
-    /**
-     * @brief constructeur de Multimedia
-     * @param dv QDateTime date de la version
-     * @param d QString (description)
-     * @param f const QString& (nom du fichier)
-     * @param t enum Media (type)
-     */
-    Multimedia(QDateTime dv,const QString& d, const QString& f, Media t):Version(dv),description(d), fichier(f), type(t){}
-    /**
      * @brief constructeur par recopie de Multimedia
      */
-    Multimedia(const Multimedia&);
+    Multimedia(const Multimedia& m):Version(m.getDate()),description(m.description),fichier(m.fichier),type(m.type){}
     /**
      * @brief methode clone
      * @return un pointeur sur un objet Multimedia, cloné sur l'actuel
@@ -265,7 +265,21 @@ class Multimedia : public Version
                               }
 
 public :
+/////////////////////////////////////////////////
     /**
+      * @brief destructeur de Multimedia
+      */
+    ~Multimedia(){}
+    /**
+     * @brief constructeur de Multimedia
+     * @param dv QDateTime date de la version
+     * @param d QString (description)
+     * @param f const QString& (nom du fichier)
+     * @param t enum Media (type)
+     */
+    Multimedia(QDateTime dv,const QString& d, const QString& f, Media t):Version(dv),description(d), fichier(f), type(t){}
+////////////////////////////////
+     /**
      * @brief accesseur getDescription
      * @return un QString, la description du multimedia
      */

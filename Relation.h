@@ -202,7 +202,10 @@ public :
      * @param d QString description
      */
     Relation(QString t, QString d, bool orient=true):orientee(orient), titre(t), description(d), nb(0), max(0), tab(nullptr){}
-
+    /**
+     * @brief sauve les relations dans un fichier xml
+     */
+    void save(QFile* f) const;
 
 };
 

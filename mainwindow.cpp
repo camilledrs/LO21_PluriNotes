@@ -422,6 +422,8 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
     reponse= QMessageBox::question(this,"Vidage corbeille", "Voulez vous vider la corbeille avant de quitter ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
         NoteManager::getInstance().viderCorbeille();
+     NoteManager::getInstance().save();
+    RelationManager::getInstance().save();
     writeSettings();
     QApplication::quit();
 }

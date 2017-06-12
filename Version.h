@@ -58,11 +58,11 @@ public :
      */
     virtual QString afficher() const=0;
     /**
-     * @brief methode type
+     * @brief methode notetype
      * methode virtuelle pure, utilisée pour connaitre le type d'une note
      * @return un QString composé de l'ensemble des valeurs des attributs particuliers à chaque classe héritant de Version
      */
-    virtual QString type() const=0;
+    virtual QString notetype() const=0;
 };
 
 /**
@@ -123,7 +123,7 @@ public:
      * @brief methode virtuelle type
      * @return un QString& composé du type
      */
-    QString type()const{
+    QString notetype()const{
         return "article";
     }
 
@@ -237,7 +237,7 @@ public :
      * @brief methode virtuelle type
      * @return un QString& composé du type
      */
-    QString type()const{
+    QString notetype()const{
         return "tache";
     }
 
@@ -339,7 +339,7 @@ public :
      * @brief methode virtuelle type
      * @return un QString& composé du type
      */
-    QString type()const{
+    QString notetype()const{
         return "multimedia";
     }
 

@@ -3,6 +3,8 @@
 
 #include <ctime>
 #include <QString>
+#include <QtXml>
+#include <QFile>
 #include "note.h"
 
 

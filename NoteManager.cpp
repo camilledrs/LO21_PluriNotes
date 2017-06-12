@@ -75,17 +75,18 @@ NoteManager& NoteManager::operator=(const NoteManager& m)
 
 void NoteManager::supprimerNote(Note& n)
 {
+    //on ne fait appel ici qu'a des notes actives (dans le sens non archivées ou supprimées)
     Relation* reference=RelationManager::getInstance().getRef();
     if(reference){
     Relation::const_iterator it=reference->begin();
     Relation::const_iterator it_end=reference->end();
     while ((it!=it_end) || (n.getId() != const_cast<Couple*>(it.elementCourant())->getIdNote2()))
         it++;
-    if (it!=it_end)
-        n.active=false;
+    if (it!=it_end) //note dans la relation reference
+        n.ChangeActive();
     else
-        n.supprime=true;}
-    else n.supprime=true;
+        n.changeSupp(); }
+    else n.changeSupp();
 }
 
 

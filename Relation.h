@@ -4,6 +4,8 @@
 
 #include <ctime>
 #include <QString>
+#include <QtXml>
+#include <QFile>
 //#include "relationmanager.h"
 #include "couple.h"
 

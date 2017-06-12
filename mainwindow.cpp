@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     ///////////////////////////////////////////////
 
-    QGroupBox *groupbox = new QGroupBox("Type de note", zoneCentrale);
+    /*QGroupBox *groupbox = new QGroupBox("Type de note", zoneCentrale);
 
     QRadioButton *article = new QRadioButton("Article");
     //QObject::connect(article,SIGNAL(clicked()),this,SLOT(articleNote()));
@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     layoutTypeNote->addWidget(tache);
     layoutTypeNote->addWidget(media);
 
-    groupbox->setLayout(layoutTypeNote);
+    groupbox->setLayout(layoutTypeNote);*/
 
     idNote = new QLineEdit;
     titreNote = new QLineEdit;
@@ -122,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     layoutPrincipal = new QVBoxLayout;
     //layoutPrincipal->addLayout(layoutRecherche);
-    layoutPrincipal->addWidget(groupbox);
+    //layoutPrincipal->addWidget(groupbox);
     layoutPrincipal->addLayout(layoutAffichage);
     layoutPrincipal->addWidget(boutonQuitter);
 

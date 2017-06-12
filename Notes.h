@@ -147,10 +147,20 @@ public  :
      */
     bool getStatutSupp(){return supprime;}
     /**
-     * @brief methode setSuppFalse
-     * Met l'attribut supprime à false pour rendre la note à nouveau active
+     * @brief methode changeSupp
+     * Change le statut de supp
      */
-    void setSuppFalse(){supprime=false;}
+    void changeSupp(){ if (supprime=false) supprime=true;
+                        else supprime=false;
+                    }
+    /**
+     * @brief methode ChangeActive
+     * change le boolean active
+     */
+    void ChangeActive(){
+        if (active==true) active=false;
+        else active=true;
+    }
     /**
      * @brief accesseur getNbVersion
      * @return le nombre de versions de la note

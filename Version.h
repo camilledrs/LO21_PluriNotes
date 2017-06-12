@@ -153,7 +153,7 @@ class Tache : public Version
     /**
      * @brief constructeur par recopie de Tache
      */
-    Tache(const Tache& t):Version(t.getDate()),action(t.action),statut(EnAttente),dateTache(t.dateTache),priorite(t.priorite){}
+    Tache(const Tache& t):Version(t.getDate()),action(t.action),statut(t.statut),dateTache(t.dateTache),priorite(t.priorite){}
     /**
      * @brief methode clone
      * @return un pointeur de Tache sur le clone de la tache
@@ -215,6 +215,7 @@ public :
                 break;
         }
     }
+    Statut getStatutTyp(){return statut;}
     /**
      * @brief accesseur getPriority
      * @return un entier, la priorité de la tache
@@ -352,7 +353,5 @@ public :
 
 
 
-
-#endif // VERSION_H
 
 #endif // VERSION_H

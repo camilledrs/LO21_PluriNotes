@@ -37,11 +37,17 @@ class MainWindow : public QMainWindow
     QDockWidget *zoneGauche;
     QDockWidget *zoneDroite;
 
-    //QLineEdit *idNote;
+    QLineEdit *idNote;
     QLineEdit *titreNote;
     QDateTimeEdit *dateCreaNote;
     QTextEdit *contenuNote;
+
+    QLabel *NoteList_l;
+    QLabel *TacheList_l;
+    QLabel *NoteListArchive_l;
     QListWidget *NoteList;
+    QListWidget *TacheList;
+    QListWidget *NoteListArchive;
 
 
     /*QTextEdit *texteNote;
@@ -58,14 +64,15 @@ class MainWindow : public QMainWindow
     QPushButton *restaurer;
     QPushButton *boutonQuitter;
 
-    QLineEdit *idNote ;
-    QPushButton *boutonAfficher;
-    QPushButton *boutonRestaurer;
+    //QLineEdit *idNote ;
+    //QPushButton *boutonAfficher;
+    //QPushButton *boutonRestaurer;
 
     QFormLayout *layoutAffich;
     QVBoxLayout *layoutAffichage;
-    QFormLayout *layout;
-    QVBoxLayout *layoutRecherche;
+    QVBoxLayout *layoutList;
+    //QFormLayout *layout;
+    //QVBoxLayout *layoutRecherche;
     QVBoxLayout *layoutPrincipal;
 
 public:
@@ -94,7 +101,7 @@ public slots:
     /**
      * @brief slot Recherche
      */
-    void Recherche();
+    //void Recherche();
     /**
      * @brief slot nouvelleFen
      * Ouvre une fenetre vide

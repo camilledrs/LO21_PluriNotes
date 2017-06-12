@@ -194,6 +194,11 @@ public :
      */
     QString getAction(){return action;}
     /**
+     * @brief accesseur setStatut
+     * @param l'indice du nouveau statut
+     */
+    void setStatut(Statut s){statut=s;}
+    /**
      * @brief accesseur getStatut
      * @return un objet de type enum Statut
      */
@@ -347,5 +352,7 @@ public :
 
 
 
+
+#endif // VERSION_H
 
 #endif // VERSION_H

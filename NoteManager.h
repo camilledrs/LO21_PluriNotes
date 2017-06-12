@@ -49,7 +49,7 @@ class NoteManager
     /**
      * @brief constructeur sans argument de NoteManager
      */
-    NoteManager():notes(nullptr), nbNotes(0), nbMaxNotes(0){}
+    NoteManager():nbNotes(0), nbMaxNotes(5), notes(new Note*[5]){}
     /**
       *@brief Destructeur de NoteManager
       * libère l'espace mémoire alloué au tableau de Notes, et détruit l'ensemble des notes

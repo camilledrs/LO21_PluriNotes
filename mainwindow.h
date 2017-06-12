@@ -56,7 +56,6 @@ class MainWindow : public QMainWindow
     QPushButton *supprimer;
     QPushButton *editer;
     QPushButton *restaurer;
-    QPushButton *archiver;
     QPushButton *boutonQuitter;
 
     QLineEdit *idNote ;
@@ -120,12 +119,6 @@ public slots:
      * @brief slot Restaurer
      * restaure la vesrion sélectionnée
      */
-    void Restaurer();
-    /**
-     * @brief slot afficherNote
-     * @param item le QListWidget sélectionné
-     * affiche la note dans la zone centrale
-     */
     void afficherNote(QListWidgetItem* item);
     /**
      * @brief slot creerNote
@@ -151,7 +144,6 @@ public slots:
      * @brief slot archiverNote
      * Archive la note actuellement affichée
      */
-    void archiverNote();
 };
 
 

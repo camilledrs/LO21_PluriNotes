@@ -49,10 +49,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     zoneCentrale = new QWidget;
 
-    zoneGauche = new QDockWidget;
+    zoneGauche = new QDockWidget(tr("Notes actives"), this);
     zoneGauche->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    //zoneGauche->setWidget();
-    addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
 
     zoneDroite = new QDockWidget;
     zoneDroite->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -62,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     ///////////////////////////////////////////////
 
-    QGroupBox *groupbox = new QGroupBox("Type de note", zoneCentrale);
+    /*QGroupBox *groupbox = new QGroupBox("Type de note", zoneCentrale);
 
     QRadioButton *article = new QRadioButton("Article");
     //QObject::connect(article,SIGNAL(clicked()),this,SLOT(articleNote()));
@@ -79,15 +77,42 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     layoutTypeNote->addWidget(tache);
     layoutTypeNote->addWidget(media);
 
-    groupbox->setLayout(layoutTypeNote);
+    groupbox->setLayout(layoutTypeNote);*/
 
     idNote = new QLineEdit;
     titreNote = new QLineEdit;
     dateCreaNote = new QDateTimeEdit(QDateTime::currentDateTime());
-    contenuNote = new QTextEdit;
-    NoteList = new QListWidget(zoneGauche);
-
     dateCreaNote->setReadOnly(true);
+    contenuNote = new QTextEdit;
+
+    NoteList = new QListWidget();
+
+    //Ajout des notes à la liste
+
+    zoneGauche->setWidget(NoteList);
+    addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
+
+    zoneGauche = new QDockWidget(tr("Taches"), this);
+
+    TacheList = new QListWidget();
+
+    //Ajout des taches à la liste
+
+    zoneGauche->setWidget(TacheList);
+    addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
+
+    zoneGauche = new QDockWidget(tr("Notes archivées"), this);
+
+    NoteListArchive = new QListWidget();
+
+    //Ajout des notes archivées à la liste
+
+    zoneGauche->setWidget(TacheList);
+    addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
+
+
+
+
 
     creer = new QPushButton("Créer");
     QObject::connect(creer,SIGNAL(clicked()),this,SLOT(creerNote()));
@@ -120,7 +145,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     layoutPrincipal = new QVBoxLayout;
     //layoutPrincipal->addLayout(layoutRecherche);
-    layoutPrincipal->addWidget(groupbox);
+    //layoutPrincipal->addWidget(groupbox);
     layoutPrincipal->addLayout(layoutAffichage);
     layoutPrincipal->addWidget(boutonQuitter);
 
@@ -140,9 +165,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     NoteList->addItem("Note référencée");*/
 
     QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
-
-    zoneGauche->setWidget(NoteList);
-    addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
 
     zoneCentrale->setLayout(layoutPrincipal);
 
@@ -215,7 +237,7 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
 
 
 
-void MainWindow::Recherche()
+/*void MainWindow::Recherche()
 {
     // Recherche de la bonne note avec idNote->text();
     Note* note = NoteManager::getInstance().getNote(idNote->text());
@@ -248,7 +270,7 @@ void MainWindow::Recherche()
     if (note->getDerniereVersion().getDate() != dateCreaNote->dateTime())  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
         boutonRestaurer->setEnabled(true);
     QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
-}
+}*/
 
 
 

@@ -57,6 +57,12 @@ public :
      * @return un QString composé de l'ensemble des valeurs des attributs particuliers à chaque classe héritant de Version
      */
     virtual QString afficher() const=0;
+    /**
+     * @brief methode type
+     * methode virtuelle pure, utilisée pour connaitre le type d'une note
+     * @return un QString composé de l'ensemble des valeurs des attributs particuliers à chaque classe héritant de Version
+     */
+    virtual QString type() const=0;
 };
 
 /**
@@ -112,6 +118,13 @@ public:
         std::stringstream s;
         s<<"Texte : "<<this->clone()->getText().toStdString();
         return (QString::fromStdString(s.str()));
+    }
+    /**
+     * @brief methode virtuelle type
+     * @return un QString& composé du type
+     */
+    QString type()const{
+        return "article";
     }
 
 };
@@ -220,6 +233,13 @@ public :
         s<<"Priorite : "<<this->clone()->getPriority()<<"\n";
         return (QString::fromStdString(s.str()));
     }
+    /**
+     * @brief methode virtuelle type
+     * @return un QString& composé du type
+     */
+    QString type()const{
+        return "tache";
+    }
 
 };
 
@@ -314,6 +334,13 @@ public :
         s<<"Fichier :"<<this->clone()->getFichier().toStdString()<<"\n";
         s<<"Type :"<<this->clone()->getType()<<"\n";
         return (QString::fromStdString(s.str()));
+    }
+    /**
+     * @brief methode virtuelle type
+     * @return un QString& composé du type
+     */
+    QString type()const{
+        return "multimedia";
     }
 
 };

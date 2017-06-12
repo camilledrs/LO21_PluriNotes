@@ -107,7 +107,7 @@ void RelationManager::save() const {
         stream.writeStartElement("refrence");
         Reference->save(&newfile);
         stream.writeEndElement();
-    }
+
     stream.writeEndElement();
     stream.writeEndDocument();
     newfile.close();

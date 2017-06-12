@@ -8,9 +8,9 @@ void RelationManager::addRelation(QString& t, QString& d, bool orient)
 {
     //check si on veut ajouter une relation comme reference
 
-    if(Reference && t==Reference->getTitre())
+    if(t==relations[0]->getTitre())
         throw RelationException("error, Reference already exist");
-    for(unsigned int i=0; i<nbRelations; i++)
+    for(unsigned int i=1; i<nbRelations; i++)
     {
         if (relations[i]->getTitre()==t)
             throw RelationException("error, creation of an already existent Relation");
@@ -25,31 +25,6 @@ void RelationManager::addRelation(QString& t, QString& d, bool orient)
         if (oldRelations) delete[] oldRelations;
     }
     relations[nbRelations++]=new Relation(t, d, orient);
-}
-
-
-RelationManager::RelationManager(const RelationManager& m):relations(new Relation*[m.nbRelations]),nbRelations(m.nbRelations), nbMaxRelations(m.nbMaxRelations)
-{
-    for(unsigned int i=0; i<nbRelations; i++)
-    {
-        relations[i]=new Relation(*m.relations[i]); // si composition
-        //relations[i]=m.relations[i]; // si agrégation
-    }
-}
-
-
-RelationManager& RelationManager::operator=(const RelationManager& m)
-{
-    if (this != &m)
-    {
-        nbRelations=m.nbRelations;
-        nbMaxRelations=m.nbMaxRelations;
-        Relation** newtab= new Relation*[nbMaxRelations];
-        for(unsigned int i=0; i<m.nbRelations; i++) newtab[i]=m.relations[i];
-        delete[] relations;
-        relations=newtab;
-    }
-    return *this;
 }
 
 
@@ -105,7 +80,7 @@ void RelationManager::save() const {
      stream.writeEndElement();
     }
         stream.writeStartElement("refrence");
-        Reference->save(&newfile);
+        relations[0]->save(&newfile);
         stream.writeEndElement();
 
     stream.writeEndElement();
@@ -153,7 +128,6 @@ void RelationManager::load() {
                             xml.readNext(); titre=xml.text().toString();
                             qDebug()<<"titre="<<titre<<"\n";
                         }
-
                         // We've found description.
                         if(xml.name() == "description") {
                             xml.readNext(); description=xml.text().toString();
@@ -164,7 +138,7 @@ void RelationManager::load() {
                             xml.readNext();
                             orientee=(xml.text().toString()).toInt();
                             qDebug()<<"orientee="<<orientee<<"\n";
-                      
+
                         // We've found nbCouple
                         if(xml.name() == "nbCouple") {
                             xml.readNext();
@@ -195,7 +169,6 @@ void RelationManager::load() {
                             qDebug()<<"nbMaxVersion="<<nbMV<<"\n";
                         }
                         // A COMPLETER POUR REMPLIR VERSION
-
                     }
                     // ...and next...
                     xml.readNext();

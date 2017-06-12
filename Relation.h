@@ -203,7 +203,7 @@ public :
      * @param t Qstring titre
      * @param d QString description
      */
-    Relation(QString t, QString d, bool orient=true):orientee(orient), titre(t), description(d), nb(0), max(0), tab(nullptr){}
+    Relation(QString t, QString d, bool orient=true):orientee(orient), titre(t), description(d), nb(0), max(5), tab(new Couple*[5]){}
     /**
      * @brief sauve les relations dans un fichier xml
      */

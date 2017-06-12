@@ -162,6 +162,12 @@ public  :
         else active=true;
     }
     /**
+     * @brief methode setTitre
+     * @param t nouveau titre de la note
+     * Met l'attribut Titre à jour
+     */
+    void setTitre(QString t){titre=t;}
+    /**
      * @brief accesseur getNbVersion
      * @return le nombre de versions de la note
      */

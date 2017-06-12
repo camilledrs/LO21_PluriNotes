@@ -32,6 +32,7 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     Titre = new QLineEdit;
     Desc = new QLineEdit;
     RelationList = new QListWidget(zoneGaucheRel);
+    RelationList->addItem("Reference");
     addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
 
     QFormLayout *layoutRel = new QFormLayout;
@@ -42,9 +43,9 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
 
 
     boutonCreer = new QPushButton("Creer une Relation");
-    boutonEditer = new QPushButton("Editer une Relation");
-    boutonSupprimer = new QPushButton("Supprimer une Relation");
-    boutonEnrichir = new QPushButton("Enrichir une Relation");
+    boutonEditer = new QPushButton("Editer");
+    boutonSupprimer = new QPushButton("Supprimer");
+    boutonEnrichir = new QPushButton("Enrichir");
 
     QHBoxLayout *layoutBouttons = new QHBoxLayout;
     layoutBouttons= new QHBoxLayout;
@@ -100,10 +101,14 @@ void WindowRelation::Creer()
 
 void WindowRelation::ajouterCouple()
 {
+    Relation* r;
     QString titre= Titre->text();
+    if (titre=="Reference") r= RelationManager::getInstance().getRef();
+    else {
     RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
     while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
-    Relation& r=itr.current();
+    r=&itr.current();
+        }
     bool ok=false;
     Note* n1;
     Note* n2;
@@ -137,15 +142,15 @@ void WindowRelation::ajouterCouple()
     if (ok && !strl.isEmpty()){
         const char* c= strl.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
         int l=atoi(c);
-        r.addCouple(*n1,*n2,l);
+        r->addCouple(*n1,*n2,l);
     }
-    if (r.getOrient()==false) //rajouter le couple miroir
+    if (r->getOrient()==false) //rajouter le couple miroir
     {
         QString strl2 = QInputDialog::getText(this, "Couple miroir", "Quel label voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);
         if (ok && !strl2.isEmpty()){
             const char* c= strl2.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
             int l2=atoi(c);
-            r.addCouple(*n1,*n2,l2);
+            r->addCouple(*n1,*n2,l2);
     }
     }
 }}
@@ -153,12 +158,16 @@ void WindowRelation::ajouterCouple()
 
 void WindowRelation::seeRelation(QListWidgetItem* i)
 {
+    Relation* r;
+    if(i->text()=="Reference") r=RelationManager::getInstance().getRef();
+    else {
     RelationManager::Iterator it= RelationManager::getInstance().getIterator();
     while(!it.isDone() && (it.current().getTitre() != i->text()))
         it.next();
-    Relation& r=it.current();
-    Titre->setText(r.getTitre());
-    Desc->setText(r.getDesc());
+    r=&it.current();
+        }
+    Titre->setText(r->getTitre());
+    Desc->setText(r->getDesc());
     RelationList->setCurrentItem(i); //plus facile pour les autres methodes ensuite
 }
 
@@ -195,7 +204,7 @@ void WindowRelation::Editer()
     }
     QMessageBox::StandardButton reponse2;
     reponse2= QMessageBox::question(this,"Modifier Description", "Voulez vous modifier la description ?",QMessageBox::Yes | QMessageBox::No);
-    if(reponse == QMessageBox::Yes)
+    if(reponse2 == QMessageBox::Yes)
     {
         bool ok;
         desc = QInputDialog::getText(this, "Description :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok);

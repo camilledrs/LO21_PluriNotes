@@ -97,15 +97,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QObject::connect(editer,SIGNAL(clicked()),this,SLOT(editerNote()));
     restaurer = new QPushButton("Restaurer");
     QObject::connect(restaurer,SIGNAL(clicked()),this,SLOT(restaurerNote()));
-    archiver = new QPushButton("Archiver");
-    QObject::connect(archiver,SIGNAL(clicked()),this,SLOT(archiverNote()));
+
 
     QHBoxLayout* layoutBouton = new QHBoxLayout;
     layoutBouton->addWidget(creer);
     layoutBouton->addWidget(supprimer);
     layoutBouton->addWidget(editer);
     layoutBouton->addWidget(restaurer);
-    layoutBouton->addWidget(archiver);
 
     layoutAffich = new QFormLayout;
     layoutAffich->addRow("Id", idNote);
@@ -378,7 +376,6 @@ void MainWindow::supprimerNote()
     }
 }
 
-void MainWindow::Restaurer(){}
 
 void MainWindow::editerNote()
 {
@@ -423,13 +420,6 @@ faire NotesListArchive->item(row)
  */
 }
 
-void MainWindow::archiverNote()
-{
-    //retrouver le QListWidgetItem i correspondant dans NoteListe grace à l'id
-    //mettre active à false
-    //delete i
-    //NoteListeArchive->addItem(id)
-}
 
 void MainWindow::fenRelation()
 {

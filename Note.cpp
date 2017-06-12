@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 void Note::restaurer(Version* v)
 {
     unsigned int i=0;
@@ -115,3 +116,5 @@ Note** Note::predecesseurs( unsigned int* nb)
     *nb=i;
     return pred;
 }
+
+

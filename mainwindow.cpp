@@ -216,16 +216,10 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
 //}
 
 
-void MainWindow::Restaurer()
-{
-
-}
 
 void MainWindow::Recherche()
 {
     // Recherche de la bonne note avec idNote->text();
-
-
     Note* note = NoteManager::getInstance().getNote(idNote->text());
 
     titreNote = new QLineEdit;
@@ -384,6 +378,7 @@ void MainWindow::supprimerNote()
     }
 }
 
+void MainWindow::Restaurer(){}
 
 void MainWindow::editerNote()
 {
@@ -439,6 +434,5 @@ void MainWindow::archiverNote()
 void MainWindow::fenRelation()
 {
     WindowRelation* fen= new WindowRelation(this);
-
     fen->show();
 }

@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     NoteList = new QListWidget();
 
+
     //Ajout des notes à la liste
 
     zoneGauche->setWidget(NoteList);
@@ -102,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     //Ajout des notes archivées à la liste
 
-    zoneGauche->setWidget(TacheList);
+    zoneGauche->setWidget(NoteListArchive);
     addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
 
 
@@ -160,6 +161,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     NoteList->addItem("Note référencée");*/
 
     QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
+    QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
+    QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
 
     zoneCentrale->setLayout(layoutPrincipal);
 
@@ -314,6 +317,7 @@ void MainWindow::creerNote()
             NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Article(QDateTime::currentDateTime(),texte));
             QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
             NoteList->addItem(id);
+            NoteList->sortItems(Qt::AscendingOrder);
         }
     }
 
@@ -332,6 +336,9 @@ void MainWindow::creerNote()
             NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action,QDateTime::currentDateTime()/*dateFin*/,p));
             QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
             NoteList->addItem(id);
+            NoteList->sortItems(Qt::AscendingOrder);
+            TacheList->addItem(id);
+            //TacheList->sortItems(Qt::AscendingOrder); trier par priorite et date echue
         }
     }
 
@@ -359,6 +366,7 @@ void MainWindow::creerNote()
                 NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,audio));
             QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
             NoteList->addItem(id);
+            NoteList->sortItems(Qt::AscendingOrder);
         }
     }
 }
@@ -379,12 +387,17 @@ void MainWindow::supprimerNote()
         if(n.getActive()==false)
             QMessageBox::information(this, "Confirmation creation", "");
         delete NoteList->currentItem();
+        if (n.getDerniereVersion().notetype()=="tache") delete TacheList->currentItem();
         idNote->setText("");
         titreNote->setText("");
         dateCreaNote->setDateTime(QDateTime::currentDateTime());
         contenuNote->setText("");
         QMessageBox::information(this, "Confirmation creation", "ok");
-        if(!n.getActive()) NoteListArchive->addItem(id); //la note etait referencee, elle est maintenant archivee, on l'ajoute dans la liste des archivees
+        if(!n.getActive())
+        {
+            NoteListArchive->addItem(id); //la note etait referencee, elle est maintenant archivee, on l'ajoute dans la liste des archivees
+            NoteListArchive->sortItems(Qt::AscendingOrder);
+        }
     }
 }
 

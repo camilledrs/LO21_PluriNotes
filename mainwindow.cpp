@@ -459,9 +459,9 @@ void MainWindow::editerNote()
 
             if (ok2 && ok3 && ok4 && !actionTache.isEmpty() && !statutTache.isEmpty()){
                 Tache ta(QDateTime::currentDateTime(),actionTache,QDateTime::currentDateTime(),priorityTache);
-                if(statutTache=="En Attente") ta.setStatut(EnAttente);
-                if(statutTache=="En cours") ta.setStatut(EnCours);
-                if(statutTache=="Terminee") ta.setStatut(Terminee);
+                if(statutTache=="En Attente") ta.setStatut(Statut::EnAttente);
+                else if(statutTache=="En cours") ta.setStatut(Statut::EnCours);
+                else if (statutTache=="Terminee") ta.setStatut(Statut::Terminee);
             NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),ta);}
 
         }

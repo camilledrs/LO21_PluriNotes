@@ -402,10 +402,102 @@ void MainWindow::supprimerNote()
 }
 
 
+
 void MainWindow::editerNote()
-{
+{    QListWidgetItem* i= NoteList->currentItem();
+     NoteManager::Iterator it = NoteManager::getInstance().getIterator();
+     while(it.current().getId() != i->text())
+         it.next();
+     Note& n=it.current();
     //voir comment j'ai fait pour editerRelation
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
+    QString titre=titreNote->text();
+    if(reponse == QMessageBox::Yes)
+    {
+        bool ok;
+        titre=QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !titre.isEmpty())
+        n.setTitre(titre);
+    }
+
+    QString t=n.getDerniereVersion().notetype();
+    if(t=="article"){
+        QString texteArticle;
+        QMessageBox::StandardButton reponse2;
+        reponse2= QMessageBox::question(this,"Modifier Texte Article", "Voulez vous modifier le texte de l'article ?",QMessageBox::Yes | QMessageBox::No);
+        if(reponse2 == QMessageBox::Yes)
+        {
+            bool ok1;
+            texteArticle = QInputDialog::getText(this, "Texte :", "Quel texte voulez vous ?", QLineEdit::Normal, QString(), &ok1);
+            if (ok1 && !texteArticle.isEmpty()){
+            Article a(QDateTime::currentDateTime(),texteArticle);
+            NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),a);}
+
+        }
+
+    }
+    if(t=="tache"){
+        QString actionTache;
+        QDateTime dateTache;
+        unsigned int priorityTache;
+        QString statutTache;
+        QMessageBox::StandardButton reponse2;
+        reponse2= QMessageBox::question(this,"Modifier Contenu  Tache", "Voulez vous modifier le contenu de la tache  ?",QMessageBox::Yes | QMessageBox::No);
+        bool ok2;
+        bool ok3;
+        bool ok4;
+        bool ok5;
+        QStringList items;
+        items << tr("En Attente") << tr("En cours") << tr("Terminee");
+        if(reponse2 == QMessageBox::Yes)
+        {
+            actionTache = QInputDialog::getText(this, "Action :", "Quelle action voulez vous ?", QLineEdit::Normal, QString(), &ok2);
+            QString priority = QInputDialog::getText(this, "Priorité :", "Quelle est la nouvelle priorité de la tache ? (optionnelle)", QLineEdit::Normal, QString(), &ok3);
+            priorityTache=priority.toInt();
+            statutTache = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Statut de la tache:"), items, 0, false, &ok4);
+
+            if (ok2 && ok3 && ok4 && !actionTache.isEmpty() && !statutTache.isEmpty()){
+                Tache ta(QDateTime::currentDateTime(),actionTache,QDateTime::currentDateTime(),priorityTache);
+                if(statutTache=="En Attente") ta.setStatut(EnAttente);
+                if(statutTache=="En cours") ta.setStatut(EnCours);
+                if(statutTache=="Terminee") ta.setStatut(Terminee);
+            NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),ta);}
+
+        }
+
+    }
+    if(t=="multimedia"){
+        QString descriptionM;
+        QString fichierM;
+        QString typeM;
+        bool ok6;
+        bool ok7;
+        bool ok8;
+        QStringList items;
+        items << tr("Image") << tr("Vidéo") << tr("Audio");
+        QMessageBox::StandardButton reponse2;
+        reponse2= QMessageBox::question(this,"Modifier Contenu Media", "Voulez vous modifier le contenu du Multimedia  ?",QMessageBox::Yes | QMessageBox::No);
+        if(reponse2 == QMessageBox::Yes)
+        {
+            descriptionM = QInputDialog::getText(this, "description :", "Quelle description voulez vous ?", QLineEdit::Normal, QString(), &ok6);
+            fichierM = QInputDialog::getText(this, "nom fichier :", "Quelle est la nom du fichier associe ? ", QLineEdit::Normal, QString(), &ok7);
+            typeM = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Statut de la tache:"), items, 0, false, &ok8);
+
+            if (ok6 && ok7 && ok8 && !descriptionM.isEmpty() && !fichierM.isEmpty() && !typeM.isEmpty()){
+
+                if(typeM=="Image") NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),descriptionM,fichierM,image));
+                if(typeM=="Vidéo") NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),descriptionM,fichierM,video));
+                if(typeM=="Audio") NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),descriptionM,fichierM,audio));
+            }
+
+        }
+    }
+
+
+
 }
+
 
 
 void MainWindow::restaurerNote()

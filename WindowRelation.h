@@ -19,7 +19,10 @@
 #include <QTabWidget> //pour les onglet
 
 
-
+/**
+ * @brief La classe WindowRelation
+ * gère les relations et les affichages de celles ci
+ */
 class WindowRelation : public QMainWindow //public QTabWidget
 {
         Q_OBJECT
@@ -42,23 +45,48 @@ class WindowRelation : public QMainWindow //public QTabWidget
     //QHBoxLayout* layoutBouttons;
 
     public:
+    /**
+         * @brief constructeur de WindowRelation
+         * @param parent qui prend le widget parent (la fenetre mainwindow dans notre cas)
+         */
         explicit WindowRelation(QWidget *parent = 0);
-        void readSettingsRel();
-        void writeSettingsRel();
+    /**
+     * @brief readSettingsRel
+     * récupère les settings de la dernière utilisation de l'application
+     */
+    void readSettingsRel();
+    /**
+     * @brief writeSettingsRel
+     * Sauvegarde l'état de l'application, au moment de quitter celle ci
+     */
+    void writeSettingsRel();
 
     public slots:
+    /**
+         * @brief slot Creer
+         * cree une nouvelle relation
+         */
         void Creer();
-
+        /**
+         * @brief slot ajouterCouple
+         * ajoute un couple à la relation actuellement affichée en zone centrale
+         */
         void ajouterCouple();
-        /*void Editer(QListWidgetItem* i)
-        {
-            //RelationManager manag = getInstance();
-            RelationManager::getInstance().editerRelation(r);
-        }*/
+        /**
+         * @brief slot Supprimer
+         * Supprime la relation actuellement affichee
+         */
         void Supprimer();
-
+        /**
+         * @brief slot seeRelation
+         * @param i le QListWidgetItem sélectionné
+         * affiche la relation sélectionnée
+         */
         void seeRelation(QListWidgetItem* i);
-
+        /**
+         * @brief slot Editer
+         * Edite la relation actuellement affichée
+         */
         void Editer();
         //void quitter();
 

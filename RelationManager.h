@@ -21,7 +21,9 @@ class RelationManager
     /**
      * @brief constructeur sans argument de RelationManager
      */
-    RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]){}
+    RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]){
+         this->Reference = new Relation("Reference", "Relation speciale reference", true);
+    }
     /**
       @brief destructeur de RelationManager
       détruit l'ensemble des objets Relation, et libère
@@ -35,12 +37,12 @@ class RelationManager
      * @brief constructeur de recopie de RelationManager
      * en privé car on ne veut pas qu'il puisse être utilisé
      */
-    RelationManager(const RelationManager& m);
+    RelationManager(const RelationManager& m){}
     /**
      * @brief operateur d'affectation de RelationManager
      * en privé car on ne veut pas qu'il puisse être utilisé
      */
-    RelationManager& operator=(const RelationManager& m);
+    RelationManager& operator=(const RelationManager& m){}
 
 
 public :

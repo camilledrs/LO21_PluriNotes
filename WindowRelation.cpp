@@ -133,14 +133,22 @@ void WindowRelation::ajouterCouple()
     else
         QMessageBox::critical(this, "Note non existante", "L'id ne correspond à aucune note, ressaisir un nouvel Id");
     if (n2 && n1){
-    QString strl = QInputDialog::getText(this, "Couple miroir", "Quel label voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);
+    QString strl = QInputDialog::getText(this, "label ", "Quel label voulez vous pour le couple ?", QLineEdit::Normal, QString(), &ok);
     if (ok && !strl.isEmpty()){
         const char* c= strl.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
         int l=atoi(c);
         r.addCouple(*n1,*n2,l);
     }
+    if (r.getOrient()==false) //rajouter le couple miroir
+    {
+        QString strl2 = QInputDialog::getText(this, "Couple miroir", "Quel label voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !strl2.isEmpty()){
+            const char* c= strl2.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
+            int l2=atoi(c);
+            r.addCouple(*n1,*n2,l2);
     }
-}
+    }
+}}
 
 
 void WindowRelation::seeRelation(QListWidgetItem* i)

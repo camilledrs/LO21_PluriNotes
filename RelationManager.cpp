@@ -8,7 +8,7 @@ void RelationManager::addRelation(QString& t, QString& d, bool orient)
 {
     //check si on veut ajouter une relation comme reference
 
-    if(t==relations[0]->getTitre())
+    if(t==RelationManager::getInstance().getRef()->getTitre())
         throw RelationException("error, Reference already exist");
     for(unsigned int i=1; i<nbRelations; i++)
     {

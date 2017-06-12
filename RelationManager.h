@@ -21,7 +21,7 @@ class RelationManager
     /**
      * @brief constructeur sans argument de RelationManager
      */
-    RelationManager():nbRelations(0),nbMaxRelations(5),relations(new Relation*[5]){
+    RelationManager():nbRelations(0),nbMaxRelations(0),relations(nullptr){
          this->Reference = new Relation("Reference", "Relation speciale reference", true);
     }
     /**

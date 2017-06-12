@@ -1,198 +1,222 @@
-#include "relation.h"
-#include <ctime>
-#include <QString>
-#include "Relation.h"
-#include "Couple.h"
-#include "NoteManager.h"
-#include <iostream>
-#include <QMessageBox>
+#include "windowrelation.h"
+//#include "mainwindow.h"
 
-
-Relation::Relation(Relation& r):tab(new Couple*[r.max]),nb(r.nb), max(r.max), titre(r.titre), description(r.description), orientee(r.orientee)
+void WindowRelation::readSettingsRel()  //A utiliser dans le constructeur de MainWindow()
 {
-    for(unsigned int i=0; i<nb; i++) tab[i]=r.tab[i];
+    QSettings settings("Equipe2", "Programme Relation");
+
+    settings.beginGroup("WindowRelation");
+    resize(settings.value("size", QSize(400, 400)).toSize());
+    move(settings.value("pos", QPoint(200, 200)).toPoint());
+    settings.endGroup();
 }
 
 
-Relation& Relation::operator=(Relation& r)
+void WindowRelation::writeSettingsRel()  //je dirais à mettre quand on quitte l’application pour sauvegarder
 {
-    if(this!=&r)
-    {
-        nb=r.nb;
-        max=r.max;
-        titre=r.titre;
-        description=r.description;
-        orientee=r.orientee;
-        Couple** newtab=new Couple*[max];
-        for(unsigned int i=0; i<nb; i++) newtab[i]=r.tab[i];
-        delete[] tab;
-        tab=newtab;
-    }
-    return *this;
+    QSettings settings("Equipe2", "Programme Relation");
+
+    settings.beginGroup("WindowRelation");
+    settings.setValue("size", size());
+    settings.setValue("pos", pos());
+    settings.endGroup();
+}
+
+WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWidget(parent)
+    zoneCentraleRel = new QWidget;
+    zoneGaucheRel = new QDockWidget;
+    zoneGaucheRel->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    //zoneGaucheRel->setWidget();
+    addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
+
+    Titre = new QLineEdit;
+    Desc = new QLineEdit;
+    RelationList = new QListWidget(zoneGaucheRel);
+    addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
+
+    QFormLayout *layoutRel = new QFormLayout;
+    layoutRel->addRow("Titre :", Titre);
+    layoutRel->addRow("Description :", Desc);
+    QObject::connect(RelationList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(seeRelation(QListWidgetItem*)));
+    //QObject::connect(boutonAfficherRel,SIGNAL(clicked()),this,SLOT(SeeRelation()));
+
+
+    boutonCreer = new QPushButton("Creer une Relation");
+    boutonEditer = new QPushButton("Editer une Relation");
+    boutonSupprimer = new QPushButton("Supprimer une Relation");
+    boutonEnrichir = new QPushButton("Enrichir une Relation");
+
+    QHBoxLayout *layoutBouttons = new QHBoxLayout;
+    layoutBouttons= new QHBoxLayout;
+    layoutBouttons->addWidget(boutonCreer);
+    QObject::connect(boutonCreer,SIGNAL(clicked()),this,SLOT(Creer())); //mettre des parametres, les récuperer des champs titre et description
+    layoutBouttons->addWidget(boutonEditer);
+    QObject::connect(boutonEditer,SIGNAL(clicked()),this,SLOT(Editer()));
+    layoutBouttons->addWidget(boutonSupprimer);
+    QObject::connect(boutonSupprimer,SIGNAL(clicked()),this,SLOT(Supprimer()));
+    layoutBouttons->addWidget(boutonEnrichir);
+    QObject::connect(boutonEnrichir,SIGNAL(clicked()),this,SLOT(ajouterCouple()));
+    boutonQuitter = new QPushButton("Quitter");
+    //QObject::connect(boutonQuitter,SIGNAL(clicked()),this,SLOT(quitter()));
+
+    layoutPrincipalRel = new QVBoxLayout;
+    layoutPrincipalRel->addLayout(layoutRel);
+    layoutPrincipalRel->addLayout(layoutBouttons);
+    layoutPrincipalRel->addWidget(boutonQuitter);
+
+    //this->setLayout(layoutPrincipalRel);
+
+    zoneCentraleRel->setLayout(layoutPrincipalRel);
+    setCentralWidget(zoneCentraleRel);
+
+    readSettingsRel();
+
 }
 
 
 
-void Relation::addCouple(Note &n1, Note &n2, int l)  //verifier ici qu'on veut la dernière version ?
+
+void WindowRelation::Creer()
 {
-    if(!this->getOrient()) //relation pas orientee, faire 2 couples
+    bool ok1=false;
+    bool ok2=false;
+    bool orient=true;
+    QString titre = QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok1);
+    QString desc = QInputDialog::getText(this, "Titre :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok2);
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Orientation", "La relation est elle orientee ?",QMessageBox::Yes | QMessageBox::No);
+    if(reponse == QMessageBox::No)
+        orient=false;
+    if (ok1 && ok2 && !titre.isEmpty() && !desc.isEmpty())
     {
-        int l2;
-        std::cout<<"quel nouveau label pour le couple miroir ?\n";
-        std::cin>>l2;
-        for(unsigned int i=0; i<nb; i++)
-            if (tab[i]->getLabel()==l2) throw NoteException("error, creation of an already existent note");
-        if (nb==max)
-        {
-            Couple** newtab= new Couple*[max+5];
-            for(unsigned int i=0; i<nb; i++) newtab[i]=this->tab[i];
-            Couple** old=this->tab;
-            this->tab=newtab;
-            max+=5;
-            if (old) delete[] old;
-        }
-        tab[nb++]= new Couple(n2, n1, l2);
+
+        RelationManager::getInstance().addRelation(titre, desc, orient);
+        QMessageBox::information(this, "Confirmation creation", "La nouvelle relation a bien été créée ! ");
     }
-    for(unsigned int i=0; i<nb; i++)
-        if (tab[i]->getLabel()==l) throw NoteException("error, creation of an already existent note");
-    if (nb==max)
-    {
-        Couple** newtab= new Couple*[max+5];
-        for(unsigned int i=0; i<nb; i++) newtab[i]=tab[i];
-        Couple** old=tab;
-        tab=newtab;
-        max+=5;
-        if (old) delete[] old;
-    }
-    //couple[nb++]=c;//attention c'est une compo
-    tab[nb++]= new Couple(n1, n2, l);
-    if (this->getOrient()==false)
-        tab[nb++]= new Couple(n2, n1, l);
+        RelationList->addItem(titre);
 }
 
 
-void Relation::suppCouple(Couple& c)
+
+void WindowRelation::ajouterCouple()
 {
-    unsigned int i=0;
-    while(i<nb && tab[i]->getLabel()!=c.getLabel())
-        i++;
-    if (i==nb)
-        throw NoteException("error, the item doesn't exist");
+    QString titre= Titre->text();
+    RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
+    while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
+    Relation& r=itr.current();
+    bool ok=false;
+    Note* n1;
+    Note* n2;
+    //while(!ok)
+        QString id1 = QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok);
+    NoteManager::Iterator it=NoteManager::getInstance().getIterator();
+    while ((!it.isDone()) && (id1 != it.current().getId())) //parcours les notes
+        it.next();
+    if (!it.isDone())
+    {
+        n1=(&it.current());
+        ok=true;
+    }
     else
+        QMessageBox::critical(this, "Note non existante", "L'id ne correspond à aucune note, ressaisir un nouvel Id");
+    ok=false;
+    //while(!ok)
+        QString id2 = QInputDialog::getText(this, "ID Note2 :", "Entrez l'id de la seconde note à mettre dans le couple", QLineEdit::Normal, QString(), &ok);
+    NoteManager::Iterator itN=NoteManager::getInstance().getIterator();
+    while ((!itN.isDone()) && (id2 != itN.current().getId())) //parcours les notes
+        itN.next();
+    if (!itN.isDone())
     {
-        Note* note1=c.getNote1();
-        Note* note2=c.getNote2();
-        if(this->getOrient() == false) //besoin de supprimer aussi la relation "miroir" (y,x)
-        {
-            unsigned int j=0;
-            while(j<nb && ((tab[j]->getIdNote1() != note2->getId()) || (tab[j]->getIdNote2()!= note1->getId())))
-                j++;
-            int inij=j;
-            if (j==nb)
-                throw NoteException("error, the mirror item doesn't exist\n");
-            else  //on supprime le couple miroir (y,x)
-            {
-                delete tab[j];
-                while(j<nb-1)
-                {
-                    tab[j]=tab[j+1];
-                    j++;
-                }
-                tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
-                nb--;
-                if (i>inij)  //on a décalé du coup, et le i initial doit être décrémenté de 1 si on veut accéder au bon couple
-                {
-                    i--;
-                }
-            }
-        }
-        //maitenant on supprime le couple (x,y)
-        delete tab[i];
-        while(i<nb-1)
-        {
-            tab[i]=tab[i+1];
-            i++;
-        }
-        tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
-        nb--;
-
-        if (note1->getActive() == false)
-        {
-            if(!RelationManager::getInstance().verifNoteRef(note1)) //la note n'est plus en couple nulle part
-            {
-                QMessageBox::StandardButton reponse;
-                reponse=QMessageBox::question(0,"Supprimer de note", "La note est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
-                if(reponse == QMessageBox::Yes)
-                    delete note1;
-                // fait apparaitre une fenêtre de dialogue avec l’utilisateur
-            }
-        }
-        if (note2->getActive() == false)
-        {
-            if(!RelationManager::getInstance().verifNoteRef(note2)) //la note n'est plus en couple nulle part
-            {
-                QMessageBox::StandardButton reponse;
-                reponse=QMessageBox::question(0,"Supprimer de note", "La note note2 est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
-                if(reponse == QMessageBox::Yes)
-                    delete note2;
-                // fait apparaitre une fenêtre de dialogue avec l’utilisateur
-            }
-        }
+        n2=&itN.current();
+        ok=true;
     }
+    else
+        QMessageBox::critical(this, "Note non existante", "L'id ne correspond à aucune note, ressaisir un nouvel Id");
+    if (n2 && n1){
+    QString strl = QInputDialog::getText(this, "label ", "Quel label voulez vous pour le couple ?", QLineEdit::Normal, QString(), &ok);
+    if (ok && !strl.isEmpty()){
+        const char* c= strl.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
+        int l=atoi(c);
+        r.addCouple(*n1,*n2,l);
+    }
+    if (r.getOrient()==false) //rajouter le couple miroir
+    {
+        QString strl2 = QInputDialog::getText(this, "Couple miroir", "Quel label voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !strl2.isEmpty()){
+            const char* c= strl2.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
+            int l2=atoi(c);
+            r.addCouple(*n1,*n2,l2);
+    }
+    }
+}}
+
+
+void WindowRelation::seeRelation(QListWidgetItem* i)
+{
+    RelationManager::Iterator it= RelationManager::getInstance().getIterator();
+    while(!it.isDone() && (it.current().getTitre() != i->text()))
+        it.next();
+    Relation& r=it.current();
+    Titre->setText(r.getTitre());
+    Desc->setText(r.getDesc());
+    RelationList->setCurrentItem(i); //plus facile pour les autres methodes ensuite
+}
+
+void WindowRelation::Supprimer()
+{
+    QString titre= Titre->text();
+    RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
+    while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
+    Relation& r=itr.current();
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la relation ?",QMessageBox::Yes | QMessageBox::No);
+    if(reponse == QMessageBox::Yes)
+       { RelationManager::getInstance().suppRelation(r);
+    delete RelationList->currentItem();
+    Titre->setText("");
+    Desc->setText("");
+    }
+
 }
 
 
-
-void Relation::SeeRelation()
+void WindowRelation::Editer()
 {
-    std::cout<<"titre = "<<titre.toStdString().c_str()<<"\n"<<"description = "<<description.toStdString().c_str()<<"\n"<<"orientation = "<<orientee<<"\n";
-    Relation::const_iterator it=begin();
-    Relation::const_iterator it_end=end();
-    if(it!=it_end)
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
+    QString titre=Titre->text();
+    QString desc=Desc->text();
+    if(reponse == QMessageBox::Yes)
     {
-        do
-        {
-            std::cout<<"label : "<<const_cast<Couple*>(it.elementCourant())->getLabel()<<"\n"<<"note1 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote1().toStdString().c_str()<<"\n"<<"note 2 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote2().toStdString().c_str()<<"\n";
-            it++;
-        } while(it!=it_end);
+        bool ok;
+        titre=QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !titre.isEmpty())
+        Titre->setText(titre);
     }
+    QMessageBox::StandardButton reponse2;
+    reponse2= QMessageBox::question(this,"Modifier Description", "Voulez vous modifier la description ?",QMessageBox::Yes | QMessageBox::No);
+    if(reponse == QMessageBox::Yes)
+    {
+        bool ok;
+        desc = QInputDialog::getText(this, "Description :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !desc.isEmpty())
+        Desc->setText(desc);
+    }
+    QListWidgetItem* i= RelationList->currentItem();
+    RelationManager::Iterator it = RelationManager::getInstance().getIterator();
+    while(it.current().getTitre() != i->text())
+        it.next();
+    Relation& r=it.current();
+    RelationManager::getInstance().editerRelation(&r,titre, desc);
+    i->setText(titre);
+
+
 }
 
-void Relation::editer(QString& t, QString& d)
+/*
+void WindowRelation::quitter()
 {
-    setTitre(t);
-    setDesc(d);
+    writeSettingsRel();
+    close()
 }
-/*void Relation::editer()
-{
-    unsigned int rep;
-    std::string titre, desc;
-    std::cout<<"changer titre ? 1 pour oui\n";
-    std::cin>>rep;
-    if (rep==1)
-    {
-        std::cout<<"donner le titre voulu\n";
-        std::cin>>titre;
-        setTitre(QString::fromStdString(titre));
-    }
-    std::cout<<"changer la description\n";
-    std::cin>>rep;
-    if(rep==1)
-    {
-        std::cout<<"donner la nouvelle description \n";
-        std::cin>>desc;
-        setDesc(QString::fromStdString(desc));
-    }
-}*/
-
-void Relation::save(QFile *f) const{
-    QXmlStreamWriter stream(f);
-    stream.writeTextElement("titre",titre );
-    stream.writeTextElement("description",description );
-    stream.writeTextElement("orientee",QString::number(orientee) );
-    stream.writeTextElement("nbCouple",QString::number(nb) );
-    stream.writeTextElement("nbMaxCouple",QString::number(max));
-    for(unsigned int j=0; j<nb; j++){
-        tab[j]->save(f);
-    }
-};
+*/

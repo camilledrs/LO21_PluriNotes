@@ -61,22 +61,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     ///////////////////////////////////////////////
 
     /*QGroupBox *groupbox = new QGroupBox("Type de note", zoneCentrale);
-
     QRadioButton *article = new QRadioButton("Article");
     //QObject::connect(article,SIGNAL(clicked()),this,SLOT(articleNote()));
     QRadioButton *tache = new QRadioButton("Tache");
     //QObject::connect(tache,SIGNAL(clicked()),this,SLOT(tacheNote()));
     QRadioButton *media = new QRadioButton("Media");
     //QObject::connect(media,SIGNAL(clicked()),this,SLOT(mediaNote()));
-
     //article->setChecked(true);
-
     QVBoxLayout *layoutTypeNote = new QVBoxLayout;
-
     layoutTypeNote->addWidget(article);
     layoutTypeNote->addWidget(tache);
     layoutTypeNote->addWidget(media);
-
     groupbox->setLayout(layoutTypeNote);*/
 
     idNote = new QLineEdit;
@@ -241,31 +236,25 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
 {
     // Recherche de la bonne note avec idNote->text();
     Note* note = NoteManager::getInstance().getNote(idNote->text());
-
     titreNote = new QLineEdit;
     dateCreaNote = new QDateTimeEdit;
     contenuNote = new QTextEdit;
-
     //titreNote->setText(note->getTitre);
     //dateCreaNote->setText(note->getDate());
     //contenuNote->setText(note->getContenu); //à voir
-
 //    QLabel *titre= new QLabel("Note");
     enregistrer = new QPushButton("Enregistrer");
     boutonRestaurer = new QPushButton("Restaurer la note");
     boutonRestaurer->setEnabled(false);
-
     layoutAffich = new QFormLayout;
     layoutAffich->addRow("Titre", titreNote);
     layoutAffich->addRow("Date de création", dateCreaNote);
     layoutAffich->addRow("Contenu", contenuNote);
-
     layoutAffichage = new QVBoxLayout;
 //    layoutAffichage->addWidget(titre);
     layoutAffichage->addLayout(layoutAffich);
     layoutAffichage->addWidget(enregistrer);
     layoutAffichage->addWidget(boutonRestaurer);
-
     layoutPrincipal->addLayout(layoutAffichage);
     if (note->getDerniereVersion().getDate() != dateCreaNote->dateTime())  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
         boutonRestaurer->setEnabled(true);
@@ -377,9 +366,7 @@ void MainWindow::creerNote()
 
 void MainWindow::supprimerNote()
 {
-    //retrouver le QListWidgetItem i correspondant dans NoteListe grace à l'id
-    //mettre l'attribut supprime à true
-    //delete i
+
     QString id= idNote->text();
     NoteManager::Iterator itn=NoteManager::getInstance().getIterator();
     while((!itn.isDone()) && (id!=itn.current().getId())) itn.next();
@@ -387,14 +374,17 @@ void MainWindow::supprimerNote()
     QMessageBox::StandardButton reponse;
     reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la note ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
-       { NoteManager::getInstance().supprimerNote(n);
-    delete NoteList->currentItem();
-    idNote->setText("");
-    titreNote->setText("");
-    dateCreaNote->setDateTime(QDateTime::currentDateTime());
-    contenuNote->setText("");
-    //Dès qu'on aura la liste des notes archivées dans le dock gauche
-    //if(!n.getActive()) NoteListArchive->addWidget("id"); //la note etait referencee, elle est maintenant archivee, on l'ajoute dans la liste des archivees
+       {
+        NoteManager::getInstance().supprimerNote(n);
+        if(n.getActive()==false)
+            QMessageBox::information(this, "Confirmation creation", "");
+        delete NoteList->currentItem();
+        idNote->setText("");
+        titreNote->setText("");
+        dateCreaNote->setDateTime(QDateTime::currentDateTime());
+        contenuNote->setText("");
+        QMessageBox::information(this, "Confirmation creation", "ok");
+        if(!n.getActive()) NoteListArchive->addItem(id); //la note etait referencee, elle est maintenant archivee, on l'ajoute dans la liste des archivees
     }
 }
 

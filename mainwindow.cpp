@@ -136,11 +136,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         NoteList->addItem(it.current().getId());
         it.next();
     }
-
     NoteList->addItems(QStringList()
                         << "Note1"
                         << "Note1");
-
     NoteList->addItem("Note référencée");*/
 
     QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
@@ -266,13 +264,13 @@ void MainWindow::afficherNote(QListWidgetItem* item)
 {
     QString id= item->text();
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
-    QMessageBox::information(this, "OK", "ok");
     while(it.current().getId() != id) it.next(); //on a trouvé la note
     Note& n=it.current();
-    idNote->setTexte(id);
+    idNote->setText(id);
     titreNote->setText(n.getTitre());
     dateCreaNote->setDateTime(n.getDate());
     contenuNote->setText(n.getDerniereVersion().afficher());
+
 }
 
 void MainWindow::creerNote()
@@ -290,7 +288,7 @@ void MainWindow::creerNote()
     cw->show();
     NoteList->addItem(cw->getId());
     //On crée bien un nouvel item mais l'id n'est pas récupéré*/
-    
+
     bool ok1=false;
     bool ok2=false;
     bool ok3=false;
@@ -367,6 +365,22 @@ void MainWindow::supprimerNote()
     //retrouver le QListWidgetItem i correspondant dans NoteListe grace à l'id
     //mettre l'attribut supprime à true
     //delete i
+    QString id= idNote->text();
+    NoteManager::Iterator itn=NoteManager::getInstance().getIterator();
+    while((!itn.isDone()) && (id!=itn.current().getId())) itn.next();
+    Note& n=itn.current();
+    QMessageBox::StandardButton reponse;
+    reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la note ?",QMessageBox::Yes | QMessageBox::No);
+    if(reponse == QMessageBox::Yes)
+       { NoteManager::getInstance().supprimerNote(n);
+    delete NoteList->currentItem();
+    idNote->setText("");
+    titreNote->setText("");
+    dateCreaNote->setDateTime(QDateTime::currentDateTime());
+    contenuNote->setText("");
+    //Dès qu'on aura la liste des notes archivées dans le dock gauche
+    //if(!n.getActive()) NoteListArchive->addWidget("id"); //la note etait referencee, elle est maintenant archivee, on l'ajoute dans la liste des archivees
+    }
 }
 
 void MainWindow::editerNote()
@@ -397,6 +411,19 @@ void MainWindow::restaurerNote()
             delete i;
         }
         */
+
+    /*Copier/coller de ce que j'ai mis comme aide dans le ToDo
+     * Pour trouver un QListWidgetItem dans une liste QListWidget simplement grace à l’id:
+faireNotesListArchive->findItems(“l’id qu’on cherche”, Qt::MatchFlags MatchExactly);
+transformer la liste obtenue en liste de QString :
+QStringList stringList;
+foreach( QListWidgetItem *item, originalFileList->selectedItems() )
+    stringList << item->text();
+ui->selectedList->addItems(stringList);
+chercher l’id dans la liste
+recuperer l’indice
+faire NotesListArchive->item(row)
+ */
 }
 
 void MainWindow::archiverNote()

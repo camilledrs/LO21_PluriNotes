@@ -80,7 +80,7 @@ void RelationManager::save() const {
      stream.writeEndElement();
     }
         stream.writeStartElement("refrence");
-        relations[0]->save(&newfile);
+        RelationManager::getInstance().getRef()->save(&newfile);
         stream.writeEndElement();
 
     stream.writeEndElement();

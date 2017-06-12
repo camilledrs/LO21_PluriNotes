@@ -76,6 +76,7 @@ NoteManager& NoteManager::operator=(const NoteManager& m)
 void NoteManager::supprimerNote(Note& n)
 {
     Relation* reference=RelationManager::getInstance().getRef();
+    if(reference){
     Relation::const_iterator it=reference->begin();
     Relation::const_iterator it_end=reference->end();
     while ((it!=it_end) || (n.getId() != const_cast<Couple*>(it.elementCourant())->getIdNote2()))
@@ -83,7 +84,8 @@ void NoteManager::supprimerNote(Note& n)
     if (it!=it_end)
         n.active=false;
     else
-        n.supprime=true;
+        n.supprime=true;}
+    else n.supprime=true;
 }
 
 
@@ -208,7 +210,6 @@ void NoteManager::load() {
                             xml.readNext(); identificateur=xml.text().toString();
                             qDebug()<<"id="<<identificateur<<"\n";
                         }
-
                         // We've found titre.
                         if(xml.name() == "title") {
                             xml.readNext(); titre=xml.text().toString();
@@ -269,16 +270,13 @@ void NoteManager::load() {
                             xml.readNext();
                             texte=xml.text().toString();
                             qDebug()<<"texte="<<texte<<"\n";
-
                         }
                          }
                              xml.readNext();
                          }
                              qDebug()<<"ajout version "<<dateV<<"\n";
                              editer()
-
                          }
-
                     }
                     // ...and next...
                     xml.readNext();

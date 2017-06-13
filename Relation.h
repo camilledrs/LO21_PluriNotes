@@ -171,8 +171,9 @@ public :
     /**
      * @brief methode SeeRelation
      * permet la visualisation de la relation et de ses couples
+     * @return un Qstring avec les couples de la note
      */
-    void SeeRelation();
+    QString SeeRelation();
     /**
      * @brief methode addCouple
      * le Couple est créé si il n'existe pas encore
@@ -203,7 +204,7 @@ public :
      * @param t Qstring titre
      * @param d QString description
      */
-    Relation(QString t, QString d, bool orient=true):orientee(orient), titre(t), description(d), nb(0), max(5), tab(new Couple*[5]){}
+    Relation(QString t, QString d, bool orient=true):orientee(orient), titre(t), description(d), nb(0), max(0), tab(nullptr){}
     /**
      * @brief sauve les relations dans un fichier xml
      */
@@ -212,3 +213,4 @@ public :
 };
 
 #endif // RELATION_H
+

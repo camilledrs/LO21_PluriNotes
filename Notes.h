@@ -1,5 +1,5 @@
-#ifndef NOTES_H_INCLUDED
-#define NOTES_H_INCLUDED
+#ifndef NOTE_H_INCLUDED
+#define NOTE_H_INCLUDED
 
 #include <ctime>
 #include <QString>

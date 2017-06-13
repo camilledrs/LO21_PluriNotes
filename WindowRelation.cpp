@@ -31,6 +31,7 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
 
     Titre = new QLineEdit;
     Desc = new QLineEdit;
+    contenuRelation= new QTextEdit;
     RelationList = new QListWidget(zoneGaucheRel);
     RelationList->addItem("Reference");
     addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
@@ -38,6 +39,7 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     QFormLayout *layoutRel = new QFormLayout;
     layoutRel->addRow("Titre :", Titre);
     layoutRel->addRow("Description :", Desc);
+    layoutRel->addRow("Couple :", contenuRelation);
     QObject::connect(RelationList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(seeRelation(QListWidgetItem*)));
     //QObject::connect(boutonAfficherRel,SIGNAL(clicked()),this,SLOT(SeeRelation()));
 
@@ -168,6 +170,7 @@ void WindowRelation::seeRelation(QListWidgetItem* i)
         }
     Titre->setText(r->getTitre());
     Desc->setText(r->getDesc());
+    contenuRelation->setText(r->SeeRelation());
     RelationList->setCurrentItem(i); //plus facile pour les autres methodes ensuite
 }
 
@@ -229,3 +232,4 @@ void WindowRelation::quitter()
     close()
 }
 */
+

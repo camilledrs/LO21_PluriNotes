@@ -1,5 +1,5 @@
-#ifndef NOTE_H_INCLUDED
-#define NOTE_H_INCLUDED
+#ifndef NOTES_H_INCLUDED
+#define NOTES_H_INCLUDED
 
 #include <ctime>
 #include <QString>
@@ -103,7 +103,10 @@ class Note
      * en privé pour que l'utilisateur de Note ne puisse pas y avoir accès
      */
     Note(const Note& n);
- 
+    /**
+     * @brief methode qui met l'attribut active à true
+     */
+    void setActive(){active=true;}
 
 public  :
     /**
@@ -138,10 +141,6 @@ public  :
      * @return true si la note est active, false sinon
      */
     bool getActive(){return active;}
-       /**
-     * @brief methode qui met l'attribut active à true
-     */
-    void setActive(){active=true;}
     /**
      * @brief accesseur getStatutSupp
      * @return true si la note est supprimee, false sinon

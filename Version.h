@@ -215,7 +215,6 @@ public :
                 break;
         }
     }
-    Statut getStatutTyp(){return statut;}
     /**
      * @brief accesseur getPriority
      * @return un entier, la priorité de la tache

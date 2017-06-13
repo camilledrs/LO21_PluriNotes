@@ -505,7 +505,7 @@ void MainWindow::editerNote()
 
 void MainWindow::restaurerNote()
 {
-    /*
+
     bool ok;
     QString id = QInputDialog::getText(this, "ID Note a restaurer :", "Entrez l'id de la note à restaurer", QLineEdit::Normal, QString(), &ok);
         NoteManager::Iterator it= NoteManager::getInstance().getIterator();
@@ -521,25 +521,20 @@ void MainWindow::restaurerNote()
         {
             it.current().setActive();
             NoteList->addItem(id);
-            QListWidgetItem* i= NoteListArchive->//trouver moyen de recuperer le QListWidgetItem grace a l'id;
+
+            QList<QListWidgetItem*> temp=NoteListArchive->findItems(id,0);
+            QStringList stringList;
+            foreach( QListWidgetItem *item, temp )
+                stringList << item->text();
+            QListWidget ui;
+            ui.addItems(stringList);
+            unsigned int row=0;
+            while(ui.item(row)->text()!=id) {row++;}
+            QListWidgetItem* i= NoteListArchive->item(row);//trouver moyen de recuperer le QListWidgetItem grace a l'id;
             delete i;
         }
-        */
 
-    /*Copier/coller de ce que j'ai mis comme aide dans le ToDo
-     * Pour trouver un QListWidgetItem dans une liste QListWidget simplement grace à l’id:
-faireNotesListArchive->findItems(“l’id qu’on cherche”, Qt::MatchFlags MatchExactly);
-transformer la liste obtenue en liste de QString :
-QStringList stringList;
-foreach( QListWidgetItem *item, originalFileList->selectedItems() )
-    stringList << item->text();
-ui->selectedList->addItems(stringList);
-chercher l’id dans la liste
-recuperer l’indice
-faire NotesListArchive->item(row)
- */
 }
-
 
 void MainWindow::fenRelation()
 {

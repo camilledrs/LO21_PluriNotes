@@ -77,11 +77,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     idNote = new QLineEdit;
     titreNote = new QLineEdit;
     dateCreaNote = new QDateTimeEdit(QDateTime::currentDateTime());
+    dateModifNote = new QDateTimeEdit(QDateTime::currentDateTime());
     dateCreaNote->setReadOnly(true);
     contenuNote = new QTextEdit;
 
     NoteList = new QListWidget();
-
 
     //Ajout des notes à la liste
 
@@ -107,9 +107,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
 
 
-
-
-
     creer = new QPushButton("Créer");
     QObject::connect(creer,SIGNAL(clicked()),this,SLOT(creerNote()));
     supprimer = new QPushButton("Supprimer");
@@ -130,6 +127,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     layoutAffich->addRow("Id", idNote);
     layoutAffich->addRow("Titre", titreNote);
     layoutAffich->addRow("Date de création", dateCreaNote);
+    layoutAffich->addRow("Date de dernière modification", dateModifNote);
     layoutAffich->addRow("Contenu", contenuNote);
 
     layoutAffichage = new QVBoxLayout;
@@ -275,6 +273,7 @@ void MainWindow::afficherNote(QListWidgetItem* item)
     idNote->setText(id);
     titreNote->setText(n.getTitre());
     dateCreaNote->setDateTime(n.getDate());
+    dateModifNote->setDateTime(n.getDateModif());
     contenuNote->setText(n.getDerniereVersion().afficher());
 
 }
@@ -327,7 +326,9 @@ void MainWindow::creerNote()
         bool ok6=false;
         bool ok7=false;
         QString action = QInputDialog::getText(this, "Action :", "Quelle est l'action de la tache ?", QLineEdit::Normal, QString(), &ok5);
+
         //QString dateFin = QInputDialog::getText(this, "Date de fin :", "Quelle est la date de fin de la tache (optionnelle) ?", QLineEdit::Normal, QString(), &ok6);
+
         QString priorite = QInputDialog::getText(this, "Priorité :", "Quelle est la priorité de la tache ? (optionnelle)", QLineEdit::Normal, QString(), &ok7);
 
         int p=priorite.toInt();
@@ -356,7 +357,7 @@ void MainWindow::creerNote()
         QString description = QInputDialog::getText(this, "Description :", "Quelle description voulez-vous ?", QLineEdit::Normal, QString(), &ok9);
         QString fichier = QInputDialog::getText(this, "Fichier :", "Quel fichier voulez-vous ? (optionnelle)", QLineEdit::Normal, QString(), &ok10);
 
-        if (ok1 && ok2 && ok3 && ok8 && ok9 && ok10 && !id.isEmpty() && !titre.isEmpty() && !description.isEmpty() && !fichier.isEmpty())
+        if (ok1 && ok2 && ok3 && ok8 && ok9 && ok10 && !id.isEmpty() && !titre.isEmpty() && !description.isEmpty())
         {
             if (typeM == "Image")
                 NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,image));
@@ -374,7 +375,6 @@ void MainWindow::creerNote()
 
 void MainWindow::supprimerNote()
 {
-
     QString id= idNote->text();
     NoteManager::Iterator itn=NoteManager::getInstance().getIterator();
     while((!itn.isDone()) && (id!=itn.current().getId())) itn.next();
@@ -387,7 +387,8 @@ void MainWindow::supprimerNote()
         if(n.getActive()==false)
             QMessageBox::information(this, "Confirmation creation", "");
         delete NoteList->currentItem();
-        if (n.getDerniereVersion().notetype()=="tache") delete TacheList->currentItem();
+        if (n.getDerniereVersion().notetype()=="tache")
+            delete TacheList->currentItem();
         idNote->setText("");
         titreNote->setText("");
         dateCreaNote->setDateTime(QDateTime::currentDateTime());

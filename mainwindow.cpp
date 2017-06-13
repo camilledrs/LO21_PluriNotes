@@ -325,16 +325,22 @@ void MainWindow::creerNote()
         bool ok5=false;
         bool ok6=false;
         bool ok7=false;
+
         QString action = QInputDialog::getText(this, "Action :", "Quelle est l'action de la tache ?", QLineEdit::Normal, QString(), &ok5);
 
-        //QString dateFin = QInputDialog::getText(this, "Date de fin :", "Quelle est la date de fin de la tache (optionnelle) ?", QLineEdit::Normal, QString(), &ok6);
+        int anneeFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Annee:"), 2000, 2000, 3000, 1, &ok6);
+        int moisFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Mois:"), 01, 01, 12, 1, &ok6);
+        int jourFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Jour:"), 01, 01, 31, 1, &ok6);
+        int heureFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Heure:"), 01, 01, 24, 1, &ok6);
+        int minuteFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Minute:"), 00, 01, 59, 1, &ok6);
 
         QString priorite = QInputDialog::getText(this, "Priorité :", "Quelle est la priorité de la tache ? (optionnelle)", QLineEdit::Normal, QString(), &ok7);
 
         int p=priorite.toInt();
         if (ok1 && ok2 && ok3 && ok5 && /*ok6 &&*/ ok7 && !id.isEmpty() && !titre.isEmpty() && !action.isEmpty())
         {
-            NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action,QDateTime::currentDateTime()/*dateFin*/,p));
+
+            NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action,QDateTime(QDate(anneeFin,moisFin,jourFin),QTime(heureFin,minuteFin)),p));
             QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
             NoteList->addItem(id);
             NoteList->sortItems(Qt::AscendingOrder);
@@ -411,7 +417,7 @@ void MainWindow::editerNote()
          it.next();
      Note& n=it.current();
     //voir comment j'ai fait pour editerRelation
-    QMessageBox::StandardButton reponse;
+    QMessageBox::StandardButton reponse = QMessageBox::No;
     reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
     QString titre=titreNote->text();
     if(reponse == QMessageBox::Yes)
@@ -419,13 +425,13 @@ void MainWindow::editerNote()
         bool ok;
         titre=QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);
         if (ok && !titre.isEmpty())
-        n.setTitre(titre);
+            n.setTitre(titre);
     }
+    QMessageBox::StandardButton reponse2 = QMessageBox::No;
 
     QString t=n.getDerniereVersion().notetype();
     if(t=="article"){
         QString texteArticle;
-        QMessageBox::StandardButton reponse2;
         reponse2= QMessageBox::question(this,"Modifier Texte Article", "Voulez vous modifier le texte de l'article ?",QMessageBox::Yes | QMessageBox::No);
         if(reponse2 == QMessageBox::Yes)
         {
@@ -443,12 +449,10 @@ void MainWindow::editerNote()
         QDateTime dateTache;
         unsigned int priorityTache;
         QString statutTache;
-        QMessageBox::StandardButton reponse2;
         reponse2= QMessageBox::question(this,"Modifier Contenu  Tache", "Voulez vous modifier le contenu de la tache  ?",QMessageBox::Yes | QMessageBox::No);
         bool ok2;
         bool ok3;
         bool ok4;
-        bool ok5;
         QStringList items;
         items << tr("En Attente") << tr("En cours") << tr("Terminee");
         if(reponse2 == QMessageBox::Yes)
@@ -477,7 +481,6 @@ void MainWindow::editerNote()
         bool ok8;
         QStringList items;
         items << tr("Image") << tr("Vidéo") << tr("Audio");
-        QMessageBox::StandardButton reponse2;
         reponse2= QMessageBox::question(this,"Modifier Contenu Media", "Voulez vous modifier le contenu du Multimedia  ?",QMessageBox::Yes | QMessageBox::No);
         if(reponse2 == QMessageBox::Yes)
         {
@@ -494,15 +497,15 @@ void MainWindow::editerNote()
 
         }
     }
-
-
-
+    if(reponse == QMessageBox::Yes || reponse2 == QMessageBox::Yes)
+        n.setDateModif(QDateTime::currentDateTime());
 }
+
 
 
 void MainWindow::restaurerNote()
 {
-
+    /*
     bool ok;
     QString id = QInputDialog::getText(this, "ID Note a restaurer :", "Entrez l'id de la note à restaurer", QLineEdit::Normal, QString(), &ok);
         NoteManager::Iterator it= NoteManager::getInstance().getIterator();
@@ -518,19 +521,23 @@ void MainWindow::restaurerNote()
         {
             it.current().setActive();
             NoteList->addItem(id);
-
-            QList<QListWidgetItem*> temp=NoteListArchive->findItems(id,0);
-            QStringList stringList;
-            foreach( QListWidgetItem *item, temp )
-                stringList << item->text();
-            QListWidget ui;
-            ui.addItems(stringList);
-            unsigned int row=0;
-            while(ui.item(row)->text()!=id) {row++;}
-            QListWidgetItem* i= NoteListArchive->item(row);//trouver moyen de recuperer le QListWidgetItem grace a l'id;
+            QListWidgetItem* i= NoteListArchive->//trouver moyen de recuperer le QListWidgetItem grace a l'id;
             delete i;
         }
+        */
 
+    /*Copier/coller de ce que j'ai mis comme aide dans le ToDo
+     * Pour trouver un QListWidgetItem dans une liste QListWidget simplement grace à l’id:
+faireNotesListArchive->findItems(“l’id qu’on cherche”, Qt::MatchFlags MatchExactly);
+transformer la liste obtenue en liste de QString :
+QStringList stringList;
+foreach( QListWidgetItem *item, originalFileList->selectedItems() )
+    stringList << item->text();
+ui->selectedList->addItems(stringList);
+chercher l’id dans la liste
+recuperer l’indice
+faire NotesListArchive->item(row)
+ */
 }
 
 

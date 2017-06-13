@@ -141,6 +141,10 @@ public  :
     /**
      * @brief methode qui met l'attribut active à true
      */
+    void setDateModif(QDateTime d){dateModif=d;}
+    /**
+     * @brief methode qui met l'attribut active à true
+     */
     void setActive(){active=true;}
     /**
      * @brief accesseur getStatutSupp

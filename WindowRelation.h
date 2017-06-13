@@ -33,6 +33,7 @@ class WindowRelation : public QMainWindow //public QTabWidget
     QLineEdit *Titre;
     QLineEdit *Desc;
     QListWidget *RelationList;
+    QTextEdit *contenuRelation;
 
     QPushButton* boutonCreer;
     QPushButton* boutonEditer;
@@ -100,3 +101,4 @@ class WindowRelation : public QMainWindow //public QTabWidget
 
 
 #endif
+

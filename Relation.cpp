@@ -126,19 +126,23 @@ void Relation::suppCouple(Couple& c)
 
 
 
-void Relation::SeeRelation()
+QString Relation::SeeRelation()
 {
-    std::cout<<"titre = "<<titre.toStdString().c_str()<<"\n"<<"description = "<<description.toStdString().c_str()<<"\n"<<"orientation = "<<orientee<<"\n";
+    std::stringstream s;
+    s<<"Orientation : "<<orientee<<"\n";
+    s<<"Couples :";
     Relation::const_iterator it=begin();
     Relation::const_iterator it_end=end();
     if(it!=it_end)
     {
         do
         {
-            std::cout<<"label : "<<const_cast<Couple*>(it.elementCourant())->getLabel()<<"\n"<<"note1 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote1().toStdString().c_str()<<"\n"<<"note 2 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote2().toStdString().c_str()<<"\n";
+            s<<"label : "<<const_cast<Couple*>(it.elementCourant())->getLabel()<<"  "<<"note1 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote1().toStdString().c_str()<<"  "<<"note 2 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote2().toStdString().c_str()<<"\n";
             it++;
         } while(it!=it_end);
     }
+
+    return (QString::fromStdString(s.str()));
 }
 
 void Relation::editer(QString& t, QString& d)

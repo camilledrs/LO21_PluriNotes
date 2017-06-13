@@ -453,6 +453,7 @@ void MainWindow::editerNote()
         bool ok2;
         bool ok3;
         bool ok4;
+        bool ok6;
         QStringList items;
         items << tr("En Attente") << tr("En cours") << tr("Terminee");
         if(reponse2 == QMessageBox::Yes)
@@ -460,10 +461,15 @@ void MainWindow::editerNote()
             actionTache = QInputDialog::getText(this, "Action :", "Quelle action voulez vous ?", QLineEdit::Normal, QString(), &ok2);
             QString priority = QInputDialog::getText(this, "Priorité :", "Quelle est la nouvelle priorité de la tache ? (optionnelle)", QLineEdit::Normal, QString(), &ok3);
             priorityTache=priority.toInt();
+            int anneeFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Annee:"), 2000, 2000, 3000, 1, &ok6);
+            int moisFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Mois:"), 01, 01, 12, 1, &ok6);
+            int jourFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Jour:"), 01, 01, 31, 1, &ok6);
+            int heureFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Heure:"), 01, 01, 24, 1, &ok6);
+            int minuteFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Minute:"), 00, 01, 59, 1, &ok6);
             statutTache = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Statut de la tache:"), items, 0, false, &ok4);
 
             if (ok2 && ok3 && ok4 && !actionTache.isEmpty() && !statutTache.isEmpty()){
-                Tache ta(QDateTime::currentDateTime(),actionTache,QDateTime::currentDateTime(),priorityTache);
+                Tache ta(QDateTime::currentDateTime(),actionTache,QDateTime(QDate(anneeFin,moisFin,jourFin),QTime(heureFin,minuteFin)),priorityTache);
                 if(statutTache=="En Attente") ta.setStatut(Statut::EnAttente);
                 else if(statutTache=="En cours") ta.setStatut(Statut::EnCours);
                 else if (statutTache=="Terminee") ta.setStatut(Statut::Terminee);

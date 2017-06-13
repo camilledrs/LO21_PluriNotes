@@ -40,6 +40,7 @@ class MainWindow : public QMainWindow
     QLineEdit *idNote;
     QLineEdit *titreNote;
     QDateTimeEdit *dateCreaNote;
+    QDateTimeEdit *dateModifNote;
     QTextEdit *contenuNote;
 
     QLabel *NoteList_l;

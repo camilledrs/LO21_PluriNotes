@@ -208,7 +208,11 @@ public  :
      * @return le dernier element du tableau, qui est la version active
      */
     Version& getDerniereVersion(){if(nbVersion !=0) return *versions[nbVersion -1];} //prendre le dernier élément du tableau si on considère que l'on ajoute tjrs à la fin du tableau
-
+    /**
+    * @brief methode setDateModif
+    * @param d la nouvelle date de modif
+    */
+    void setDateModif(QDateTime d){dateModif = d;}
 };
 
 #endif // NOTE_H

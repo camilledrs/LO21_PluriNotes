@@ -197,9 +197,12 @@ void WindowRelation::Supprimer()
 
 void WindowRelation::Editer()
 {
+    QString titre=Titre->text();
+    if(titre == RelationManager::getInstance().getRef()->getTitre())
+        QMessageBox::warning(this, "Erreur modification", "La relation Reference ne peut être modifiée !");
+    else {
     QMessageBox::StandardButton reponse;
     reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
-    QString titre=Titre->text();
     QString desc=Desc->text();
     if(reponse == QMessageBox::Yes)
     {
@@ -224,7 +227,7 @@ void WindowRelation::Editer()
     Relation& r=it.current();
     RelationManager::getInstance().editerRelation(&r,titre, desc);
     i->setText(titre);
-
+}
 
 }
 

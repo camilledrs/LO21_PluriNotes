@@ -21,6 +21,7 @@
 #include <QGroupBox>
 #include <QRadioButton>
 #include <QComboBox>
+#include <QFileDialog>
 #include "notemanager.h"
 #include "windowrelation.h"
 #include "note.h"

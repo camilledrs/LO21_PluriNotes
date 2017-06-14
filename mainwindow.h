@@ -136,9 +136,14 @@ public slots:
     void quitter();
     /**
      * @brief slot afficherNote
-     * affiche la vesrion sélectionnée
+     * affiche la vesrion sélectionnée depuis les liste à gauche
      */
     void afficherNote(QListWidgetItem* item);
+    /**
+     * @brief slot afficherNote
+     * affiche la vesrion sélectionnée depuis l'arborescence
+     */
+    void afficherNote(QTreeWidgetItem* item);
     /**
      * @brief slot creerNote
      * cree une nouvelle note

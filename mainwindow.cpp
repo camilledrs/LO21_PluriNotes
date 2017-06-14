@@ -26,12 +26,12 @@ void MainWindow::writeSettings()  //je dirais à mettre quand on quitte l’appl
 
 
 //Pour l'affichage il y a , dans le dock gauche, 3 parties différentes avec chacune une QLIstWidget
-// 1) NoteList  
-// 2) TacheList 
+// 1) NoteList
+// 2) TacheList
 // 3) NoteListArchive
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    //Menu 
+    //Menu
     QMenu *menuFichier = menuBar()->addMenu(tr("&Fichier"));
     QAction *nouvelleFen = new QAction("&Nouvelle Fenêtre", this);
     menuFichier->addAction(nouvelleFen);
@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     menuFichier->addAction(actionRelation);
     QAction *actionCorbeille= new QAction("&Vider Corbeille", this);
     menuFichier->addAction(actionCorbeille);
-    
+
     //connexion menu
     connect(actionQuitter, SIGNAL(triggered()), this, SLOT(quitter()));
     connect(actionRelation, SIGNAL(triggered()), this, SLOT(fenRelation()));
@@ -51,19 +51,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     //zone centrale
     zoneCentrale = new QWidget;
 
-    //premiere partie de la zonne gauche 
+    //premiere partie de la zonne gauche
     zoneGauche = new QDockWidget(tr("Notes actives"), this);
     zoneGauche->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
     //premiere partie de la zone droite
     zoneDroite = new QDockWidget(tr("Arborescence fils"), this);
     zoneDroite->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    
+
 
 
     ///////////////////////////////////////////////
 
-    
+
     //champs de la zone centrale on ne peut pas les editer, ils serviront a l'affichage de note
     idNote = new QLineEdit;
     titreNote = new QLineEdit;
@@ -99,13 +99,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     zoneGauche->setWidget(NoteListArchive);
     addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
-    
+
     //Arborescence
     NoteAbrFils= new QTreeWidget();
     NoteAbrFils->headerItem()->setText(0, "Arbre des fils");
     NoteAbrPeres= new QTreeWidget();
     NoteAbrPeres->headerItem()->setText(0, "Arbre des peres");
-    
+
     //Partie pour l'arborescence des fils
     zoneDroite->setWidget(NoteAbrFils);
     addDockWidget(Qt::RightDockWidgetArea, zoneDroite);
@@ -158,18 +158,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 
 
-//Connexions sur la liste 
-  QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
+//Connexions sur la liste
+    QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
     QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
-     QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
+    QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
     QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
     QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
-     QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
+    QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
     QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
     QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
     QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
-    
-      QObject::connect(NoteAbrFils,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(afficherNote(QTreeWidgetItem*)));
+
+    QObject::connect(NoteAbrFils,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(afficherNote(QTreeWidgetItem*)));
     QObject::connect(NoteAbrPeres,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(afficherNote(QTreeWidgetItem*)));
 
     zoneCentrale->setLayout(layoutPrincipal);
@@ -177,7 +177,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     setCentralWidget(zoneCentrale);
     ////////////////////////////////////////////////
 
-    
+
 
     ///////PARAMETRAGE///////////////////////
     readSettings();
@@ -205,7 +205,7 @@ void MainWindow::quitter() //demande à l'utilisateur si il veut vider la corbei
     reponse= QMessageBox::question(this,"Vidage corbeille", "Voulez vous vider la corbeille avant de quitter ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
         NoteManager::getInstance().viderCorbeille();
-     NoteManager::getInstance().save();
+    NoteManager::getInstance().save();
     RelationManager::getInstance().save();
     writeSettings();
     QApplication::quit();
@@ -249,6 +249,8 @@ void MainWindow::afficherNote(QListWidgetItem* item)
     dateCreaNote->setDateTime(n.getDate());
     dateModifNote->setDateTime(n.getDateModif());
     contenuNote->setText(n.getDerniereVersion().afficher());
+    if (!n.getActive())
+        editer->setEnabled(false);
 }
 
 void MainWindow::afficherNote(QString id)
@@ -261,6 +263,8 @@ void MainWindow::afficherNote(QString id)
     dateCreaNote->setDateTime(n.getDate());
     dateModifNote->setDateTime(n.getDateModif());
     contenuNote->setText(n.getDerniereVersion().afficher());
+    if (!n.getActive())
+        editer->setEnabled(false);
 }
 
 void MainWindow::afficherNote(QTreeWidgetItem* item)
@@ -274,10 +278,13 @@ void MainWindow::afficherNote(QTreeWidgetItem* item)
     dateCreaNote->setDateTime(n.getDate());
     dateModifNote->setDateTime(n.getDateModif());
     contenuNote->setText(n.getDerniereVersion().afficher());
+    if (!n.getActive())
+        editer->setEnabled(false);
 }
 
 void MainWindow::arborescencefils(QListWidgetItem *item)
-{   NoteAbrFils->clear();
+{
+    NoteAbrFils->clear();
     QString id= item->text();
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
     while(it.current().getId() != id) it.next(); //on a trouvé la note
@@ -290,7 +297,8 @@ void MainWindow::arborescencefils(QListWidgetItem *item)
     NoteAbrFils->expandAll();
 }
 void MainWindow::arborescencePeres(QListWidgetItem *item)
-{   NoteAbrPeres->clear();
+{
+    NoteAbrPeres->clear();
     QString id= item->text();
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
     while(it.current().getId() != id) it.next(); //on a trouvé la note
@@ -400,15 +408,16 @@ void MainWindow::supprimerNote()
 {
     QString id= idNote->text();
     NoteManager::Iterator itn=NoteManager::getInstance().getIterator();
-    while((!itn.isDone()) && (id!=itn.current().getId())) itn.next();
+    while((!itn.isDone()) && (id!=itn.current().getId()))
+        itn.next();
     Note& n=itn.current();
     QMessageBox::StandardButton reponse;
     reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la note ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
        {
         NoteManager::getInstance().supprimerNote(n);
-        if(n.getActive()==false)
-            QMessageBox::information(this, "Confirmation creation", "");
+        if(n.getStatutSupp()==true)
+            QMessageBox::information(this, "Confirmation supression", "La note a bien été supprimée");
         delete NoteList->currentItem();
         if (n.getDerniereVersion().notetype()=="tache")
             delete TacheList->currentItem();
@@ -416,9 +425,10 @@ void MainWindow::supprimerNote()
         titreNote->setText("");
         dateCreaNote->setDateTime(QDateTime::currentDateTime());
         contenuNote->setText("");
-        QMessageBox::information(this, "Confirmation creation", "ok");
-        if(!n.getActive())
+        //QMessageBox::information(this, "Confirmation supression", "ok");
+        if(!n.getActive() && !n.getStatutSupp())
         {
+            QMessageBox::information(this, "Confirmation supression", "Note encore référencée, archivage de la note");
             NoteListArchive->addItem(id); //la note etait referencee, elle est maintenant archivee, on l'ajoute dans la liste des archivees
             NoteListArchive->sortItems(Qt::AscendingOrder);
         }
@@ -443,6 +453,8 @@ void MainWindow::editerNote()
         titre=QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);
         if (ok && !titre.isEmpty())
             n.setTitre(titre);
+        else
+            QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
     }
     QMessageBox::StandardButton reponse2 = QMessageBox::No;
 
@@ -454,12 +466,14 @@ void MainWindow::editerNote()
         {
             bool ok1;
             texteArticle = QInputDialog::getText(this, "Texte :", "Quel texte voulez vous ?", QLineEdit::Normal, QString(), &ok1);
-            if (ok1 && !texteArticle.isEmpty()){
-            Article a(QDateTime::currentDateTime(),texteArticle);
-            NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),a);}
-
+            if (ok1 && !texteArticle.isEmpty())
+            {
+                Article a(QDateTime::currentDateTime(),texteArticle);
+                NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),a);
+            }
+            else
+                QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
         }
-
     }
     if(t=="tache"){
         QString actionTache;
@@ -485,17 +499,20 @@ void MainWindow::editerNote()
             int minuteFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Minute:"), 00, 01, 59, 1, &ok6);
             statutTache = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Statut de la tache:"), items, 0, false, &ok4);
 
-            if (ok2 && ok3 && ok4 && !actionTache.isEmpty() && !statutTache.isEmpty()){
+            if (ok2 && ok3 && ok4 && !actionTache.isEmpty() && !statutTache.isEmpty())
+            {
                 Tache ta(QDateTime::currentDateTime(),actionTache,QDateTime(QDate(anneeFin,moisFin,jourFin),QTime(heureFin,minuteFin)),priorityTache);
                 if(statutTache=="En Attente") ta.setStatut(Statut::EnAttente);
                 else if(statutTache=="En cours") ta.setStatut(Statut::EnCours);
                 else if (statutTache=="Terminee") ta.setStatut(Statut::Terminee);
-            NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),ta);}
-
+                NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),ta);
+            }
+            else
+                QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
         }
-
     }
-    if(t=="multimedia"){
+    if(t=="multimedia")
+    {
         QString descriptionM;
         QString fichierM;
         QString typeM;
@@ -511,13 +528,14 @@ void MainWindow::editerNote()
             fichierM = QInputDialog::getText(this, "nom fichier :", "Quelle est la nom du fichier associe ? ", QLineEdit::Normal, QString(), &ok7);
             typeM = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Statut de la tache:"), items, 0, false, &ok8);
 
-            if (ok6 && ok7 && ok8 && !descriptionM.isEmpty() && !fichierM.isEmpty() && !typeM.isEmpty()){
-
+            if (ok6 && ok7 && ok8 && !descriptionM.isEmpty() && !fichierM.isEmpty() && !typeM.isEmpty())
+            {
                 if(typeM=="Image") NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),descriptionM,fichierM,image));
                 if(typeM=="Vidéo") NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),descriptionM,fichierM,video));
                 if(typeM=="Audio") NoteManager::getInstance().editer(&n,titre,QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),descriptionM,fichierM,audio));
             }
-
+            else
+                QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
         }
     }
     if(reponse == QMessageBox::Yes || reponse2 == QMessageBox::Yes)
@@ -528,7 +546,6 @@ void MainWindow::editerNote()
 
 void MainWindow::restaurerNote()
 {
-
     bool ok;
     QString id = QInputDialog::getText(this, "ID Note a restaurer :", "Entrez l'id de la note à restaurer", QLineEdit::Normal, QString(), &ok);
         NoteManager::Iterator it= NoteManager::getInstance().getIterator();

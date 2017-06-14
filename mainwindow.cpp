@@ -305,8 +305,6 @@ void MainWindow::arborescencePeres(QListWidgetItem *item)
 
 void MainWindow::creerNote()
 {
- 
-
     bool ok1=false;
     bool ok2=false;
     bool ok3=false;
@@ -390,7 +388,11 @@ void MainWindow::creerNote()
             NoteList->sortItems(Qt::AscendingOrder);
             afficherNote(id);
         }
+        else
+            QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
     }
+    else
+        QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
 }
 
 
@@ -420,11 +422,7 @@ void MainWindow::supprimerNote()
             NoteListArchive->addItem(id); //la note etait referencee, elle est maintenant archivee, on l'ajoute dans la liste des archivees
             NoteListArchive->sortItems(Qt::AscendingOrder);
         }
-        else
-            QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
     }
-    else
-        QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
 }
 
 

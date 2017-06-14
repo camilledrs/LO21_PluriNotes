@@ -67,6 +67,7 @@ void Note::verifRef( const QString s)
     }
 }
 
+
 Note** Note::sucesseurs( unsigned int* nb)
 {
     Note** succ=new Note*[NoteManager::getInstance().getNbNotes()];
@@ -87,6 +88,16 @@ Note** Note::sucesseurs( unsigned int* nb)
             itr++;
         }
         it.next();  //sinon on passe à la prochaine relation
+    }
+    Relation::const_iterator it2=RelationManager::getInstance().getRef()->begin();
+    Relation::const_iterator itend=RelationManager::getInstance().getRef()->end();
+    while (it2!=itend)
+    {
+        if(it2.elementCourant()->getIdNote1()==this->getId())
+        {succ[i]=const_cast<Couple*>(it2.elementCourant())->getNote2();
+            i++;
+        }
+        it2++;
     }
     *nb=i;
     return succ;
@@ -113,8 +124,42 @@ Note** Note::predecesseurs( unsigned int* nb)
         }
         it.next();  //sinon on passe à la prochaine relation
     }
+    Relation::const_iterator it2=RelationManager::getInstance().getRef()->begin();
+    Relation::const_iterator itend=RelationManager::getInstance().getRef()->end();
+    while (it2!=itend)
+    {
+        if(it2.elementCourant()->getIdNote2()==this->getId())
+        {pred[i]=const_cast<Couple*>(it2.elementCourant())->getNote1();
+            i++;
+        }
+        it2++;
+    }
+
     *nb=i;
     return pred;
+}
+
+void Note::enfant(QTreeWidgetItem* parent,QTreeWidget* abr){
+
+        unsigned int nbSucc=0;
+        Note ** succ=sucesseurs(&nbSucc);
+        for(unsigned int i=0;i<nbSucc;i++){
+            QTreeWidgetItem* succ_item = new QTreeWidgetItem(parent,QTreeWidgetItem::Type);
+            succ_item->setText(0, succ[i]->getId());
+            succ[i]->enfant(succ_item,abr);
+        }
+
+}
+void Note::parent( QTreeWidgetItem* enfant){
+
+    unsigned int nbPred=0;
+    Note ** pred=predecesseurs(&nbPred);
+    for(unsigned int i=0;i<nbPred;i++){
+        QTreeWidgetItem* succ_item = new QTreeWidgetItem(enfant,QTreeWidgetItem::Type);
+        succ_item->setText(0, pred[i]->getId());
+        pred[i]->parent(succ_item);
+    }
+
 }
 
 

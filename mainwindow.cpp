@@ -115,6 +115,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QObject::connect(editer,SIGNAL(clicked()),this,SLOT(editerNote()));
     restaurer = new QPushButton("Restaurer");
     QObject::connect(restaurer,SIGNAL(clicked()),this,SLOT(restaurerNote()));
+    restaurerVersion = new QPushButton("Restaurer Version");
+    QObject::connect(restaurerVersion,SIGNAL(clicked()),this,SLOT(RestaurerV()));
 
 
     QHBoxLayout* layoutBouton = new QHBoxLayout;
@@ -122,6 +124,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     layoutBouton->addWidget(supprimer);
     layoutBouton->addWidget(editer);
     layoutBouton->addWidget(restaurer);
+    layoutBouton->addWidget(restaurerVersion);
 
     layoutAffich = new QFormLayout;
     layoutAffich->addRow("Id", idNote);
@@ -225,11 +228,27 @@ void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbe
 
 
 
-//void MainWindow::RestaurerV()
-//{
-  //  Note::restaurer(/*chercher la version en question*/);
-   // boutonRestaurer->setEnabled(False);
-//}
+void MainWindow::RestaurerV()
+{
+    QStringList items;
+    QString id= idNote->text();
+    NoteManager::Iterator it = NoteManager::getInstance().getIterator();
+    while(!it.isDone() && it.current().getId()!=id) it.next();
+    if(!it.isDone())
+    {
+        unsigned int i=0;
+        while(i<it.current().getNbVersion()){
+            items << tr(it.current().getElement(i).getDate().toString("dd.MM.yyyy hh:mm:ss").toStdString().c_str());
+            i++;}
+        bool ok;
+        QString date = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Date de modification:"), items, 0, false,&ok);
+        if(ok){
+        unsigned int i=0;
+        while(i<it.current().getNbVersion() && it.current().getElement(i).getDate().toString("dd.MM.yyyy hh:mm:ss")!=date) i++;
+        it.current().restaurer(&it.current().getElement(i));
+        }
+    }
+}
 
 
 

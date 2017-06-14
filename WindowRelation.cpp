@@ -177,6 +177,9 @@ void WindowRelation::seeRelation(QListWidgetItem* i)
 void WindowRelation::Supprimer()
 {
     QString titre= Titre->text();
+    if (titre==RelationManager::getInstance().getRef()->getTitre())
+        QMessageBox::warning(this, "Erreur suppression", "La relation Reference ne peut être supprimée !");
+    else {
     RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
     while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
     Relation& r=itr.current();
@@ -188,7 +191,7 @@ void WindowRelation::Supprimer()
     Titre->setText("");
     Desc->setText("");
     }
-
+}
 }
 
 

@@ -213,6 +213,11 @@ public  :
     * @param d la nouvelle date de modif
     */
     void setDateModif(QDateTime d){dateModif = d;}
+        /**
+    * @brief methode getElement
+    * @param i le ième élément du tableau de version
+    */
+    Version& getElement(int i){if (i<nbVersion) return *versions[i];}
 };
 
 #endif // NOTE_H

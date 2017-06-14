@@ -77,17 +77,64 @@ void NoteManager::supprimerNote(Note& n)
 {
     //on ne fait appel ici qu'a des notes actives (dans le sens non archivées ou supprimées)
     Relation* reference=RelationManager::getInstance().getRef();
-    if(reference->getnb()!=0){
-    Relation::const_iterator it=reference->begin();
-    Relation::const_iterator it_end=reference->end();
-    while ((it!=it_end) && (n.getId() != (it.elementCourant()->getIdNote2())))
-        it++;
-    if (it!=it_end)  //note dans la relation reference
-        n.ChangeActive();
+    if(reference->getnb()!=0)
+    {
+        Relation::const_iterator it=reference->begin();
+        Relation::const_iterator it_end=reference->end();
+        while ((it!=it_end) && (n.getId() != (it.elementCourant()->getIdNote2())))
+            it++;
+        if (it!=it_end)  //note dans la relation reference
+            n.ChangeActive();
+        else
+        {
+            Relation::iterator it=reference->ibegin();
+            Relation::iterator it_end=reference->iend();
+            for(it;it!=it_end;it++)
+            //while ((it!=it_end) && (n.getId() != (it.elementCourant()->getIdNote1())))
+                //it++;
+                if (n.getId() == it.elementCourant()->getIdNote1())  //note fait référence à une note
+                    reference->suppCouple(*it.elementCourant());
+            RelationManager::Iterator itRelationManager = RelationManager::getInstance().getIterator();
+            for(itRelationManager;!itRelationManager.isDone();itRelationManager.next())
+            {
+                Relation::iterator itRelation=reference->ibegin();
+                Relation::iterator itRelation_end=reference->iend();
+                for(itRelation;itRelation!=itRelation_end;itRelation++)
+                {
+                    if (n.getId() == itRelation.elementCourant()->getIdNote1())  //note à une relation avec une autre note
+                        itRelationManager.current().suppCouple(*itRelation.elementCourant());
+                    if (n.getId() == itRelation.elementCourant()->getIdNote2())  //note à une relation avec une note
+                        itRelationManager.current().suppCouple(*it.elementCourant());
+                }
+            }
+            n.changeSupp();
+        }
+    }
     else
+    {
+        Relation::iterator it=reference->ibegin();
+        Relation::iterator it_end=reference->iend();
+        for(it;it!=it_end;it++)
+        //while ((it!=it_end) && (n.getId() != (it.elementCourant()->getIdNote1())))
+            //it++;
+            if (n.getId() == it.elementCourant()->getIdNote1())  //note fait référence à une note
+                reference->suppCouple(*it.elementCourant());
+        RelationManager::Iterator itRelationManager = RelationManager::getInstance().getIterator();
+        for(itRelationManager;!itRelationManager.isDone();itRelationManager.next())
+        {
+            Relation::iterator itRelation=reference->ibegin();
+            Relation::iterator itRelation_end=reference->iend();
+            for(itRelation;itRelation!=itRelation_end;itRelation++)
+            {
+                if (n.getId() == itRelation.elementCourant()->getIdNote1())  //note à une relation avec une autre note
+                    itRelationManager.current().suppCouple(*itRelation.elementCourant());
+                if (n.getId() == itRelation.elementCourant()->getIdNote2())  //note à une relation avec une note
+                    itRelationManager.current().suppCouple(*it.elementCourant());
+            }
+        }
         n.changeSupp();
     }
-    else n.changeSupp();
+
 }
 
 

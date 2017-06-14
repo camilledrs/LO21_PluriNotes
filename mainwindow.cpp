@@ -52,10 +52,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     zoneGauche = new QDockWidget(tr("Notes actives"), this);
     zoneGauche->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    zoneDroite = new QDockWidget;
+    zoneDroite = new QDockWidget(tr("Arborescence fils"), this);
     zoneDroite->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    //zoneDroite->setWidget();
-    addDockWidget(Qt::RightDockWidgetArea, zoneDroite);
+    
 
 
     ///////////////////////////////////////////////
@@ -105,6 +104,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     zoneGauche->setWidget(NoteListArchive);
     addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
+    
+    //Arborescence
+    NoteAbrFils= new QTreeWidget();
+    NoteAbrFils->headerItem()->setText(0, "Arbre des fils");
+    NoteAbrPeres= new QTreeWidget();
+    NoteAbrPeres->headerItem()->setText(0, "Arbre des peres");
+    //Ajout de larborescence de note
+    zoneDroite->setWidget(NoteAbrFils);
+    addDockWidget(Qt::RightDockWidgetArea, zoneDroite);
+
+    zoneDroite = new QDockWidget(tr("Arborescence peres"), this);
+    zoneDroite->setWidget(NoteAbrPeres);
+    addDockWidget(Qt::RightDockWidgetArea, zoneDroite);
 
 
     creer = new QPushButton("Créer");
@@ -161,9 +173,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
                         << "Note1");
     NoteList->addItem("Note référencée");*/
 
-    QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
+  QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
+    QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
+     QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
     QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
+    QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
+     QObject::connect(TacheList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
     QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
+    QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
+    QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
 
     zoneCentrale->setLayout(layoutPrincipal);
 
@@ -308,6 +326,29 @@ void MainWindow::afficherNote(QString id)
     contenuNote->setText(n.getDerniereVersion().afficher());
 }
 
+
+void MainWindow::arborescencefils(QListWidgetItem *item)
+{   NoteAbrFils->clear();
+    QString id= item->text();
+    NoteManager::Iterator it=NoteManager::getInstance().getIterator();
+    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    Note& n=it.current();
+    QTreeWidgetItem* note_item = new QTreeWidgetItem(NoteAbrFils,QTreeWidgetItem::Type);
+    note_item->setText(0, n.getId());
+    n.enfant(note_item,NoteAbrFils);
+    NoteAbrFils->expandAll();
+}
+void MainWindow::arborescencePeres(QListWidgetItem *item)
+{   NoteAbrPeres->clear();
+    QString id= item->text();
+    NoteManager::Iterator it=NoteManager::getInstance().getIterator();
+    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    Note& n=it.current();
+    QTreeWidgetItem* note_item = new QTreeWidgetItem(NoteAbrPeres,QTreeWidgetItem::Type);
+    note_item->setText(0, n.getId());
+    n.parent(note_item);
+    NoteAbrPeres->expandAll();
+}
 
 void MainWindow::creerNote()
 {

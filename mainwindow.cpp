@@ -168,6 +168,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
     QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
     QObject::connect(NoteListArchive,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
+    
+      QObject::connect(NoteAbrFils,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(afficherNote(QTreeWidgetItem*)));
+    QObject::connect(NoteAbrPeres,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(afficherNote(QTreeWidgetItem*)));
 
     zoneCentrale->setLayout(layoutPrincipal);
 
@@ -260,6 +263,18 @@ void MainWindow::afficherNote(QString id)
     contenuNote->setText(n.getDerniereVersion().afficher());
 }
 
+void MainWindow::afficherNote(QTreeWidgetItem* item)
+{
+    QString id= item->text(0);
+    NoteManager::Iterator it=NoteManager::getInstance().getIterator();
+    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    Note& n=it.current();
+    idNote->setText(id);
+    titreNote->setText(n.getTitre());
+    dateCreaNote->setDateTime(n.getDate());
+    dateModifNote->setDateTime(n.getDateModif());
+    contenuNote->setText(n.getDerniereVersion().afficher());
+}
 
 void MainWindow::arborescencefils(QListWidgetItem *item)
 {   NoteAbrFils->clear();

@@ -25,13 +25,13 @@ void MainWindow::writeSettings()  //je dirais à mettre quand on quitte l’appl
 
 
 
-//Pour l'affichage il faut, dans le dock gauche, 3 parties différentes avec chacune une QLIstWidget
-// 1) NoteList  (on peut trier par id grace a sortItems(Qt::SortOrder order = Qt::AscendingOrder) )
-// 2) TacheList (trié par ordre de priorité)
+//Pour l'affichage il y a , dans le dock gauche, 3 parties différentes avec chacune une QLIstWidget
+// 1) NoteList  
+// 2) TacheList 
 // 3) NoteListArchive
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-
+    //Menu 
     QMenu *menuFichier = menuBar()->addMenu(tr("&Fichier"));
     QAction *nouvelleFen = new QAction("&Nouvelle Fenêtre", this);
     menuFichier->addAction(nouvelleFen);
@@ -41,17 +41,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     menuFichier->addAction(actionRelation);
     QAction *actionCorbeille= new QAction("&Vider Corbeille", this);
     menuFichier->addAction(actionCorbeille);
+    
+    //connexion menu
     connect(actionQuitter, SIGNAL(triggered()), this, SLOT(quitter()));
     connect(actionRelation, SIGNAL(triggered()), this, SLOT(fenRelation()));
     connect(nouvelleFen, SIGNAL(triggered()), this, SLOT(nouvelleFen()));
     connect(actionCorbeille, SIGNAL(triggered()), this, SLOT(viderLaCorbeille()));
 
-
+    //zone centrale
     zoneCentrale = new QWidget;
 
+    //premiere partie de la zonne gauche 
     zoneGauche = new QDockWidget(tr("Notes actives"), this);
     zoneGauche->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
+    //premiere partie de la zone droite
     zoneDroite = new QDockWidget(tr("Arborescence fils"), this);
     zoneDroite->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     
@@ -60,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     ///////////////////////////////////////////////
 
     
-
+    //champs de la zone centrale on ne peut pas les editer, ils serviront a l'affichage de note
     idNote = new QLineEdit;
     titreNote = new QLineEdit;
     dateCreaNote = new QDateTimeEdit(QDateTime::currentDateTime());
@@ -72,22 +76,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     contenuNote = new QTextEdit;
     contenuNote->setReadOnly(true);
 
+    //liste des notes actives
     NoteList = new QListWidget();
-
-    //Ajout des notes à la liste
 
     zoneGauche->setWidget(NoteList);
     addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
 
+    //partie pour la liste des taches
     zoneGauche = new QDockWidget(tr("Taches"), this);
 
     TacheList = new QListWidget();
 
-    //Ajout des taches à la liste
-
     zoneGauche->setWidget(TacheList);
     addDockWidget(Qt::LeftDockWidgetArea, zoneGauche);
 
+    //partie pour la liste des notes archivees
     zoneGauche = new QDockWidget(tr("Notes archivées"), this);
 
     NoteListArchive = new QListWidget();
@@ -102,15 +105,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     NoteAbrFils->headerItem()->setText(0, "Arbre des fils");
     NoteAbrPeres= new QTreeWidget();
     NoteAbrPeres->headerItem()->setText(0, "Arbre des peres");
-    //Ajout de larborescence de note
+    
+    //Partie pour l'arborescence des fils
     zoneDroite->setWidget(NoteAbrFils);
     addDockWidget(Qt::RightDockWidgetArea, zoneDroite);
 
+    //partie pour l'arborescence des peres
     zoneDroite = new QDockWidget(tr("Arborescence peres"), this);
     zoneDroite->setWidget(NoteAbrPeres);
     addDockWidget(Qt::RightDockWidgetArea, zoneDroite);
 
 
+    //Boutons de la zone du millier
     creer = new QPushButton("Créer");
     QObject::connect(creer,SIGNAL(clicked()),this,SLOT(creerNote()));
     supprimer = new QPushButton("Supprimer");
@@ -122,7 +128,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     restaurerVersion = new QPushButton("Restaurer Version");
     QObject::connect(restaurerVersion,SIGNAL(clicked()),this,SLOT(RestaurerV()));
 
-
+    //Mise en forme de la zone centrale
     QHBoxLayout* layoutBouton = new QHBoxLayout;
     layoutBouton->addWidget(creer);
     layoutBouton->addWidget(supprimer);
@@ -152,19 +158,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 
 
-    //Note note1 = NoteManager::getInstance().addNote("Nouvelle note","quelquechose",QDateTime(),QDateTime(),const Version(QDateTime()));
-
-    /*NoteManager::Iterator it = NoteManager::getInstance().getIterator();
-    while (!it.isDone())
-    {
-        NoteList->addItem(it.current().getId());
-        it.next();
-    }
-    NoteList->addItems(QStringList()
-                        << "Note1"
-                        << "Note1");
-    NoteList->addItem("Note référencée");*/
-
+//Connexions sur la liste 
   QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(afficherNote(QListWidgetItem*)));
     QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencefils(QListWidgetItem*)));
      QObject::connect(NoteList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(arborescencePeres(QListWidgetItem*)));
@@ -201,7 +195,7 @@ void MainWindow::nouvelleFen()
     zoneCentrale->setViewMode(QMdiArea::TabbedView);
 }
 
-void MainWindow::quitter() //demander à l'utilisateur si il veut vider la corbeille avant de quitter
+void MainWindow::quitter() //demande à l'utilisateur si il veut vider la corbeille avant de quitter+ sauvegarde dans xml
 {
 
     QMessageBox::StandardButton reponse;
@@ -296,19 +290,7 @@ void MainWindow::arborescencePeres(QListWidgetItem *item)
 
 void MainWindow::creerNote()
 {
-    /*bool ok;
-    QStringList items;
-    items << tr("Article") << tr("Tache") << tr("Media");
-    QString reponse= QInputDialog::getitem(this, "Type de note", "Quel type de note voulez-vous créer ?", QLineEdit::Normal, QString(), &ok);
-    //fenetreCreationNote();
-    //QString item = fenetreCreationNote::getItem(this, tr("Création d'une note"),tr("Type de note"), items, 0, false, &ok);
-    //if (ok && !item.isEmpty())
-        //if (item=="Article")
-    //QMessageBox::StandardButton reponse= QMessageBox::question(this,"OK", "ça marche",QMessageBox::Yes | QMessageBox::No);
-    CreateNoteWidget *cw = new CreateNoteWidget();
-    cw->show();
-    NoteList->addItem(cw->getId());
-    //On crée bien un nouvel item mais l'id n'est pas récupéré*/
+ 
 
     bool ok1=false;
     bool ok2=false;

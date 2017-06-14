@@ -156,9 +156,10 @@ public slots:
      */
     void restaurerNote();  //problème : on n'affiche plus les notes supprimées je crois
     /**
-     * @brief slot archiverNote
-     * Archive la note actuellement affichée
+     * @brief slot RestaurerV
+     * Permet de choisir la version à restaurer et la restaure
      */
+    void RestaurerV();
 };
 
 

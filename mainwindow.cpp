@@ -78,7 +78,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     dateCreaNote = new QDateTimeEdit(QDateTime::currentDateTime());
     dateModifNote = new QDateTimeEdit(QDateTime::currentDateTime());
     dateCreaNote->setReadOnly(true);
+    dateModifNote->setReadOnly(true);
+    idNote->setReadOnly(true);
+    titreNote->setReadOnly(true);
     contenuNote = new QTextEdit;
+    contenuNote->setReadOnly(true);
 
     NoteList = new QListWidget();
 

@@ -520,7 +520,7 @@ void MainWindow::restaurerNote()
         else if(it.current().getActive() && !it.current().getStatutSupp()) throw NotesException("Note deja active");
         else if(it.current().getStatutSupp())
         {
-            it.current().setSuppFalse();
+            it.current().changeSupp();
             NoteList->addItem(id);
          }
         else //note archivee

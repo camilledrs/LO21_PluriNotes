@@ -58,6 +58,81 @@ class Relation
 
 public :
     /**
+     * @brief La classe iterator de Relation
+     * permet un accès en lecture et en écriture
+     */
+    class iterator
+    {
+        friend class Relation;
+        Couple ** courant; /**< tableau de couples dans lequel on itère */
+        /**
+         * @brief constructeur de iterator
+         * @param deb tableau dans lequel on souhaite itérer
+         */
+        iterator(Couple** deb):courant(deb){}
+
+    public :
+        /**
+         * @brief contructeur sans argument de iterator
+         */
+        iterator():courant(0){}
+        /**
+         * @brief methode elementCourant
+         * @return un pointeur sur le Couple pointé par l'iterator
+         */
+        Couple* const elementCourant(){return *courant;}
+        /**
+         * @brief surcharge de l'operator *
+         * @return une reference sur le Couple actuellement pointé
+         */
+        Couple& operator*() const {return **courant;}
+        /**
+         * @brief surcharge de l'operator ++
+         * @return l'iterateur sur le couple suivant
+         */
+        iterator& operator++(){++courant; return *this;}
+        /**
+         * @brief surcharge de l'operator ++
+         * @return l'iterateur sur le couple actuel, avant l'incrémentation
+         */
+        iterator& operator++(int) {iterator old=*this; ++courant; return old;}
+        /**
+         * @brief surcharge de l'operator ==
+         * @param it l'iterateur avec lequel on compare
+         * @return true si les deux couples pointés par chaque iterateur sont les mêmes, false sinon
+         */
+        bool operator==(iterator it) const {return courant==it.courant;}
+        /**
+         * @brief surcharge de l'operator !=
+         * @param it l'iterateur avec lequel on compare
+         * @return false si les deux couples pointés par chaque iterateur sont les mêmes, true sinon
+         */
+        bool operator!=(iterator it) const {return courant!=it.courant;}
+    };
+    /**
+     * @brief methode begin
+     * @return un objet iterator au debut du tableau tab
+     */
+    iterator ibegin() {return iterator(tab);}
+    /**
+     * @brief methode elem
+     * @param i de type entier
+     * @return un objet iterator au niveau de tab[i]
+     */
+    iterator ielem(int i) const {return iterator(tab+i);}
+    /**
+     * @brief methode end
+     * @return un objet const_iterator à la fin du tableau tab
+     */
+    iterator iend() const {return iterator(tab+nb);}
+
+
+
+
+
+
+
+    /**
      * @brief La classe const_iterator de Relation
      * permet un accès en lecture seulement
      */

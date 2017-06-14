@@ -67,7 +67,6 @@ void Note::verifRef( const QString s)
     }
 }
 
-
 Note** Note::sucesseurs( unsigned int* nb)
 {
     Note** succ=new Note*[NoteManager::getInstance().getNbNotes()];
@@ -78,6 +77,7 @@ Note** Note::sucesseurs( unsigned int* nb)
         Relation* curr=(&it.current());
         Relation::const_iterator itr=curr->begin();
         Relation::const_iterator end=curr->end();
+        if(curr->getOrient()!=0){
         while (itr!=end)
         {
             if(itr.elementCourant()->getIdNote1() == this->getId())
@@ -86,7 +86,7 @@ Note** Note::sucesseurs( unsigned int* nb)
                 i++;
             }
             itr++;
-        }
+        }}
         it.next();  //sinon on passe à la prochaine relation
     }
     Relation::const_iterator it2=RelationManager::getInstance().getRef()->begin();
@@ -113,14 +113,17 @@ Note** Note::predecesseurs( unsigned int* nb)
         Relation* curr=(&it.current());
         Relation::const_iterator itr=curr->begin();
         Relation::const_iterator end=curr->end();
+        if(curr->getOrient()!=0){
         while (itr!=end)
         {
+
             if(itr.elementCourant()->getIdNote2()==this->getId())
             {
                 pred[i]=const_cast<Couple*>(itr.elementCourant())->getNote1();
                 i++;
             }
             itr++;
+        }
         }
         it.next();  //sinon on passe à la prochaine relation
     }

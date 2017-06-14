@@ -80,9 +80,9 @@ void NoteManager::supprimerNote(Note& n)
     if(reference->getnb()!=0){
     Relation::const_iterator it=reference->begin();
     Relation::const_iterator it_end=reference->end();
-    while ((it!=it_end) || (n.getId() != (const_cast<Couple*>(it.elementCourant())->getIdNote2())))
+    while ((it!=it_end) && (n.getId() != (it.elementCourant()->getIdNote2())))
         it++;
-    if ((it!=it_end) || ((it==it_end) && (const_cast<Couple*>(it.elementCourant())->getIdNote2() ==n.getId())))  //note dans la relation reference
+    if (it!=it_end)  //note dans la relation reference
         n.ChangeActive();
     else
         n.changeSupp();

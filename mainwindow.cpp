@@ -59,19 +59,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     ///////////////////////////////////////////////
 
-    /*QGroupBox *groupbox = new QGroupBox("Type de note", zoneCentrale);
-    QRadioButton *article = new QRadioButton("Article");
-    //QObject::connect(article,SIGNAL(clicked()),this,SLOT(articleNote()));
-    QRadioButton *tache = new QRadioButton("Tache");
-    //QObject::connect(tache,SIGNAL(clicked()),this,SLOT(tacheNote()));
-    QRadioButton *media = new QRadioButton("Media");
-    //QObject::connect(media,SIGNAL(clicked()),this,SLOT(mediaNote()));
-    //article->setChecked(true);
-    QVBoxLayout *layoutTypeNote = new QVBoxLayout;
-    layoutTypeNote->addWidget(article);
-    layoutTypeNote->addWidget(tache);
-    layoutTypeNote->addWidget(media);
-    groupbox->setLayout(layoutTypeNote);*/
+    
 
     idNote = new QLineEdit;
     titreNote = new QLineEdit;
@@ -192,36 +180,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     setCentralWidget(zoneCentrale);
     ////////////////////////////////////////////////
 
-    /*idNote = new QLineEdit;
-    boutonAfficher = new QPushButton("Afficher une note");
-    boutonRestaurer = new QPushButton("Restaurer la version");
-    layout = new QFormLayout;
-    layout->addRow("Id", idNote);
-    layoutRecherche = new QVBoxLayout;
-    layoutRecherche->addLayout(layout);
-    layoutRecherche->addWidget(boutonAfficher);
-    layoutRecherche->addWidget(boutonRestaurer);
-    QObject::connect(boutonAfficher,SIGNAL(clicked()),this,SLOT(Recherche()));
-    layoutPrincipal = new QVBoxLayout;
-    layoutPrincipal->addLayout(layoutRecherche);
-    zoneCentrale->setLayout(layoutPrincipal);
-    setCentralWidget(zoneCentrale);*/
+    
 
     ///////PARAMETRAGE///////////////////////
     readSettings();
 
 }
 
-/*void MainWindow::articleNote()
-{
-    texteNote = new QTextEdit;
-    layoutAffich->addRow("Texte", texteNote);
-}
-void MainWindow::tacheNote()
-{
-    actionNote = new QLineEdit;
-    layoutAffich->addRow("Action", actionNote);
-}*/
+
 
 void MainWindow::nouvelleFen()
 {
@@ -274,36 +240,6 @@ void MainWindow::RestaurerV()
 
 
 
-/*void MainWindow::Recherche()
-{
-    // Recherche de la bonne note avec idNote->text();
-    Note* note = NoteManager::getInstance().getNote(idNote->text());
-    titreNote = new QLineEdit;
-    dateCreaNote = new QDateTimeEdit;
-    contenuNote = new QTextEdit;
-    //titreNote->setText(note->getTitre);
-    //dateCreaNote->setText(note->getDate());
-    //contenuNote->setText(note->getContenu); //à voir
-//    QLabel *titre= new QLabel("Note");
-    enregistrer = new QPushButton("Enregistrer");
-    boutonRestaurer = new QPushButton("Restaurer la note");
-    boutonRestaurer->setEnabled(false);
-    layoutAffich = new QFormLayout;
-    layoutAffich->addRow("Titre", titreNote);
-    layoutAffich->addRow("Date de création", dateCreaNote);
-    layoutAffich->addRow("Contenu", contenuNote);
-    layoutAffichage = new QVBoxLayout;
-//    layoutAffichage->addWidget(titre);
-    layoutAffichage->addLayout(layoutAffich);
-    layoutAffichage->addWidget(enregistrer);
-    layoutAffichage->addWidget(boutonRestaurer);
-    layoutPrincipal->addLayout(layoutAffichage);
-    if (note->getDerniereVersion().getDate() != dateCreaNote->dateTime())  //si ce n'est pas la dernière version qu'on traite, on peut la restaurer
-        boutonRestaurer->setEnabled(true);
-    QObject::connect(boutonRestaurer,SIGNAL(clicked()),this,SLOT(RestaurerV()));
-}*/
-
-
 
 void MainWindow::afficherNote(QListWidgetItem* item)
 {
@@ -337,9 +273,11 @@ void MainWindow::arborescencefils(QListWidgetItem *item)
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
     while(it.current().getId() != id) it.next(); //on a trouvé la note
     Note& n=it.current();
+    QSet<Note*> notepresc;
+    notepresc.insert(const_cast<Note*>(&n));
     QTreeWidgetItem* note_item = new QTreeWidgetItem(NoteAbrFils,QTreeWidgetItem::Type);
     note_item->setText(0, n.getId());
-    n.enfant(note_item,NoteAbrFils);
+    n.enfant(note_item,notepresc);
     NoteAbrFils->expandAll();
 }
 void MainWindow::arborescencePeres(QListWidgetItem *item)
@@ -348,9 +286,11 @@ void MainWindow::arborescencePeres(QListWidgetItem *item)
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
     while(it.current().getId() != id) it.next(); //on a trouvé la note
     Note& n=it.current();
+    QSet<Note*> notepresc;
+        notepresc.insert(const_cast<Note*>(&n));
     QTreeWidgetItem* note_item = new QTreeWidgetItem(NoteAbrPeres,QTreeWidgetItem::Type);
     note_item->setText(0, n.getId());
-    n.parent(note_item);
+    n.parent(note_item,notepresc);
     NoteAbrPeres->expandAll();
 }
 

@@ -222,13 +222,15 @@ public  :
      /**
      * @brief methode enfant
      * @param parent est le treeWidgetItem parent
+     * @param notepresc ensemble des notes prescedantes
      */
-    void enfant( QTreeWidgetItem* parent,QTreeWidget* abr);
+    void enfant( QTreeWidgetItem* parent,QSet <Note*> notepresc);
     /**
      * @brief methode parent
      * @param parent est le treeWidgetItem enfant
+     * @param notepresc ensemble des notes prescedantes
      */
-    void parent( QTreeWidgetItem* enfant);
+    void parent( QTreeWidgetItem* enfant,QSet <Note*> notepresc);
 };
 
 #endif // NOTE_H

@@ -92,6 +92,12 @@ public:
      * sauvegarde les paramètres de l'application avant de quitter
      */
     void writeSettings();
+    /**
+     * @brief afficherNote
+     * affiche la note sélectionnée
+     *  @param id de la note à afficher
+     */
+    void afficherNote(QString id);
 
 signals:
 
@@ -124,8 +130,8 @@ public slots:
      */
     void quitter();
     /**
-     * @brief slot Restaurer
-     * restaure la vesrion sélectionnée
+     * @brief slot afficherNote
+     * affiche la vesrion sélectionnée
      */
     void afficherNote(QListWidgetItem* item);
     /**

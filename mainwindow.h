@@ -22,6 +22,7 @@
 #include <QRadioButton>
 #include <QComboBox>
 #include <QFileDialog>
+#include<QTreeWidget>
 #include "notemanager.h"
 #include "windowrelation.h"
 #include "note.h"
@@ -50,6 +51,8 @@ class MainWindow : public QMainWindow
     QListWidget *NoteList;
     QListWidget *TacheList;
     QListWidget *NoteListArchive;
+    QTreeWidget *NoteAbrFils;
+    QTreeWidget *NoteAbrPeres;
 
 
     /*QTextEdit *texteNote;
@@ -161,6 +164,16 @@ public slots:
      * Permet de choisir la version à restaurer et la restaure
      */
     void RestaurerV();
+     /**
+     * @brief slot arborescencefils
+     * affiche les descendants de la note selectionnee
+     */
+    void arborescencefils(QListWidgetItem* item);
+    /**
+     * @brief slot arborescencePeres
+     * affiche les ascendants de la note selectionnee
+     */
+    void arborescencePeres(QListWidgetItem* item);
 };
 
 

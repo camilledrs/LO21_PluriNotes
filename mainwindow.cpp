@@ -275,7 +275,18 @@ void MainWindow::afficherNote(QListWidgetItem* item)
     dateCreaNote->setDateTime(n.getDate());
     dateModifNote->setDateTime(n.getDateModif());
     contenuNote->setText(n.getDerniereVersion().afficher());
+}
 
+void MainWindow::afficherNote(QString id)
+{
+    NoteManager::Iterator it=NoteManager::getInstance().getIterator();
+    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    Note& n=it.current();
+    idNote->setText(id);
+    titreNote->setText(n.getTitre());
+    dateCreaNote->setDateTime(n.getDate());
+    dateModifNote->setDateTime(n.getDateModif());
+    contenuNote->setText(n.getDerniereVersion().afficher());
 }
 
 
@@ -317,6 +328,7 @@ void MainWindow::creerNote()
             QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
             NoteList->addItem(id);
             NoteList->sortItems(Qt::AscendingOrder);
+            afficherNote(id);
         }
     }
 
@@ -346,6 +358,7 @@ void MainWindow::creerNote()
             NoteList->sortItems(Qt::AscendingOrder);
             TacheList->addItem(id);
             //TacheList->sortItems(Qt::AscendingOrder); trier par priorite et date echue
+            afficherNote(id);
         }
     }
 
@@ -374,6 +387,7 @@ void MainWindow::creerNote()
             QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
             NoteList->addItem(id);
             NoteList->sortItems(Qt::AscendingOrder);
+            afficherNote(id);
         }
     }
 }

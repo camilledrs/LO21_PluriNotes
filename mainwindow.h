@@ -64,6 +64,7 @@ class MainWindow : public QMainWindow
     QPushButton *editer;
     QPushButton *restaurer;
     QPushButton *boutonQuitter;
+    QPushButton *restaurerVersion;
 
     //QLineEdit *idNote ;
     //QPushButton *boutonAfficher;

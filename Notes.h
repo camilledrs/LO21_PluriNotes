@@ -6,6 +6,7 @@
 //#include "notemanager.h"
 #include "version.h"
 #include <QDateTime>
+#include<QTreeWidget>
 
 
 
@@ -218,6 +219,16 @@ public  :
     * @param i le ième élément du tableau de version
     */
     Version& getElement(int i){if (i<nbVersion) return *versions[i];}
+     /**
+     * @brief methode enfant
+     * @param parent est le treeWidgetItem parent
+     */
+    void enfant( QTreeWidgetItem* parent,QTreeWidget* abr);
+    /**
+     * @brief methode parent
+     * @param parent est le treeWidgetItem enfant
+     */
+    void parent( QTreeWidgetItem* enfant);
 };
 
 #endif // NOTE_H

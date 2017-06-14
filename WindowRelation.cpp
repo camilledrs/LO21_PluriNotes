@@ -152,7 +152,7 @@ void WindowRelation::ajouterCouple()
         if (ok && !strl2.isEmpty()){
             const char* c= strl2.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
             int l2=atoi(c);
-            r->addCouple(*n1,*n2,l2);
+            r->addCouple(*n2,*n1,l2);
     }
     }
 }}

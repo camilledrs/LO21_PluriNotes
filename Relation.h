@@ -6,9 +6,7 @@
 #include <QString>
 #include <QtXml>
 #include <QFile>
-//#include "relationmanager.h"
 #include "couple.h"
-//#include "mainwindow.h"
 
 
 /**
@@ -126,13 +124,6 @@ public :
      * @return un objet const_iterator à la fin du tableau tab
      */
     iterator iend() const {return iterator(tab+nb);}
-
-
-
-
-
-
-
     /**
      * @brief La classe const_iterator de Relation
      * permet un accès en lecture seulement

@@ -39,7 +39,7 @@ void Relation::addCouple(Note &n1, Note &n2, int l)  //verifier ici qu'on veut l
 {
 
     for(unsigned int i=0; i<nb; i++)
-        if (tab[i]->getLabel()==l) 
+        if (tab[i]->getLabel()==l)
             throw NoteException("error, creation of an already existent note");
     if (nb==max)
     {
@@ -48,7 +48,7 @@ void Relation::addCouple(Note &n1, Note &n2, int l)  //verifier ici qu'on veut l
         Couple** old=tab;
         tab=newtab;
         max+=5;
-        if (old) delete[] 
+        if (old) delete[]
             old;
     }
     tab[nb++]= new Couple(n1, n2, l);
@@ -149,14 +149,14 @@ void Relation::editer(QString& t, QString& d)
     setDesc(d);
 }
 
-void Relation::save(QXmlStreamWriter &stream) const{
-
+void Relation::save(QFile *f) const
+{
+    QXmlStreamWriter stream(f);
     stream.writeTextElement("titre",titre );
     stream.writeTextElement("description",description );
     stream.writeTextElement("orientee",QString::number(orientee) );
     stream.writeTextElement("nbCouple",QString::number(nb) );
     stream.writeTextElement("nbMaxCouple",QString::number(max));
-    for(unsigned int j=0; j<nb; j++){
-        tab[j]->save(stream);
-    }
+    for(unsigned int j=0; j<nb; j++)
+        tab[j]->save(f);
 };

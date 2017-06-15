@@ -104,7 +104,7 @@ class Note
      * en privé pour que l'utilisateur de Note ne puisse pas y avoir accès
      */
     Note(const Note& n);
-    
+
 
 public  :
     /**
@@ -152,9 +152,13 @@ public  :
      * @brief methode changeSupp
      * Change le statut de supp
      */
-    void changeSupp(){ if (supprime=false) supprime=true;
-                        else supprime=false;
-                    }
+    void changeSupp()
+    {
+        if (supprime=false)
+            supprime=true;
+        else
+            supprime=false;
+    }
     /**
      * @brief methode ChangeActive
      * change le boolean active

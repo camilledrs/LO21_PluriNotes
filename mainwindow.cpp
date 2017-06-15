@@ -257,7 +257,7 @@ void MainWindow::afficherNote(QListWidgetItem* item)
     else
     {
         editer->setEnabled(true);
-        restaurerVersion->setEnabled(false);
+        restaurerVersion->setEnabled(true);
     }
 }
 
@@ -279,7 +279,7 @@ void MainWindow::afficherNote(QString id)
     else
     {
         editer->setEnabled(true);
-        restaurerVersion->setEnabled(false);
+        restaurerVersion->setEnabled(true);
     }
 }
 
@@ -303,7 +303,7 @@ void MainWindow::afficherNote(QTreeWidgetItem* item)
     else
     {
         editer->setEnabled(true);
-        restaurerVersion->setEnabled(false);
+        restaurerVersion->setEnabled(true);
     }
 }
 

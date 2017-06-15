@@ -27,22 +27,22 @@ class WindowRelation : public QMainWindow //public QTabWidget
 {
     Q_OBJECT
 
-    QWidget *zoneCentraleRel;
-    QDockWidget *zoneGaucheRel;
+    QWidget *zoneCentraleRel;  /**< widget de la zone centrale */
+    QDockWidget *zoneGaucheRel; /**< widget de la zone gauche */
 
-    QLineEdit *Titre;
-    QLineEdit *Desc;
-    QListWidget *RelationList;
-    QTextEdit *contenuRelation;
+    QLineEdit *Titre;    /**< line edit pour le titre de la relation */
+    QLineEdit *Desc;    /**< line edit pour la description de la relation */
+    QListWidget *RelationList;  /**< Liste des relations */
+    QTextEdit *contenuRelation; /**< text edit pour les caractéristiques de la relation */
 
-    QPushButton* boutonCreer;
-    QPushButton* boutonEditer;
-    QPushButton* boutonSupprimer;
-    QPushButton* boutonEnrichir;
-    QPushButton *boutonSupprimerCouple;
-    QPushButton *boutonQuitter;
+    QPushButton* boutonCreer;  /**< bouton Créer */
+    QPushButton* boutonEditer;  /**< bouton Editer */
+    QPushButton* boutonSupprimer;  /**< bouton Supprimer */
+    QPushButton* boutonEnrichir;  /**< bouton Enrichir */
+    QPushButton *boutonSupprimerCouple;  /**< bouton Supprimer Couple */
+    QPushButton *boutonQuitter;  /**< bouton quitter */
 
-    QVBoxLayout* layoutPrincipalRel;
+    QVBoxLayout* layoutPrincipalRel;   /**< Layout de l'affichage de la fenêtre des relations */
 
 public:
     /**
@@ -97,4 +97,3 @@ public:
 
 
 #endif
-

@@ -8,6 +8,7 @@
 #include <QFile>
 //#include "relationmanager.h"
 #include "couple.h"
+//#include "mainwindow.h"
 
 
 /**
@@ -289,3 +290,4 @@ public :
 
 #endif // RELATION_H
 
+ 

@@ -238,3 +238,4 @@ public  :
 };
 
 #endif // NOTE_H
+  

@@ -48,6 +48,7 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     boutonEditer = new QPushButton("Editer");
     boutonSupprimer = new QPushButton("Supprimer");
     boutonEnrichir = new QPushButton("Enrichir");
+    boutonSupprimerCouple = new QPushButton("Supprimer couple");
 
     QHBoxLayout *layoutBouttons = new QHBoxLayout;
     layoutBouttons= new QHBoxLayout;
@@ -59,6 +60,8 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     QObject::connect(boutonSupprimer,SIGNAL(clicked()),this,SLOT(Supprimer()));
     layoutBouttons->addWidget(boutonEnrichir);
     QObject::connect(boutonEnrichir,SIGNAL(clicked()),this,SLOT(ajouterCouple()));
+    layoutBouttons->addWidget(boutonSupprimerCouple);
+    QObject::connect(boutonSupprimerCouple,SIGNAL(clicked()),this,SLOT(supprimerCouple()));
     boutonQuitter = new QPushButton("Quitter");
     //QObject::connect(boutonQuitter,SIGNAL(clicked()),this,SLOT(quitter()));
 
@@ -106,16 +109,18 @@ void WindowRelation::ajouterCouple()
     Relation* r;
     QString titre= Titre->text();
     if (titre=="Reference") r= RelationManager::getInstance().getRef();
-    else {
-    RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
-    while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
-    r=&itr.current();
-        }
+    else
+    {
+        RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
+        while((!itr.isDone()) && (titre!=itr.current().getTitre()))
+            itr.next();
+        r=&itr.current();
+    }
     bool ok=false;
     Note* n1;
     Note* n2;
     //while(!ok)
-        QString id1 = QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok);
+    QString id1 = QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok);
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
     while ((!it.isDone()) && (id1 != it.current().getId())) //parcours les notes
         it.next();
@@ -139,23 +144,28 @@ void WindowRelation::ajouterCouple()
     }
     else
         QMessageBox::critical(this, "Note non existante", "L'id ne correspond à aucune note, ressaisir un nouvel Id");
-    if (n2 && n1){
-    QString strl = QInputDialog::getText(this, "label ", "Quel label voulez vous pour le couple ?", QLineEdit::Normal, QString(), &ok);
-    if (ok && !strl.isEmpty()){
-        const char* c= strl.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
-        int l=atoi(c);
-        r->addCouple(*n1,*n2,l);
-    }
-    if (r->getOrient()==false) //rajouter le couple miroir
+    if (n2 && n1)
     {
-        QString strl2 = QInputDialog::getText(this, "Couple miroir", "Quel label voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);
-        if (ok && !strl2.isEmpty()){
-            const char* c= strl2.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
-            int l2=atoi(c);
-            r->addCouple(*n2,*n1,l2);
+        QString strl = QInputDialog::getText(this, "label ", "Quel label voulez vous pour le couple ?", QLineEdit::Normal, QString(), &ok);
+        if (ok && !strl.isEmpty())
+        {
+            const char* c= strl.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
+            int l=atoi(c);
+            r->addCouple(*n1,*n2,l);
+        }
+        if (r->getOrient()==false) //rajouter le couple miroir
+        {
+            QString strl2 = QInputDialog::getText(this, "Couple miroir", "Quel label voulez vous pour le couple miroir ?", QLineEdit::Normal, QString(), &ok);
+            if (ok && !strl2.isEmpty())
+            {
+                const char* c= strl2.toStdString().c_str(); //pour convertir QString en const char* et ensuite pouvoir appeler atoi
+                int l2=atoi(c);
+                r->addCouple(*n2,*n1,l2);
+            }
+        }
     }
-    }
-}}
+}
+
 
 void WindowRelation::supprimerCouple()
 {
@@ -197,6 +207,7 @@ void WindowRelation::supprimerCouple()
         QMessageBox::critical(this,"Erreur","Vous avez fait une erreur lors de la saisie");
 }
 
+
 void WindowRelation::seeRelation(QListWidgetItem* i)
 {
     Relation* r;
@@ -218,19 +229,21 @@ void WindowRelation::Supprimer()
     QString titre= Titre->text();
     if (titre==RelationManager::getInstance().getRef()->getTitre())
         QMessageBox::warning(this, "Erreur suppression", "La relation Reference ne peut être supprimée !");
-    else {
-    RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
-    while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
-    Relation& r=itr.current();
-    QMessageBox::StandardButton reponse;
-    reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la relation ?",QMessageBox::Yes | QMessageBox::No);
-    if(reponse == QMessageBox::Yes)
-       { RelationManager::getInstance().suppRelation(r);
-    delete RelationList->currentItem();
-    Titre->setText("");
-    Desc->setText("");
+    else
+    {
+        RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
+        while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
+        Relation& r=itr.current();
+        QMessageBox::StandardButton reponse;
+        reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la relation ?",QMessageBox::Yes | QMessageBox::No);
+        if(reponse == QMessageBox::Yes)
+        {
+            RelationManager::getInstance().suppRelation(r);
+            delete RelationList->currentItem();
+            Titre->setText("");
+            Desc->setText("");
+        }
     }
-}
 }
 
 

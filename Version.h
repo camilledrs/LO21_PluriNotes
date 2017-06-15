@@ -7,7 +7,6 @@
 #include <QFile>
 #include <QTextCodec>
 #include <sstream>
-//#include "notemanager.h"
 
 /**
  * @brief la Classe Version
@@ -71,7 +70,6 @@ public :
  */
 class Article : public Version
 {
-    //friend class CreateNoteWidget;
     QString texte; /**< Attribut texte de type QString */
     /**
      * @brief constructeur par recopie de Article
@@ -84,12 +82,10 @@ public:
      * @param s de type QString
      */
     Article(QDateTime d,const QString& s):Version(d),texte(s){}
-    //friend NoteManager Article(QDateTime d,const QString& s):Version(d),texte(s){}
     /**
       @brief destructeur de Article
       */
     ~Article(){}
-//public :
     /**
      * @brief accesseur getText
      * @return le texte de l'Article
@@ -104,17 +100,20 @@ public:
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const {QXmlStreamWriter stream(f);
-                               stream.writeStartElement("article");
-                               stream.writeTextElement("date version",getDate().toString());
-                               stream.writeTextElement("texte",texte );
-                              }
+    void save(QFile* f) const 
+    {
+        QXmlStreamWriter stream(f);
+        stream.writeStartElement("article");
+        stream.writeTextElement("date version",getDate().toString());
+        stream.writeTextElement("texte",texte );
+    }
 
     /**
      * @brief methode virtuelle afficher
      * @return un QString& composé du texte de l'article
      */
-    QString afficher() const {
+    QString afficher() const
+    {
         std::stringstream s;
         s<<"Texte : "<<this->clone()->getText().toStdString();
         return (QString::fromStdString(s.str()));
@@ -123,9 +122,7 @@ public:
      * @brief methode virtuelle type
      * @return un QString& composé du type
      */
-    QString notetype()const{
-        return "article";
-    }
+    QString notetype()const{return "article";}
 
 };
 
@@ -133,10 +130,12 @@ public:
  * Enumeration Statut
  * Statuts possibles d'une Tache
  */
-enum Statut{EnAttente, /**< Enum value EnAttente. */
-            EnCours, /**< Enum value EnCours. */
-            Terminee /**< Enum value Terminee. */
-           };
+enum Statut
+{
+    EnAttente, /**< Enum value EnAttente. */
+    EnCours, /**< Enum value EnCours. */
+    Terminee /**< Enum value Terminee. */
+};
 
 /**
  * @brief La classe Tache
@@ -144,7 +143,6 @@ enum Statut{EnAttente, /**< Enum value EnAttente. */
  */
 class Tache : public Version
 {
-    //friend class CreateNoteWidget;
     QString action; /**< attribut de type QString */
     Statut statut; /**< statut de la tache, de type enum Statut*/
     QDateTime dateTache; /**< attribut QDateTime de la date de la tache */
@@ -163,17 +161,18 @@ class Tache : public Version
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const {    QXmlStreamWriter stream(f);
-                                   stream.writeStartElement("tache");
-                                   stream.writeTextElement("date version",getDate().toString());
-                                   stream.writeTextElement("action",action );
-                                   stream.writeTextElement("statut",QString::number(statut));
-                                   stream.writeTextElement("date tache",dateTache.toString() );
-                                   stream.writeTextElement("priorite",QString::number(priorite) );
-                              }
+    void save(QFile* f) const 
+    {   
+        QXmlStreamWriter stream(f);
+        stream.writeStartElement("tache");
+        stream.writeTextElement("date version",getDate().toString());
+        stream.writeTextElement("action",action );
+        stream.writeTextElement("statut",QString::number(statut));
+        stream.writeTextElement("date tache",dateTache.toString() );
+        stream.writeTextElement("priorite",QString::number(priorite) );
+  }
 
 public :
-////////////////////////
     /**
       @brief destructeur de Tache
       */
@@ -187,7 +186,6 @@ public :
      * @param p entier (priorité)
      */
     Tache(QDateTime dv,const QString a, QDateTime d, unsigned int p=0) :Version(dv),action(a), statut(EnAttente), dateTache(d), priorite(p){} // en privé pour qu'une tache ne puisse être construite que par une classe friend
-//////////////////////
     /**
      * @brief accesseur getAction
      * @return un QString, l'action de la tache
@@ -202,7 +200,8 @@ public :
      * @brief accesseur getStatut
      * @return un objet de type enum Statut
      */
-    std::string getStatut() {
+    std::string getStatut() 
+    {
         switch(statut){
             case EnAttente :
                 return "EnAttente";
@@ -225,12 +224,12 @@ public :
      * @return un QDateTime, la date de la tache
      */
     QDateTime getDateT() const{return dateTache;}
-
     /**
      * @brief methode virtuelle afficher
      * @return un QString& affichant l'action, le statut, la date et la priorité de la tache
      */
-    QString afficher() const {
+    QString afficher() const
+    {
         std::stringstream s;
         s<<"Action : "<<this->clone()->getAction().toStdString()<<"\n";
         s<<"Statut :"<<this->clone()->getStatut()<<"\n";
@@ -242,20 +241,18 @@ public :
      * @brief methode virtuelle type
      * @return un QString& composé du type
      */
-    QString notetype()const{
-        return "tache";
-    }
-
+    QString notetype()const{ return "tache";}
 };
 
 /**
  * Enumeration Media
  * différents types de multimedias possibles
  */
-enum Media {image, /**< Enum value image.*/
-            audio, /**< Enum value audio. */
-            video  /**< Enum value video. */
-           };
+enum Media {
+    image, /**< Enum value image.*/
+    audio, /**< Enum value audio. */
+    video  /**< Enum value video. */
+};
 
 
 /**
@@ -264,7 +261,6 @@ enum Media {image, /**< Enum value image.*/
  */
 class Multimedia : public Version
 {
-    //friend class CreateNoteWidget;
     QString description; /**< attribut QString, description du multimedia */
     QString fichier; /**< QString, nom du fichier */
     Media type; /**< de type enum Media, type de multimedia */
@@ -281,16 +277,17 @@ class Multimedia : public Version
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const {    QXmlStreamWriter stream(f);
-                                   stream.writeStartElement("multimedia");
-                                   stream.writeTextElement("date version",getDate().toString());
-                                   stream.writeTextElement("description",description );
-                                   stream.writeTextElement("fichier",fichier );
-                                   stream.writeTextElement("type",QString::number(type) );
-                              }
+    void save(QFile* f) const 
+    {
+        QXmlStreamWriter stream(f);
+        stream.writeStartElement("multimedia");
+        stream.writeTextElement("date version",getDate().toString());
+        stream.writeTextElement("description",description );
+        stream.writeTextElement("fichier",fichier );
+        stream.writeTextElement("type",QString::number(type) );
+   }
 
 public :
-/////////////////////////////////////////////////
     /**
       * @brief destructeur de Multimedia
       */
@@ -303,7 +300,6 @@ public :
      * @param t enum Media (type)
      */
     Multimedia(QDateTime dv,const QString& d, const QString& f, Media t):Version(dv),description(d), fichier(f), type(t){}
-////////////////////////////////
      /**
      * @brief accesseur getDescription
      * @return un QString, la description du multimedia
@@ -318,7 +314,8 @@ public :
      * @brief accesseur getType
      * @return un string correspondant au type de multimedia
      */
-    std::string getType() {
+    std::string getType() 
+    {
         switch(type){
                            case image : return "image";
                             break;
@@ -333,7 +330,8 @@ public :
      * @brief methode virtuelle afficher
      * @return un QString composé de la description, du nom de fichier et du type du Multimedia
      */
-    QString afficher() const {
+    QString afficher() const 
+    {
         std::stringstream s;
         s<<"Description : "<<this->clone()->getDescription().toStdString()<<"\n";
         s<<"Fichier :"<<this->clone()->getFichier().toStdString()<<"\n";
@@ -347,7 +345,6 @@ public :
     QString notetype()const{
         return "multimedia";
     }
-
 };
 
 

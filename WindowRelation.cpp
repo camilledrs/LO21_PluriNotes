@@ -188,7 +188,7 @@ void WindowRelation::supprimerCouple()
     for (RelationManager::Iterator itRelationManager=RelationManager::getInstance().getIterator();!itRelationManager.isDone();itRelationManager.next())
         nbCouple+=itRelationManager.current().getnb();
 
-    int labelCouple = QInputDialog::getInt(this, tr("Label"),tr("Entrez le label du couple:"), 0, 0, nbCouple, 1, &ok);
+    int labelCouple = QInputDialog::getInt(this, tr("Label"),tr("Entrez le label du couple:"), 1, 1, nbCouple, 1, &ok);
     if (ok)
     {
         Relation::iterator itRelation = r->ibegin();
@@ -232,7 +232,8 @@ void WindowRelation::Supprimer()
     else
     {
         RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
-        while((!itr.isDone()) && (titre!=itr.current().getTitre())) itr.next();
+        while((!itr.isDone()) && (titre!=itr.current().getTitre()))
+            itr.next();
         Relation& r=itr.current();
         QMessageBox::StandardButton reponse;
         reponse= QMessageBox::question(this,"Confirmation Suppression", "Voulez vous vraiment supprimer la relation ?",QMessageBox::Yes | QMessageBox::No);

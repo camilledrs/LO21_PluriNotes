@@ -99,11 +99,13 @@ public:
      * @brief methode save
      *  @param stream pour ecrire dans le fichier xml
      */
-    void save(QXmlStreamWriter &stream) const {
-                               stream.writeStartElement("article");
-                               stream.writeTextElement("dateVersion",getDate().toString());
-                               stream.writeTextElement("texte",texte );
-                              }
+    void save(QXmlStreamWriter &stream) const
+    {
+       QXmlStreamWriter stream(f);
+       stream.writeStartElement("article");
+       stream.writeTextElement("dateVersion",getDate().toString());
+       stream.writeTextElement("texte",texte );
+  }
 
 
     /**
@@ -159,14 +161,16 @@ class Tache : public Version
      * @brief methode save
      *  @param stream pour ecrire dans le fichier xml
      */
-    void save(QXmlStreamWriter &stream) const {
-                                   stream.writeStartElement("tache");
-                                   stream.writeTextElement("dateVersion",getDate().toString());
-                                   stream.writeTextElement("action",action );
-                                   stream.writeTextElement("statut",QString::number(statut));
-                                   stream.writeTextElement("dateTache",dateTache.toString() );
-                                   stream.writeTextElement("priorite",QString::number(priorite) );
-                              }
+    void save(QXmlStreamWriter &stream) const
+    {
+        QXmlStreamWriter stream(f);
+        stream.writeStartElement("tache");
+        stream.writeTextElement("dateVersion",getDate().toString());
+        stream.writeTextElement("action",action );
+        stream.writeTextElement("statut",QString::number(statut));
+        stream.writeTextElement("dateTache",dateTache.toString() );
+        stream.writeTextElement("priorite",QString::number(priorite) );
+   }
 
 public :
     /**
@@ -273,13 +277,15 @@ class Multimedia : public Version
      * @brief methode save
      *  @param stream pour ecrire dans le fichier xml
      */
-    void save(QXmlStreamWriter &stream) const {
-                                   stream.writeStartElement("multimedia");
-                                   stream.writeTextElement("dateVersion",getDate().toString());
-                                   stream.writeTextElement("description",description );
-                                   stream.writeTextElement("fichier",fichier );
-                                   stream.writeTextElement("type",QString::number(type) );
-                              }
+    void save(QXmlStreamWriter &stream) const 
+    {
+        QXmlStreamWriter stream(f);
+        stream.writeStartElement("multimedia");
+        stream.writeTextElement("dateVersion",getDate().toString());
+        stream.writeTextElement("description",description );
+        stream.writeTextElement("fichier",fichier );
+        stream.writeTextElement("type",QString::number(type) );
+    }
 
 public :
     /**

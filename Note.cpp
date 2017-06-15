@@ -153,16 +153,14 @@ void Note::enfant(QTreeWidgetItem* parent,QSet <Note*> notepresc ){
 
 }
 void Note::parent( QTreeWidgetItem* enfant,QSet <Note*> notepresc){
-
-        notepresc.insert(this);
+    notepresc.insert(this);
     unsigned int nbPred=0;
     Note ** pred=predecesseurs(&nbPred);
-    for(unsigned int i=0;i<nbPred;i++){
+    for(unsigned int i=0;i<nbPred;i++)
+    {
         if(notepresc.contains(pred[i])) continue;
         QTreeWidgetItem* succ_item = new QTreeWidgetItem(enfant,QTreeWidgetItem::Type);
         succ_item->setText(0, pred[i]->getId());
         pred[i]->parent(succ_item,notepresc);
     }
-
-
 }

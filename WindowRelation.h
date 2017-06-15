@@ -39,6 +39,7 @@ class WindowRelation : public QMainWindow //public QTabWidget
     QPushButton* boutonEditer;
     QPushButton* boutonSupprimer;
     QPushButton* boutonEnrichir;
+    QPushButton *boutonSupprimerCouple;
     QPushButton *boutonQuitter;
 
     //QFormLayout *layoutRel;
@@ -89,7 +90,11 @@ class WindowRelation : public QMainWindow //public QTabWidget
          * Edite la relation actuellement affichée
          */
         void Editer();
-        //void quitter();
+        /**
+         * @brief slot supprimerCouple
+         * supprime un couple à la relation actuellement affichée en zone centrale
+         */
+        void supprimerCouple();
 
 
 

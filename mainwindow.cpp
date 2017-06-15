@@ -23,12 +23,6 @@ void MainWindow::writeSettings()  //je dirais à mettre quand on quitte l’appl
     settings.endGroup();
 }
 
-
-
-//Pour l'affichage il y a , dans le dock gauche, 3 parties différentes avec chacune une QLIstWidget
-// 1) NoteList
-// 2) TacheList
-// 3) NoteListArchive
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     //Menu
@@ -58,10 +52,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     //premiere partie de la zone droite
     zoneDroite = new QDockWidget(tr("Arborescence fils"), this);
     zoneDroite->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
-
-
-    ///////////////////////////////////////////////
 
 
     //champs de la zone centrale on ne peut pas les editer, ils serviront a l'affichage de note
@@ -151,8 +141,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QObject::connect(boutonQuitter,SIGNAL(clicked()),this,SLOT(quitter()));
 
     layoutPrincipal = new QVBoxLayout;
-    //layoutPrincipal->addLayout(layoutRecherche);
-    //layoutPrincipal->addWidget(groupbox);
+
     layoutPrincipal->addLayout(layoutAffichage);
     layoutPrincipal->addWidget(boutonQuitter);
 
@@ -175,32 +164,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     zoneCentrale->setLayout(layoutPrincipal);
 
     setCentralWidget(zoneCentrale);
-    ////////////////////////////////////////////////
-
-
-
-    ///////PARAMETRAGE///////////////////////
     readSettings();
-
 }
-
 
 
 void MainWindow::nouvelleFen()
 {
     QMdiArea *zoneCentrale = new QMdiArea;
-
     WindowRelation *ongletRel = new WindowRelation(this);
     QMdiSubWindow *sousFenetre1 = zoneCentrale->addSubWindow(ongletRel);
-
-
     setCentralWidget(zoneCentrale);
     zoneCentrale->setViewMode(QMdiArea::TabbedView);
 }
 
 void MainWindow::quitter() //demande à l'utilisateur si il veut vider la corbeille avant de quitter+ sauvegarde dans xml
 {
-
     QMessageBox::StandardButton reponse;
     reponse= QMessageBox::question(this,"Vidage corbeille", "Voulez vous vider la corbeille avant de quitter ?",QMessageBox::Yes | QMessageBox::No);
     if(reponse == QMessageBox::Yes)
@@ -218,23 +196,27 @@ void MainWindow::RestaurerV()
     QStringList items;
     QString id= idNote->text();
     NoteManager::Iterator it = NoteManager::getInstance().getIterator();
-    while(!it.isDone() && it.current().getId()!=id) it.next();
+    while(!it.isDone() && it.current().getId()!=id) 
+        it.next();
     if(!it.isDone())
     {
         unsigned int i=0;
-        while(i<it.current().getNbVersion()){
+        while(i<it.current().getNbVersion())
+        {
             items << tr(it.current().getElement(i).getDate().toString("dd.MM.yyyy hh:mm:ss").toStdString().c_str());
-            i++;}
+            i++;
+        }
         bool ok;
         QString date = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Date de modification:"), items, 0, false,&ok);
-        if(ok){
-        unsigned int i=0;
-        while(i<it.current().getNbVersion() && it.current().getElement(i).getDate().toString("dd.MM.yyyy hh:mm:ss")!=date) i++;
-        it.current().restaurer(&it.current().getElement(i));
+        if(ok)
+        {
+            unsigned int i=0;
+            while(i<it.current().getNbVersion() && it.current().getElement(i).getDate().toString("dd.MM.yyyy hh:mm:ss")!=date) 
+                i++;
+            it.current().restaurer(&it.current().getElement(i));
         }
     }
 }
-
 
 
 
@@ -255,7 +237,10 @@ void MainWindow::afficherNote(QListWidgetItem* item)
         restaurerVersion->setEnabled(false);
     }
     else
+    {
         editer->setEnabled(true);
+        restaurerVersion->setEnabled(true);
+    }
 }
 
 void MainWindow::afficherNote(QString id)
@@ -274,7 +259,10 @@ void MainWindow::afficherNote(QString id)
         restaurerVersion->setEnabled(false);
     }
     else
+    {
         editer->setEnabled(true);
+        restaurerVersion->setEnabled(true);
+    }
 }
 
 void MainWindow::afficherNote(QTreeWidgetItem* item)
@@ -295,7 +283,10 @@ void MainWindow::afficherNote(QTreeWidgetItem* item)
         restaurerVersion->setEnabled(false);
     }
     else
+    {
         editer->setEnabled(true);
+        restaurerVersion->setEnabled(true);
+    }
 }
 
 void MainWindow::arborescencefils(QListWidgetItem *item)
@@ -303,7 +294,8 @@ void MainWindow::arborescencefils(QListWidgetItem *item)
     NoteAbrFils->clear();
     QString id= item->text();
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
-    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    while(it.current().getId() != id) //on a trouvé la note
+        it.next(); 
     Note& n=it.current();
     QSet<Note*> notepresc;
     notepresc.insert(const_cast<Note*>(&n));
@@ -312,15 +304,17 @@ void MainWindow::arborescencefils(QListWidgetItem *item)
     n.enfant(note_item,notepresc);
     NoteAbrFils->expandAll();
 }
+
 void MainWindow::arborescencePeres(QListWidgetItem *item)
 {
     NoteAbrPeres->clear();
     QString id= item->text();
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
-    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    while(it.current().getId() != id) //on a trouvé la note
+        it.next();
     Note& n=it.current();
     QSet<Note*> notepresc;
-        notepresc.insert(const_cast<Note*>(&n));
+    notepresc.insert(const_cast<Note*>(&n));
     QTreeWidgetItem* note_item = new QTreeWidgetItem(NoteAbrPeres,QTreeWidgetItem::Type);
     note_item->setText(0, n.getId());
     n.parent(note_item,notepresc);
@@ -381,7 +375,6 @@ void MainWindow::creerNote()
                 NoteList->addItem(id);
                 NoteList->sortItems(Qt::AscendingOrder);
                 TacheList->addItem(id);
-                //TacheList->sortItems(Qt::AscendingOrder); trier par priorite et date echue
                 afficherNote(id);
             }
         }
@@ -423,12 +416,6 @@ void MainWindow::creerNote()
     }
 }
 
-/*void MainWindow::supprimerNoteListe(QString id)
-{
-    NoteListArchive->setCurrentItem(new QListWidgetItem(id));
-    delete NoteListArchive->currentItem();
-}*/
-
 
 void MainWindow::supprimerNote()
 {
@@ -454,7 +441,8 @@ void MainWindow::supprimerNote()
             QListWidget ui;
             ui.addItems(stringList);
             unsigned int row=0;
-            while(ui.item(row)->text()!=id) {row++;}
+            while(ui.item(row)->text()!=id) 
+                row++;
             QListWidgetItem* i= TacheList->item(row);//trouver moyen de recuperer le QListWidgetItem grace a l'id;
             delete i;
         }
@@ -462,7 +450,6 @@ void MainWindow::supprimerNote()
         titreNote->setText("");
         dateCreaNote->setDateTime(QDateTime::currentDateTime());
         contenuNote->setText("");
-        //QMessageBox::information(this, "Confirmation supression", "ok");
         if(!n.getActive() && !n.getStatutSupp())
         {
             QMessageBox::information(this, "Confirmation supression", "Note encore référencée, archivage de la note");
@@ -475,12 +462,12 @@ void MainWindow::supprimerNote()
 
 
 void MainWindow::editerNote()
-{    QListWidgetItem* i= NoteList->currentItem();
+{    
+    QListWidgetItem* i= NoteList->currentItem();
      NoteManager::Iterator it = NoteManager::getInstance().getIterator();
      while(it.current().getId() != i->text())
          it.next();
      Note& n=it.current();
-    //voir comment j'ai fait pour editerRelation
     QMessageBox::StandardButton reponse = QMessageBox::No;
     reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
     QString titre=titreNote->text();
@@ -512,7 +499,8 @@ void MainWindow::editerNote()
                 QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
         }
     }
-    if(t=="tache"){
+    if(t=="tache")
+    {
         QString actionTache;
         QDateTime dateTache;
         unsigned int priorityTache;
@@ -585,31 +573,32 @@ void MainWindow::restaurerNote()
 {
     bool ok;
     QString id = QInputDialog::getText(this, "ID Note a restaurer :", "Entrez l'id de la note à restaurer", QLineEdit::Normal, QString(), &ok);
-        NoteManager::Iterator it= NoteManager::getInstance().getIterator();
-        while((it.current().getId() != id) && !it.isDone()) it.next();
-        if(it.isDone()) throw NotesException("Note non existante");
-        else if(it.current().getActive() && !it.current().getStatutSupp()) throw NotesException("Note deja active");
-        else if(it.current().getStatutSupp())
-        {
-            it.current().changeSupp();
-            NoteList->addItem(id);
-         }
-        else //note archivee
-        {
-            it.current().setActive();
-            NoteList->addItem(id);
+    NoteManager::Iterator it= NoteManager::getInstance().getIterator();
+    while((it.current().getId() != id) && !it.isDone()) it.next();
+    if(it.isDone()) throw NotesException("Note non existante");
+    else if(it.current().getActive() && !it.current().getStatutSupp()) throw NotesException("Note deja active");
+    else if(it.current().getStatutSupp())
+    {
+        it.current().changeSupp();
+        NoteList->addItem(id);
+    }
+    else //note archivee
+    {
+        it.current().setActive();
+        NoteList->addItem(id);
 
-            QList<QListWidgetItem*> temp=NoteListArchive->findItems(id,0);
-            QStringList stringList;
-            foreach( QListWidgetItem *item, temp )
-                stringList << item->text();
-            QListWidget ui;
-            ui.addItems(stringList);
-            unsigned int row=0;
-            while(ui.item(row)->text()!=id) {row++;}
-            QListWidgetItem* i= NoteListArchive->item(row);//trouver moyen de recuperer le QListWidgetItem grace a l'id;
-            delete i;
-        }
+        QList<QListWidgetItem*> temp=NoteListArchive->findItems(id,0);
+        QStringList stringList;
+        foreach( QListWidgetItem *item, temp )
+            stringList << item->text();
+        QListWidget ui;
+        ui.addItems(stringList);
+        unsigned int row=0;
+        while(ui.item(row)->text()!=id) 
+            row++;
+        QListWidgetItem* i= NoteListArchive->item(row);//trouver moyen de recuperer le QListWidgetItem grace a l'id;
+        delete i;
+    }
 }
 
 void MainWindow::fenRelation()

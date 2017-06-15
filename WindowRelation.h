@@ -25,7 +25,7 @@
  */
 class WindowRelation : public QMainWindow //public QTabWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
     QWidget *zoneCentraleRel;
     QDockWidget *zoneGaucheRel;
@@ -42,11 +42,9 @@ class WindowRelation : public QMainWindow //public QTabWidget
     QPushButton *boutonSupprimerCouple;
     QPushButton *boutonQuitter;
 
-    //QFormLayout *layoutRel;
     QVBoxLayout* layoutPrincipalRel;
-    //QHBoxLayout* layoutBouttons;
 
-    public:
+public:
     /**
          * @brief constructeur de WindowRelation
          * @param parent qui prend le widget parent (la fenetre mainwindow dans notre cas)
@@ -94,14 +92,7 @@ class WindowRelation : public QMainWindow //public QTabWidget
          * @brief slot supprimerCouple
          * supprime un couple à la relation actuellement affichée en zone centrale
          */
-        void supprimerCouple();
-
-
-
-    private:
-        //(...)
-
-
+        void supprimerCouple()
 };
 
 

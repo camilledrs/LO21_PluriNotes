@@ -34,9 +34,8 @@ public :
      */
     Version(QDateTime d):date(d){}
     /**
-     * @brief destructeur virtuel pur de ~Version
+     * @brief destructeur virtuel de ~Version
      */
-    //virtual ~Version()=0;
     ~Version(){}
     /**
      * @brief methode save
@@ -100,7 +99,7 @@ public:
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const 
+    void save(QFile* f) const
     {
         QXmlStreamWriter stream(f);
         stream.writeStartElement("article");
@@ -161,8 +160,8 @@ class Tache : public Version
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const 
-    {   
+    void save(QFile* f) const
+    {
         QXmlStreamWriter stream(f);
         stream.writeStartElement("tache");
         stream.writeTextElement("date version",getDate().toString());
@@ -200,7 +199,7 @@ public :
      * @brief accesseur getStatut
      * @return un objet de type enum Statut
      */
-    std::string getStatut() 
+    std::string getStatut()
     {
         switch(statut){
             case EnAttente :
@@ -277,7 +276,7 @@ class Multimedia : public Version
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
      */
-    void save(QFile* f) const 
+    void save(QFile* f) const
     {
         QXmlStreamWriter stream(f);
         stream.writeStartElement("multimedia");
@@ -314,7 +313,7 @@ public :
      * @brief accesseur getType
      * @return un string correspondant au type de multimedia
      */
-    std::string getType() 
+    std::string getType()
     {
         switch(type){
                            case image : return "image";
@@ -330,7 +329,7 @@ public :
      * @brief methode virtuelle afficher
      * @return un QString composé de la description, du nom de fichier et du type du Multimedia
      */
-    QString afficher() const 
+    QString afficher() const
     {
         std::stringstream s;
         s<<"Description : "<<this->clone()->getDescription().toStdString()<<"\n";

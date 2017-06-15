@@ -37,12 +37,12 @@ class RelationManager
      * @brief constructeur de recopie de RelationManager
      * en privé car on ne veut pas qu'il puisse être utilisé
      */
-    RelationManager(const RelationManager& m){}
+    RelationManager(const RelationManager& m);
     /**
      * @brief operateur d'affectation de RelationManager
      * en privé car on ne veut pas qu'il puisse être utilisé
      */
-    RelationManager& operator=(const RelationManager& m){}
+    RelationManager& operator=(const RelationManager& m);
 
 
 public :
@@ -135,6 +135,11 @@ public :
      */
     static void free_instance(){if (managR) delete managR;}
     /**
+     * @brief methode getNbRelations
+     * @return le nombre de relation dans RelationManager
+     */
+    int getNbRelations(){return nbRelations;}
+    /**
      * @brief methode getRef
      * @return un pointeur sur la relation spéciale Reference
      */
@@ -153,6 +158,7 @@ public :
      * @brief telecharge les relations depuis un fichier xml
      */
     void load();
+
 };
 
 

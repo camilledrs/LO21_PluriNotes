@@ -95,17 +95,16 @@ public:
      * @return un objet pointeur d'Article cloné de l'article
      */
     Article* clone()const{return new Article(*this);}
-    /**
+     /**
      * @brief methode save
-     * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
+     *  @param stream pour ecrire dans le fichier xml
      */
-    void save(QFile* f) const
-    {
-        QXmlStreamWriter stream(f);
-        stream.writeStartElement("article");
-        stream.writeTextElement("date version",getDate().toString());
-        stream.writeTextElement("texte",texte );
-    }
+    void save(QXmlStreamWriter &stream) const {
+                               stream.writeStartElement("article");
+                               stream.writeTextElement("dateVersion",getDate().toString());
+                               stream.writeTextElement("texte",texte );
+                              }
+
 
     /**
      * @brief methode virtuelle afficher
@@ -156,20 +155,18 @@ class Tache : public Version
      * @return un pointeur de Tache sur le clone de la tache
      */
     Tache* clone()const{return new Tache(*this);}//a voir si prive ou public
-    /**
+   /**
      * @brief methode save
-     * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
+     *  @param stream pour ecrire dans le fichier xml
      */
-    void save(QFile* f) const
-    {
-        QXmlStreamWriter stream(f);
-        stream.writeStartElement("tache");
-        stream.writeTextElement("date version",getDate().toString());
-        stream.writeTextElement("action",action );
-        stream.writeTextElement("statut",QString::number(statut));
-        stream.writeTextElement("date tache",dateTache.toString() );
-        stream.writeTextElement("priorite",QString::number(priorite) );
-  }
+    void save(QXmlStreamWriter &stream) const {
+                                   stream.writeStartElement("tache");
+                                   stream.writeTextElement("dateVersion",getDate().toString());
+                                   stream.writeTextElement("action",action );
+                                   stream.writeTextElement("statut",QString::number(statut));
+                                   stream.writeTextElement("dateTache",dateTache.toString() );
+                                   stream.writeTextElement("priorite",QString::number(priorite) );
+                              }
 
 public :
     /**
@@ -272,19 +269,17 @@ class Multimedia : public Version
      * @return un pointeur sur un objet Multimedia, cloné sur l'actuel
      */
     Multimedia* clone()const{return new Multimedia(*this);}
-    /**
+   /**
      * @brief methode save
-     * @param l'adresse d'un QFile, fichier ou on va sauvegarder les versions
+     *  @param stream pour ecrire dans le fichier xml
      */
-    void save(QFile* f) const
-    {
-        QXmlStreamWriter stream(f);
-        stream.writeStartElement("multimedia");
-        stream.writeTextElement("date version",getDate().toString());
-        stream.writeTextElement("description",description );
-        stream.writeTextElement("fichier",fichier );
-        stream.writeTextElement("type",QString::number(type) );
-   }
+    void save(QXmlStreamWriter &stream) const {
+                                   stream.writeStartElement("multimedia");
+                                   stream.writeTextElement("dateVersion",getDate().toString());
+                                   stream.writeTextElement("description",description );
+                                   stream.writeTextElement("fichier",fichier );
+                                   stream.writeTextElement("type",QString::number(type) );
+                              }
 
 public :
     /**

@@ -32,7 +32,7 @@ class Couple //Class car on veut tout en privé
     //! \return un poiteur sur la note 2
     Note* getNote2(){return note2;}
     //! acceseur pour permettre d'obtenir l'ID de la note 1
-    //! \return le label'ID de la première note du couple
+    //! \return le l'ID de la première note du couple
     QString getIdNote1()const {return note1->getId();}
     //! acceseur pour permettre d'obtenir l'ID de la note 2
     //! \return le l'ID de la deuxième note du couple
@@ -47,15 +47,15 @@ class Couple //Class car on veut tout en privé
     Couple(Note& n1, Note& n2, int l):label(l), note1(&n1), note2(&n2) {}
    //! un destructeur, qui libère l'espace mémoire alloué aux deux pointeurs de note
     ~Couple(){}
-     /**
+    /**
      * @brief methode save
-     * @param stream pour ecrire  les couples dans le fichier xml
+     * @param l'adresse d'un QFile, fichier ou on va sauvegarder les couples
      */
-    void save(QXmlStreamWriter &stream) const {
+    void save(QFile* f) const {    QXmlStreamWriter stream(f);
                                    stream.writeStartElement("couple");
                                    stream.writeTextElement("label",QString::number(label));
-                                   stream.writeTextElement("idNote1",getIdNote1() );
-                                   stream.writeTextElement("idNote2",getIdNote2());
+                                   stream.writeTextElement("id note1",getIdNote1() );
+                                   stream.writeTextElement("id note 2",getIdNote2());
                                    stream.writeEndElement();
 
                               }

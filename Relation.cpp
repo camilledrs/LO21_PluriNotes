@@ -39,7 +39,8 @@ void Relation::addCouple(Note &n1, Note &n2, int l)  //verifier ici qu'on veut l
 {
 
     for(unsigned int i=0; i<nb; i++)
-        if (tab[i]->getLabel()==l) throw NoteException("error, creation of an already existent note");
+        if (tab[i]->getLabel()==l) 
+            throw NoteException("error, creation of an already existent note");
     if (nb==max)
     {
         Couple** newtab= new Couple*[max+5];
@@ -47,10 +48,10 @@ void Relation::addCouple(Note &n1, Note &n2, int l)  //verifier ici qu'on veut l
         Couple** old=tab;
         tab=newtab;
         max+=5;
-        if (old) delete[] old;
+        if (old) delete[] 
+            old;
     }
     tab[nb++]= new Couple(n1, n2, l);
-
 }
 
 
@@ -84,9 +85,7 @@ void Relation::suppCouple(Couple& c)
                 tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
                 nb--;
                 if (i>inij)  //on a décalé du coup, et le i initial doit être décrémenté de 1 si on veut accéder au bon couple
-                {
                     i--;
-                }
             }
         }
         //maitenant on supprime le couple (x,y)
@@ -106,10 +105,7 @@ void Relation::suppCouple(Couple& c)
                 QMessageBox::StandardButton reponse;
                 reponse=QMessageBox::question(0,"Supprimer de note", "La note " + note1->getId() + " est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
                 if(reponse == QMessageBox::Yes)
-                //{
-                    //MainWindow::supprimerNoteListe(note1->getId());
                     delete note1;
-                //}
                 // fait apparaitre une fenêtre de dialogue avec l’utilisateur
             }
         }
@@ -144,7 +140,6 @@ QString Relation::SeeRelation()
             it++;
         } while(it!=it_end);
     }
-
     return (QString::fromStdString(s.str()));
 }
 
@@ -153,36 +148,15 @@ void Relation::editer(QString& t, QString& d)
     setTitre(t);
     setDesc(d);
 }
-/*void Relation::editer()
-{
-    unsigned int rep;
-    std::string titre, desc;
-    std::cout<<"changer titre ? 1 pour oui\n";
-    std::cin>>rep;
-    if (rep==1)
-    {
-        std::cout<<"donner le titre voulu\n";
-        std::cin>>titre;
-        setTitre(QString::fromStdString(titre));
-    }
-    std::cout<<"changer la description\n";
-    std::cin>>rep;
-    if(rep==1)
-    {
-        std::cout<<"donner la nouvelle description \n";
-        std::cin>>desc;
-        setDesc(QString::fromStdString(desc));
-    }
-}*/
 
-void Relation::save(QFile *f) const{
+void Relation::save(QFile *f) const
+{
     QXmlStreamWriter stream(f);
     stream.writeTextElement("titre",titre );
     stream.writeTextElement("description",description );
     stream.writeTextElement("orientee",QString::number(orientee) );
     stream.writeTextElement("nbCouple",QString::number(nb) );
     stream.writeTextElement("nbMaxCouple",QString::number(max));
-    for(unsigned int j=0; j<nb; j++){
+    for(unsigned int j=0; j<nb; j++)
         tab[j]->save(f);
-    }
 };

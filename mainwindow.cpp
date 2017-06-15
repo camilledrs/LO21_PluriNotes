@@ -250,7 +250,12 @@ void MainWindow::afficherNote(QListWidgetItem* item)
     dateModifNote->setDateTime(n.getDateModif());
     contenuNote->setText(n.getDerniereVersion().afficher());
     if (!n.getActive())
+    {
         editer->setEnabled(false);
+        restaurerVersion->setEnabled(false);
+    }
+    else
+        editer->setEnabled(true);
 }
 
 void MainWindow::afficherNote(QString id)
@@ -264,7 +269,12 @@ void MainWindow::afficherNote(QString id)
     dateModifNote->setDateTime(n.getDateModif());
     contenuNote->setText(n.getDerniereVersion().afficher());
     if (!n.getActive())
+    {
         editer->setEnabled(false);
+        restaurerVersion->setEnabled(false);
+    }
+    else
+        editer->setEnabled(true);
 }
 
 void MainWindow::afficherNote(QTreeWidgetItem* item)
@@ -284,6 +294,8 @@ void MainWindow::afficherNote(QTreeWidgetItem* item)
         editer->setEnabled(false);
         restaurerVersion->setEnabled(false);
     }
+    else
+        editer->setEnabled(true);
 }
 
 void MainWindow::arborescencefils(QListWidgetItem *item)

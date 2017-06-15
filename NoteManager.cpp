@@ -165,33 +165,43 @@ void NoteManager::editer(Note* n, QString title, QDateTime modif, const Version&
 }
 
 
-void NoteManager::save() const 
-{
-    QFile newfile("notes.xml");
+
+void NoteManager::save() const {
+
+    QFile newfile(filename);
     if (!newfile.open(QIODevice::WriteOnly | QIODevice::Text))
-        throw NotesException(QString("erreur sauvegarde notes : ouverture fichier xml"));
+    {
+                //QMessageBox::information(this,"Fichier de sauvegarde non trouvé, impossible de sauvegarder");
+               emit NotesException(QString("Fichier de sauvegarde non trouvé, impossible de sauvegarder"));
+               return;
+
+    }
+
+
     QXmlStreamWriter stream(&newfile);
     stream.setAutoFormatting(true);
     stream.writeStartDocument();
-    stream.writeStartElement("notes");
-    for(unsigned int i=0; i<nbNotes; i++)
-    {
+    stream.writeStartElement("Save");
+    for(unsigned int i=0; i<nbNotes; i++){
         stream.writeStartElement("note");
         stream.writeTextElement("id",notes[i]->getId());
         stream.writeTextElement("title",notes[i]->getTitre());
-        stream.writeTextElement("date crea",notes[i]->getDate().toString());
-        stream.writeTextElement("date modif",notes[i]->getDateModif().toString());
+        stream.writeTextElement("dateCrea",notes[i]->getDate().toString());
+        stream.writeTextElement("dateModif",notes[i]->getDateModif().toString());
         stream.writeTextElement("active",QString::number(notes[i]->getActive()));
         stream.writeTextElement("supprime",QString::number(notes[i]->getStatutSupp()));
-        stream.writeTextElement("nb version",QString::number(notes[i]->getNbVersion()));
-        stream.writeTextElement("nb max version",QString::number(notes[i]->getNbMaxVersion()));
-        for(unsigned int j=0; j<notes[i]->getNbVersion(); j++)
-        {
-            notes[i]->versions[j]->save(&newfile);
+        stream.writeTextElement("nbVersion",QString::number(notes[i]->getNbVersion()));
+        stream.writeTextElement("nbMaxVersion",QString::number(notes[i]->getNbMaxVersion()));
+        for(unsigned int j=0; j<notes[i]->getNbVersion(); j++){
+            notes[i]->versions[j]->save(stream);
              stream.writeEndElement();
         }
         stream.writeEndElement();
     }
+    // On sauvegarde toutes les relations à la fin du fichier
+       RelationManager& instance = RelationManager::getInstance();
+       instance.save(stream);
+
     stream.writeEndElement();
     stream.writeEndDocument();
     newfile.close();
@@ -199,7 +209,7 @@ void NoteManager::save() const
 
 /*
 void NoteManager::load() {
-    QFile fin("notes.xml");
+    QFile fin(filename);
     // If we can't open it, let's show an error message.
     if (!fin.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw NotesException("Erreur ouverture fichier notes");
@@ -216,10 +226,11 @@ void NoteManager::load() {
         // If token is StartElement, we'll see if we can read it.
         if(token == QXmlStreamReader::StartElement) {
             // If it's named taches, we'll go to the next.
-            if(xml.name() == "notes") continue;
+            if(xml.name() == "Save") continue;
             // If it's named tache, we'll dig the information from there.
             if(xml.name() == "note") {
                 qDebug()<<"new note\n";
+
                 QString identificateur;
                 QString titre;
                 QDateTime dateC;
@@ -229,6 +240,7 @@ void NoteManager::load() {
                 Version** v= new  Version*[1];
                 unsigned int nbV;
                 unsigned int nbMV;
+                Note* n;
                 QXmlStreamAttributes attributes = xml.attributes();
                 xml.readNext();
                 //We're going to loop over the things because the order might change.
@@ -246,13 +258,13 @@ void NoteManager::load() {
                             qDebug()<<"titre="<<titre<<"\n";
                         }
                         // We've found datecrea
-                        if(xml.name() == "date crea") {
+                        if(xml.name() == "dateCrea") {
                             xml.readNext();
                             dateC.fromString(xml.text().toString());
                             qDebug()<<"dateCrea="<<dateC<<"\n";
                         }
                         // We've found datemodif
-                        if(xml.name() == "date modif") {
+                        if(xml.name() == "dateModif") {
                             xml.readNext();
                             dateMod.fromString(xml.text().toString());
                             qDebug()<<"dateModif="<<dateMod<<"\n";
@@ -270,17 +282,18 @@ void NoteManager::load() {
                             qDebug()<<"supprime="<<supp<<"\n";
                         }
                         // We've found nbVersion
-                        if(xml.name() == "nb version") {
+                        if(xml.name() == "nbVersion") {
                             xml.readNext();
                             nbV=(xml.text().toString()).toInt();
                             qDebug()<<"nbVersion="<<nbV<<"\n";
                         }
                         // We've found nbMaxVersion
-                        if(xml.name() == "nb max version") {
+                        if(xml.name() == "nbMaxVersion") {
                             xml.readNext();
                             nbMV=(xml.text().toString()).toInt();
                             qDebug()<<"nbMaxVersion="<<nbMV<<"\n";
                         }
+                        n=new Note(identificateur,titre, dateC, dateMod,act,supp);
                          if(xml.name() == "article") {
                              qDebug()<<"new article\n";
                              QDateTime dateV;
@@ -290,7 +303,7 @@ void NoteManager::load() {
                              while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "article")) {
                              if(xml.tokenType() == QXmlStreamReader::StartElement) {
                                 // We've found dateversion
-                            if(xml.name() == "date version") {
+                            if(xml.name() == "dateVersion") {
                                 xml.readNext();
                                 dateV.fromString(xml.text().toString());
                                 qDebug()<<"date="<<dateV<<"\n";
@@ -305,14 +318,107 @@ void NoteManager::load() {
                              xml.readNext();
                          }
                              qDebug()<<"ajout version "<<dateV<<"\n";
-                             editer()
+                             n->editer(titre,dateV,Article(dateV,texte));
                          }
+
+                         if(xml.name()=="tache"){
+                             qDebug()<<"new tache\n";
+                             QDateTime dateV;
+                             QString action;
+                             QDateTime dateT;
+                             unsigned int priority;
+                             unsigned int s;
+                             QXmlStreamAttributes attributesV = xml.attributes();
+                             xml.readNext();
+                             while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "tache")) {
+                             if(xml.tokenType() == QXmlStreamReader::StartElement) {
+                                // We've found dateversion
+                            if(xml.name() == "dateVersion") {
+                                xml.readNext();
+                                dateV.fromString(xml.text().toString());
+                                qDebug()<<"date="<<dateV<<"\n";
+                        }
+                        // We've found texte article
+                        if(xml.name() == "action") {
+                            xml.readNext();
+                            action=xml.text().toString();
+                            qDebug()<<"action="<<action<<"\n";
+                        }
+                        if(xml.name() == "dateTache") {
+                            xml.readNext();
+                            dateT.fromString(xml.text().toString());
+                            qDebug()<<"date tache="<<dateT<<"\n";
+                        }
+                        if(xml.name() == "priorite") {
+                            xml.readNext();
+                            priority=(xml.text().toString()).toInt();
+                            qDebug()<<"priorite="<<priority<<"\n";
+                        }
+                        if(xml.name() == "Statut") {
+                            xml.readNext();
+                            s=(xml.text().toString()).toInt();
+                            qDebug()<<"statut="<<s<<"\n";
+                        }
+                         }
+                             xml.readNext();
+                         }
+                             qDebug()<<"ajout version "<<dateV<<"\n";
+                             //Tache* t= new Tache(dateV,action,dateT,priority);
+                             //t->setStatut(static_cast<Statut>(s));
+                             n->editer(titre,dateV, Tache(dateV,action,dateT,priority));
+
+                         }
+
+                         if(xml.name()=="multimedia"){
+                             qDebug()<<"new tache\n";
+                             QDateTime dateV;
+                             QString description;
+                             QString fichier;
+                             unsigned int type;
+
+                             QXmlStreamAttributes attributesV = xml.attributes();
+                             xml.readNext();
+                             while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "tache")) {
+                             if(xml.tokenType() == QXmlStreamReader::StartElement) {
+                                // We've found dateversion
+                            if(xml.name() == "dateVersion") {
+                                xml.readNext();
+                                dateV.fromString(xml.text().toString());
+                                qDebug()<<"date="<<dateV<<"\n";
+                        }
+                        // We've found texte article
+                        if(xml.name() == "description") {
+                            xml.readNext();
+                            description=xml.text().toString();
+                            qDebug()<<"description="<<description<<"\n";
+                        }
+                        if(xml.name() == "fichier") {
+                            xml.readNext();
+                            fichier=xml.text().toString();
+                            qDebug()<<"fichier="<<fichier<<"\n";
+                        }
+                        if(xml.name() == "type") {
+                            xml.readNext();
+                            type=(xml.text().toString()).toInt();
+                            qDebug()<<"type="<<type<<"\n";
+                        }
+
+                         }
+                             xml.readNext();
+                         }
+                             qDebug()<<"ajout version "<<dateV<<"\n";
+                             //Tache* t= new Tache(dateV,action,dateT,priority);
+                             //t->setStatut(static_cast<Statut>(s));
+                             n->editer(titre,dateV, Multimedia(dateV,description,fichier,static_cast<Media>(type)));
+
+                         }
+
                     }
                     // ...and next...
                     xml.readNext();
                 }
                 qDebug()<<"ajout note "<<identificateur<<"\n";
-                addNoteXML(identificateur,titre,dateC,dateMod,act,supp,nbV,nbMV,v);
+                addNoteXML(n);
             }
         }
     }

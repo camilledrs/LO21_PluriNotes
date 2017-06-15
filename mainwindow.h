@@ -35,38 +35,38 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    QWidget *zoneCentrale;
-    QDockWidget *zoneGauche;
-    QDockWidget *zoneDroite;
+    QWidget *zoneCentrale; /**< widget de la zone centrale */
+    QDockWidget *zoneGauche;  /**< dock gauche */
+    QDockWidget *zoneDroite; /**< Dock droit */
 
-    QLineEdit *idNote;
-    QLineEdit *titreNote;
-    QDateTimeEdit *dateCreaNote;
-    QDateTimeEdit *dateModifNote;
-    QTextEdit *contenuNote;
+    QLineEdit *idNote;   /**< Line edit pour l'id de la note */
+    QLineEdit *titreNote;  /**< Line edit pour le titre de la note */
+    QDateTimeEdit *dateCreaNote;  /**< DateTime edit pour la date de création de la note */
+    QDateTimeEdit *dateModifNote;  /**< DateTime edit pour la date de derniere modification de la note */
+    QTextEdit *contenuNote;  /**< Texte edit pour l'ensemble des caractéristiques de la note */
 
-    QLabel *NoteList_l;
-    QLabel *TacheList_l;
-    QLabel *NoteListArchive_l;
-    QListWidget *NoteList;
-    QListWidget *TacheList;
-    QListWidget *NoteListArchive;
-    QTreeWidget *NoteAbrFils;
-    QTreeWidget *NoteAbrPeres;
+    QLabel *NoteList_l;   /**< Titre de la liste des notes */
+    QLabel *TacheList_l;  /**< Titre de la liste des taches */
+    QLabel *NoteListArchive_l;  /**< Titre de la liste des notes archivées */
+    QListWidget *NoteList;  /**< liste des notes */
+    QListWidget *TacheList;  /**< liste des taches */
+    QListWidget *NoteListArchive;  /**< liste des notes archivees */
+    QTreeWidget *NoteAbrFils;  /**< arbre des successeurs */
+    QTreeWidget *NoteAbrPeres;  /**< arbre des prédecesseurs */
 
-    QPushButton *enregistrer;
+    QPushButton *enregistrer;  /**< bouton enregistrer */
 
-    QPushButton *creer;
-    QPushButton *supprimer;
-    QPushButton *editer;
-    QPushButton *restaurer;
-    QPushButton *boutonQuitter;
-    QPushButton *restaurerVersion;
+    QPushButton *creer;   /**< bouton creer */
+    QPushButton *supprimer;   /**< bouton supprimer */
+    QPushButton *editer;   /**< bouton editer */
+    QPushButton *restaurer;   /**< bouton restaurer */
+    QPushButton *boutonQuitter;   /**< bouton quitter */
+    QPushButton *restaurerVersion;   /**< bouton restaurer version */
 
-    QFormLayout *layoutAffich;
-    QVBoxLayout *layoutAffichage;
-    QVBoxLayout *layoutList;
-    QVBoxLayout *layoutPrincipal;
+    QFormLayout *layoutAffich;    /**< Layout pour l'affichage d'une note */
+    QVBoxLayout *layoutAffichage;  /**< Layout vertical pour l'affichage d'une note */
+    QVBoxLayout *layoutList;  /**< Layout vertical pour l'affichage des listes */
+    QVBoxLayout *layoutPrincipal;  /**< Layout vertical pour l'affichage de toute la fenêtre principale */
 
 public:
     /**
@@ -116,7 +116,7 @@ public slots:
     void quitter();
     /**
      * @brief slot afficherNote
-     * affiche la vesrion sélectionnée depuis les liste à gauche
+     * affiche la note sélectionnée depuis les liste à gauche
      */
     void afficherNote(QListWidgetItem* item);
     /**

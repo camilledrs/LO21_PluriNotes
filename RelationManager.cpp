@@ -1,283 +1,162 @@
-#include "RelationManager.h"
+#include "relation.h"
+#include <ctime>
+#include <QString>
 #include "Relation.h"
+#include "Couple.h"
+#include "NoteManager.h"
+#include <iostream>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QMessageBox>
 
-RelationManager* RelationManager::managR = new RelationManager();
 
-void RelationManager::addRelation(QString& t, QString& d, bool orient)
+Relation::Relation(Relation& r):tab(new Couple*[r.max]),nb(r.nb), max(r.max), titre(r.titre), description(r.description), orientee(r.orientee)
 {
-    //check si on veut ajouter une relation comme reference
-
-    if(t==RelationManager::getInstance().getRef()->getTitre())
-        throw RelationException("error, Reference already exist");
-    for(unsigned int i=1; i<nbRelations; i++)
-    {
-        if (relations[i]->getTitre()==t)
-            throw RelationException("error, creation of an already existent Relation");
-    }
-    if (nbRelations==nbMaxRelations)
-    {
-        Relation** newRelations= new Relation*[nbMaxRelations+5];
-        for(unsigned int i=0; i<nbRelations; i++) newRelations[i]=relations[i];
-        Relation** oldRelations=relations;
-        relations=newRelations;
-        nbMaxRelations+=5;
-        if (oldRelations) delete[] oldRelations;
-    }
-    relations[nbRelations++]=new Relation(t, d, orient);
+    for(unsigned int i=0; i<nb; i++) tab[i]=r.tab[i];
 }
 
 
-void RelationManager::suppRelation(Relation& r)
+Relation& Relation::operator=(Relation& r)
 {
-    if(&r != RelationManager::getInstance().getRef())
+    if(this!=&r)
     {
-        unsigned int i=0;
-        while(i<nbRelations && relations[i]->getTitre()!=r.getTitre())
-            i++;
-        if (i==nbRelations)
-            throw RelationException("error, Relation to delete doesn't exist");
-        else
-        {
-            for(unsigned int k=0; k<r.getnb(); k++)  //on supprime tous les couples de la relation à supprimer
-                delete r.tab[k];
-            Relation* tmp=relations[i];
-            for (unsigned int j=0; j<nbRelations-1; j++)  //on décale les relations dans le tableau pour ne pas laisser de trou
-                relations[j]=relations[j+1];
-            delete relations[i];  //on supprime l'espace alloué à la relation
-        }
+        nb=r.nb;
+        max=r.max;
+        titre=r.titre;
+        description=r.description;
+        orientee=r.orientee;
+        Couple** newtab=new Couple*[max];
+        for(unsigned int i=0; i<nb; i++) newtab[i]=r.tab[i];
+        delete[] tab;
+        tab=newtab;
     }
+    return *this;
+}
+
+
+
+void Relation::addCouple(Note &n1, Note &n2, int l)  //verifier ici qu'on veut la dernière version ?
+{
+
+    for(unsigned int i=0; i<nb; i++)
+        if (tab[i]->getLabel()==l)
+            throw NoteException("error, creation of an already existent note");
+    if (nb==max)
+    {
+        Couple** newtab= new Couple*[max+5];
+        for(unsigned int i=0; i<nb; i++) newtab[i]=tab[i];
+        Couple** old=tab;
+        tab=newtab;
+        max+=5;
+        if (old) delete[]
+            old;
+    }
+    tab[nb++]= new Couple(n1, n2, l);
+}
+
+
+void Relation::suppCouple(Couple& c)
+{
+    unsigned int i=0;
+    while(i<nb && tab[i]->getLabel()!=c.getLabel())
+        i++;
+    if (i==nb)
+        throw NoteException("error, the item doesn't exist");
     else
-        throw RelationException("error, Reference can't be deleted");
-}
-
-bool RelationManager::verifNoteRef(const Note* n)  //renvoie true si la note est encore couplée dans une des relations, false sinon (dans ce cas on peut proposer de la supprimer
-{
-    RelationManager::Iterator it=getIterator();
-    while(!it.isDone())  //on parcours l'ensemble des relations
-          {
-              Relation curr=it.current();
-              Relation::const_iterator itr=curr.begin();
-              Relation::const_iterator end=curr.end();
-              while (itr!=end && const_cast<Couple*>(itr.elementCourant())->getIdNote1()!=const_cast<Note*>(n)->getId() && const_cast<Couple*>(itr.elementCourant())->getIdNote2() != const_cast<Note*>(n)->getId())
-                  itr++;
-              if (itr!=end) return true; //la note est bien relationnée ailleurs
-              it.next();  //sinon on passe à la prochaine relation
-          }
-    return false;  //on a pas trouvé de couple avec n
-}
-
-void RelationManager::save(QXmlStreamWriter &stream) const {
-
-    for(unsigned int i=0; i<nbRelations; i++){
-        stream.writeStartElement("relation");
-        relations[i]->save(stream);
-     stream.writeEndElement();
-    }
-        stream.writeStartElement("refrence");
-        RelationManager::getInstance().getRef()->save(stream);
-        stream.writeEndElement();
-
-
-}
-
-/*
-void RelationManager::load() {
-    QFile fin("plurinotes.xml");
-    // If we can't open it, let's show an error message.
-    if (!fin.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return;
-    }
-    // QXmlStreamReader takes any QIODevice.
-    QXmlStreamReader xml(&fin);
-    //qDebug()<<"debut fichier\n";
-    // We'll parse the XML until we reach end of it.
-    while(!xml.atEnd() && !xml.hasError()) {
-        // Read next element.
-        QXmlStreamReader::TokenType token = xml.readNext();
-        // If token is just StartDocument, we'll go to next.
-        if(token == QXmlStreamReader::StartDocument) continue;
-        // If token is StartElement, we'll see if we can read it.
-        if(token == QXmlStreamReader::StartElement) {
-            // If it's named taches, we'll go to the next.
-            if(xml.name() == "Save") continue;
-            // If it's named tache, we'll dig the information from there.
-            if(xml.name() == "relation") {
-                qDebug()<<"new relation\n";
-                QString titre;
-                QString description;
-                bool orientee;
-                unsigned int nbc;
-                unsigned int nbcmax;
-                Couple** c;
-                Relation *r;
-                QXmlStreamAttributes attributes = xml.attributes();
-                xml.readNext();
-                //We're going to loop over the things because the order might change.
-                //We'll continue the loop until we hit an EndElement named article.
-                while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "relation")) {
-                    if(xml.tokenType() == QXmlStreamReader::StartElement) {
-                        // We've found identificteur.
-                        if(xml.name() == "titre") {
-                            xml.readNext(); titre=xml.text().toString();
-                            qDebug()<<"titre="<<titre<<"\n";
-                        }
-                        // We've found description.
-                        if(xml.name() == "description") {
-                            xml.readNext(); description=xml.text().toString();
-                            qDebug()<<"descritpion="<<description<<"\n";
-                        }
-                        // We've found orientee
-                        if(xml.name() == "orientee") {
-                            xml.readNext();
-                            orientee=(xml.text().toString()).toInt();
-                            qDebug()<<"orientee="<<orientee<<"\n";}
-                        // We've found nbCouple
-                        if(xml.name() == "nbCouple") {
-                            xml.readNext();
-                            nbc=(xml.text().toString()).toInt();
-                            qDebug()<<"nb="<<nbc<<"\n";
-                        }
-                        // We've found nbMaxVersion
-                        if(xml.name() == "nbMaxCouple") {
-                            xml.readNext();
-                            nbcmax=(xml.text().toString()).toInt();
-                            qDebug()<<"max="<<nbcmax<<"\n";
-                        }
-                        r=new Relation(titre,description,orientee);
-
-                                if(xml.name() == "couple") {
-                                    qDebug()<<"new couple\n";
-                                    int label;
-                                    QString idn1;
-                                    QString idn2;
-                                    QXmlStreamAttributes attributesV = xml.attributes();
-                                    xml.readNext();
-                                    while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "couple")) {
-                                    if(xml.tokenType() == QXmlStreamReader::StartElement) {
-                                       // We've found label
-                                   if(xml.name() == "label") {
-                                       xml.readNext();
-                                       label=(xml.text().toString()).toInt();
-                                       qDebug()<<"label="<<label<<"\n";
-                               }
-                               // We've found idnote1
-                               if(xml.name() == "idNote1") {
-                                   xml.readNext();
-                                   idn1=xml.text().toString();
-                                   qDebug()<<"idNote1="<<idn1<<"\n";
-                               }
-                                if(xml.name() == "idNote2") {
-                                    xml.readNext();
-                                    idn2=xml.text().toString();
-                                    qDebug()<<"idNote2="<<idn2<<"\n";
-                                }
-                                }
-                                    xml.readNext();
-                                }
-                                    qDebug()<<"ajout couple "<<label<<"\n";
-                                    //r->addCouple();
-                                }
-
-                    }
-                    // ...and next...
-                    xml.readNext();
+    {
+        Note* note1=c.getNote1();
+        Note* note2=c.getNote2();
+        if(this->getOrient() == false) //besoin de supprimer aussi la relation "miroir" (y,x)
+        {
+            unsigned int j=0;
+            while(j<nb && ((tab[j]->getIdNote1() != note2->getId()) || (tab[j]->getIdNote2()!= note1->getId())))
+                j++;
+            int inij=j;
+            if (j==nb)
+                throw NoteException("error, the mirror item doesn't exist\n");
+            else  //on supprime le couple miroir (y,x)
+            {
+                delete tab[j];
+                while(j<nb-1)
+                {
+                    tab[j]=tab[j+1];
+                    j++;
                 }
-                qDebug()<<"ajout relation "<<titre<<"\n";
-                //addRelation(r);
+                tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
+                nb--;
+                if (i>inij)  //on a décalé du coup, et le i initial doit être décrémenté de 1 si on veut accéder au bon couple
+                    i--;
             }
-            if(xml.name() == "reference") {
-                qDebug()<<"new relation\n";
-                QString titre;
-                QString description;
-                bool orientee;
-                unsigned int nbc;
-                unsigned int nbcmax;
-                Couple** c;
-                Relation *r;
-                QXmlStreamAttributes attributes = xml.attributes();
-                xml.readNext();
-                //We're going to loop over the things because the order might change.
-                //We'll continue the loop until we hit an EndElement named article.
-                while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "relation")) {
-                    if(xml.tokenType() == QXmlStreamReader::StartElement) {
-                        // We've found identificteur.
-                        if(xml.name() == "titre") {
-                            xml.readNext(); titre=xml.text().toString();
-                            qDebug()<<"titre="<<titre<<"\n";
-                        }
-                        // We've found description.
-                        if(xml.name() == "description") {
-                            xml.readNext(); description=xml.text().toString();
-                            qDebug()<<"descritpion="<<description<<"\n";
-                        }
-                        // We've found orientee
-                        if(xml.name() == "orientee") {
-                            xml.readNext();
-                            orientee=(xml.text().toString()).toInt();
-                            qDebug()<<"orientee="<<orientee<<"\n";}
-                        // We've found nbCouple
-                        if(xml.name() == "nbCouple") {
-                            xml.readNext();
-                            nbc=(xml.text().toString()).toInt();
-                            qDebug()<<"nb="<<nbc<<"\n";
-                        }
-                        // We've found nbMaxVersion
-                        if(xml.name() == "nbMaxCouple") {
-                            xml.readNext();
-                            nbcmax=(xml.text().toString()).toInt();
-                            qDebug()<<"max="<<nbcmax<<"\n";
-                        }
-                        r=new Relation(titre,description,orientee);
+        }
+        //maitenant on supprime le couple (x,y)
+        delete tab[i];
+        while(i<nb-1)
+        {
+            tab[i]=tab[i+1];
+            i++;
+        }
+        tab[nb-1]=NULL; //on a décalé, on met l'ancien dernier à NULL vu qu'on diminue la taille du tableau
+        nb--;
 
-                                if(xml.name() == "couple") {
-                                    qDebug()<<"new couple\n";
-                                    int label;
-                                    QString idn1;
-                                    QString idn2;
-                                    QXmlStreamAttributes attributesV = xml.attributes();
-                                    xml.readNext();
-                                    while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "couple")) {
-                                    if(xml.tokenType() == QXmlStreamReader::StartElement) {
-                                       // We've found label
-                                   if(xml.name() == "label") {
-                                       xml.readNext();
-                                       label=(xml.text().toString()).toInt();
-                                       qDebug()<<"label="<<label<<"\n";
-                               }
-                               // We've found idnote1
-                               if(xml.name() == "idNote1") {
-                                   xml.readNext();
-                                   idn1=xml.text().toString();
-                                   qDebug()<<"idNote1="<<idn1<<"\n";
-                               }
-                                if(xml.name() == "idNote2") {
-                                    xml.readNext();
-                                    idn2=xml.text().toString();
-                                    qDebug()<<"idNote2="<<idn2<<"\n";
-                                }
-                                }
-                                    xml.readNext();
-                                }
-                                    qDebug()<<"ajout couple "<<label<<"\n";
-                                    //r->addCouple();
-                                }
-
-                    }
-                    // ...and next...
-                    xml.readNext();
-                }
-                qDebug()<<"ajout reference "<<titre<<"\n";
-                Reference=r;
+        if (note1->getActive() == false)
+        {
+            if(!RelationManager::getInstance().verifNoteRef(note1)) //la note n'est plus en couple nulle part
+            {
+                QMessageBox::StandardButton reponse;
+                reponse=QMessageBox::question(0,"Supprimer de note", "La note " + note1->getId() + " est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
+                if(reponse == QMessageBox::Yes)
+                    delete note1;
+                // fait apparaitre une fenêtre de dialogue avec l’utilisateur
+            }
+        }
+        if (note2->getActive() == false)
+        {
+            if(!RelationManager::getInstance().verifNoteRef(note2)) //la note n'est plus en couple nulle part
+            {
+                QMessageBox::StandardButton reponse;
+                reponse=QMessageBox::question(0,"Supprimer de note", "La note " + note2->getId() + "est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
+                if(reponse == QMessageBox::Yes)
+                    delete note2;
+                // fait apparaitre une fenêtre de dialogue avec l’utilisateur
             }
         }
     }
-    // Error handling.
-    if(xml.hasError()) {
-        throw RelationException("Erreur lecteur fichier notes, parser xml");
-    }
-    // Removes any device() or data from the reader * and resets its internal state to the initial state.
-    xml.clear();
-    qDebug()<<"fin load\n";
 }
 
-*/
+
+
+QString Relation::SeeRelation()
+{
+    std::stringstream s;
+    s<<"Orientation : "<<orientee<<"\n";
+    s<<"Couples :";
+    Relation::const_iterator it=begin();
+    Relation::const_iterator it_end=end();
+    if(it!=it_end)
+    {
+        do
+        {
+            s<<"label : "<<const_cast<Couple*>(it.elementCourant())->getLabel()<<"  "<<"note1 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote1().toStdString().c_str()<<"  "<<"note 2 : "<<const_cast<Couple*>(it.elementCourant())->getIdNote2().toStdString().c_str()<<"\n";
+            it++;
+        } while(it!=it_end);
+    }
+    return (QString::fromStdString(s.str()));
+}
+
+void Relation::editer(QString& t, QString& d)
+{
+    setTitre(t);
+    setDesc(d);
+}
+
+void Relation::save(QFile *f) const
+{
+    QXmlStreamWriter stream(f);
+    stream.writeTextElement("titre",titre );
+    stream.writeTextElement("description",description );
+    stream.writeTextElement("orientee",QString::number(orientee) );
+    stream.writeTextElement("nbCouple",QString::number(nb) );
+    stream.writeTextElement("nbMaxCouple",QString::number(max));
+    for(unsigned int j=0; j<nb; j++)
+        tab[j]->save(f);
+};

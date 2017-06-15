@@ -149,14 +149,14 @@ void Relation::editer(QString& t, QString& d)
     setDesc(d);
 }
 
-void Relation::save(QFile *f) const
-{
-    QXmlStreamWriter stream(f);
+void Relation::save(QXmlStreamWriter &stream) const{
+
     stream.writeTextElement("titre",titre );
     stream.writeTextElement("description",description );
     stream.writeTextElement("orientee",QString::number(orientee) );
     stream.writeTextElement("nbCouple",QString::number(nb) );
     stream.writeTextElement("nbMaxCouple",QString::number(max));
-    for(unsigned int j=0; j<nb; j++)
-        tab[j]->save(f);
+    for(unsigned int j=0; j<nb; j++){
+        tab[j]->save(stream);
+    }
 };

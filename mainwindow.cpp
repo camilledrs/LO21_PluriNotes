@@ -271,7 +271,8 @@ void MainWindow::afficherNote(QTreeWidgetItem* item)
 {
     QString id= item->text(0);
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
-    while(it.current().getId() != id) it.next(); //on a trouvé la note
+    while(it.current().getId() != id) //on a trouvé la note
+        it.next();
     Note& n=it.current();
     idNote->setText(id);
     titreNote->setText(n.getTitre());
@@ -341,71 +342,74 @@ void MainWindow::creerNote()
             afficherNote(id);
         }
     }
-
-    if (type == "Tache")
+    else
     {
-        bool ok5=false;
-        bool ok6=false;
-        bool ok7=false;
-
-        QString action = QInputDialog::getText(this, "Action :", "Quelle est l'action de la tache ?", QLineEdit::Normal, QString(), &ok5);
-
-        int anneeFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Annee:"), 2000, 2000, 3000, 1, &ok6);
-        int moisFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Mois:"), 01, 01, 12, 1, &ok6);
-        int jourFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Jour:"), 01, 01, 31, 1, &ok6);
-        int heureFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Heure:"), 01, 01, 24, 1, &ok6);
-        int minuteFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Minute:"), 00, 01, 59, 1, &ok6);
-
-        QString priorite = QInputDialog::getText(this, "Priorité :", "Quelle est la priorité de la tache ? (optionnelle)", QLineEdit::Normal, QString(), &ok7);
-
-        int p=priorite.toInt();
-        if (ok1 && ok2 && ok3 && ok5 && /*ok6 &&*/ ok7 && !id.isEmpty() && !titre.isEmpty() && !action.isEmpty())
+        if (type == "Tache")
         {
+            bool ok5=false;
+            bool ok6=false;
+            bool ok7=false;
 
-            NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action,QDateTime(QDate(anneeFin,moisFin,jourFin),QTime(heureFin,minuteFin)),p));
-            QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
-            NoteList->addItem(id);
-            NoteList->sortItems(Qt::AscendingOrder);
-            TacheList->addItem(id);
-            //TacheList->sortItems(Qt::AscendingOrder); trier par priorite et date echue
-            afficherNote(id);
-        }
-    }
+            QString action = QInputDialog::getText(this, "Action :", "Quelle est l'action de la tache ?", QLineEdit::Normal, QString(), &ok5);
 
-    if (type == "Media")
-    {
-        bool ok8=false;
-        bool ok9=false;
-        bool ok10=false;
+            int anneeFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Annee:"), 2000, 2000, 3000, 1, &ok6);
+            int moisFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Mois:"), 01, 01, 12, 1, &ok6);
+            int jourFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Jour:"), 01, 01, 31, 1, &ok6);
+            int heureFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Heure:"), 01, 01, 24, 1, &ok6);
+            int minuteFin = QInputDialog::getInt(this, tr("Date de fin de tache (optionnelle)"),tr("Minute:"), 00, 01, 59, 1, &ok6);
 
-        QStringList items;
-        items << tr("Image") << tr("Vidéo") << tr("Audio");
+            QString priorite = QInputDialog::getText(this, "Priorité :", "Quelle est la priorité de la tache ? (optionnelle)", QLineEdit::Normal, QString(), &ok7);
 
-        QString typeM = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Type de média:"), items, 0, false, &ok8);
+            int p=priorite.toInt();
+            if (ok1 && ok2 && ok3 && ok5 && /*ok6 &&*/ ok7 && !id.isEmpty() && !titre.isEmpty() && !action.isEmpty())
+            {
 
-        QString description = QInputDialog::getText(this, "Description :", "Quelle description voulez-vous ?", QLineEdit::Normal, QString(), &ok9);
-        QString fichier = QInputDialog::getText(this, "Fichier :", "Quel fichier voulez-vous ? (optionnelle)", QLineEdit::Normal, QString(), &ok10);
-
-        if (ok1 && ok2 && ok3 && ok8 && ok9 && ok10 && !id.isEmpty() && !titre.isEmpty() && !description.isEmpty())
-        {
-            if (typeM == "Image")
-                NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,image));
-            if (typeM == "Vidéo")
-                NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,video));
-            if (typeM == "Audio")
-                NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,audio));
-            QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
-            NoteList->addItem(id);
-            NoteList->sortItems(Qt::AscendingOrder);
-            afficherNote(id);
+                NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Tache(QDateTime::currentDateTime(),action,QDateTime(QDate(anneeFin,moisFin,jourFin),QTime(heureFin,minuteFin)),p));
+                QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
+                NoteList->addItem(id);
+                NoteList->sortItems(Qt::AscendingOrder);
+                TacheList->addItem(id);
+                //TacheList->sortItems(Qt::AscendingOrder); trier par priorite et date echue
+                afficherNote(id);
+            }
         }
         else
-            QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
-    }
-    else
-        QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
-}
+        {
+            if (type == "Media")
+            {
+                bool ok8=false;
+                bool ok9=false;
+                bool ok10=false;
 
+                QStringList items;
+                items << tr("Image") << tr("Vidéo") << tr("Audio");
+
+                QString typeM = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Type de média:"), items, 0, false, &ok8);
+
+                QString description = QInputDialog::getText(this, "Description :", "Quelle description voulez-vous ?", QLineEdit::Normal, QString(), &ok9);
+                QString fichier = QInputDialog::getText(this, "Fichier :", "Quel fichier voulez-vous ? (optionnelle)", QLineEdit::Normal, QString(), &ok10);
+
+                if (ok1 && ok2 && ok3 && ok8 && ok9 && ok10 && !id.isEmpty() && !titre.isEmpty() && !description.isEmpty())
+                {
+                    if (typeM == "Image")
+                        NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,image));
+                    if (typeM == "Vidéo")
+                        NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,video));
+                    if (typeM == "Audio")
+                        NoteManager::getInstance().addNote(id,titre,QDateTime::currentDateTime(),QDateTime::currentDateTime(),Multimedia(QDateTime::currentDateTime(),description,fichier,audio));
+                    QMessageBox::information(this, "Confirmation creation", "La nouvelle note a bien été créée ! ");
+                    NoteList->addItem(id);
+                    NoteList->sortItems(Qt::AscendingOrder);
+                    afficherNote(id);
+                }
+                else
+                    QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
+            }
+            else
+                QMessageBox::critical(this, "Erreur", "Vous avez fait une erreur lors de la saisie");
+        }
+    }
+}
 
 void MainWindow::supprimerNote()
 {

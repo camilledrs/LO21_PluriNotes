@@ -226,3 +226,4 @@ public :
 };
 
 #endif // NOTEMANAGER_H
+  

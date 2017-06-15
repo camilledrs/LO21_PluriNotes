@@ -150,10 +150,11 @@ public :
      * @return true si la note est référencée, false sinon
      */
     bool verifNoteRef(const Note* n);
-     /**
+      /**
      * @brief sauve les relations dans un fichier xml
+     * @param stream pour ecrire dans le fichier xml
      */
-    void save() const;
+    void save(QXmlStreamWriter &stream) const;
     /**
      * @brief telecharge les relations depuis un fichier xml
      */

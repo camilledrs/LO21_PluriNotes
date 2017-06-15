@@ -263,8 +263,9 @@ public :
       */
     ~Relation()
     {
-        for (unsigned int i=0; i<nb; i++) delete tab[i];
-        delete[] tab;
+        for (unsigned int i=0; i<nb; i++)
+            delete tab[i];
+        //delete[] tab;
     }
     /**
      * @brief constructeur pas recopie de Relation
@@ -290,4 +291,3 @@ public :
 
 #endif // RELATION_H
 
- 

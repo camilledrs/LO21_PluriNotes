@@ -104,6 +104,8 @@ public:
      */
     void afficherNote(QString id);
 
+    //void supprimerNoteListe(QString id);
+
 signals:
 
 public slots:

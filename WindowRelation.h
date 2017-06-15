@@ -107,4 +107,3 @@ class WindowRelation : public QMainWindow //public QTabWidget
 
 #endif
 
-  

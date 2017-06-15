@@ -51,14 +51,15 @@ class Couple //Class car on veut tout en privé
      * @brief methode save
      * @param l'adresse d'un QFile, fichier ou on va sauvegarder les couples
      */
-    void save(QFile* f) const {    QXmlStreamWriter stream(f);
-                                   stream.writeStartElement("couple");
-                                   stream.writeTextElement("label",QString::number(label));
-                                   stream.writeTextElement("id note1",getIdNote1() );
-                                   stream.writeTextElement("id note 2",getIdNote2());
-                                   stream.writeEndElement();
-
-                              }
+    void save(QFile* f) const 
+    {    
+        QXmlStreamWriter stream(f);
+        stream.writeStartElement("couple");
+        stream.writeTextElement("label",QString::number(label));
+        stream.writeTextElement("id note1",getIdNote1() );
+        stream.writeTextElement("id note 2",getIdNote2());
+        stream.writeEndElement();
+    }
 };
 
 #endif // COUPLE_H

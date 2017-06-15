@@ -166,4 +166,3 @@ void Note::parent( QTreeWidgetItem* enfant,QSet <Note*> notepresc){
 
 
 }
-  

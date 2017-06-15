@@ -85,6 +85,19 @@ class Note
             versions[i]=v[i]->clone();
         }
     }
+     /**
+     * @brief constructeur de Note
+     * constructeur en privé car on veut que seul NoteManager puisse créer des Notes
+     * @param id de type QString, id de la note à créer
+     * @param title de type QString
+     * @param crea de type QDateTime, date de creation de la note
+     * @param modif de type QDateTime, date de modification de la Note
+     * @param act de type bool, statut active de la note
+     * @param supp de type bool, statut supprime de la Note
+     */
+    Note(QString id, QString title, QDateTime crea,QDateTime modif,bool act, bool supp):id(id), titre(title),dateCrea(crea), dateModif(modif), active(act), supprime(supp), nbVersion(0), nbMaxVersion(5){
+        versions=new Version*[nbMaxVersion];
+    }
     /**
      * @brief methode editer
      * @param tittle de type QString, nouveau titre que l'on souhaite donner

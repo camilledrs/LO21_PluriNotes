@@ -104,9 +104,12 @@ void Relation::suppCouple(Couple& c)
             if(!RelationManager::getInstance().verifNoteRef(note1)) //la note n'est plus en couple nulle part
             {
                 QMessageBox::StandardButton reponse;
-                reponse=QMessageBox::question(0,"Supprimer de note", "La note est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
+                reponse=QMessageBox::question(0,"Supprimer de note", "La note " + note1->getId() + " est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
                 if(reponse == QMessageBox::Yes)
+                //{
+                    //MainWindow::supprimerNoteListe(note1->getId());
                     delete note1;
+                //}
                 // fait apparaitre une fenêtre de dialogue avec l’utilisateur
             }
         }
@@ -115,7 +118,7 @@ void Relation::suppCouple(Couple& c)
             if(!RelationManager::getInstance().verifNoteRef(note2)) //la note n'est plus en couple nulle part
             {
                 QMessageBox::StandardButton reponse;
-                reponse=QMessageBox::question(0,"Supprimer de note", "La note note2 est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
+                reponse=QMessageBox::question(0,"Supprimer de note", "La note " + note2->getId() + "est archivée et n'est plus référencée, voulez-vous  la supprimer ?",QMessageBox::Yes|QMessageBox::No);
                 if(reponse == QMessageBox::Yes)
                     delete note2;
                 // fait apparaitre une fenêtre de dialogue avec l’utilisateur

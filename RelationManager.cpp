@@ -1,7 +1,6 @@
 #include "RelationManager.h"
 #include "Relation.h"
 
-//Relation* RelationManager::Reference = new Relation("Reference", "note1 reference note2");
 RelationManager* RelationManager::managR = new RelationManager();
 
 void RelationManager::addRelation(QString& t, QString& d, bool orient)

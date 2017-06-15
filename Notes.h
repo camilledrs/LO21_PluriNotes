@@ -3,12 +3,9 @@
 
 #include <ctime>
 #include <QString>
-//#include "notemanager.h"
 #include "version.h"
 #include <QDateTime>
 #include<QTreeWidget>
-
-
 
 
 /**
@@ -95,10 +92,6 @@ class Note
      * @param v référence de version, nouvelle version créée
      */
     void editer(QString tittle, QDateTime modif,const Version& v); // edition des attributs de note uniquement
-    //creation d'une nouvelle version et penser à incrémenter nbVersion, verifiee si elle est active
-//    void creerArticle(tm crea, const QString& s);
-//    void creerMultimedia(tm crea, const QString& desc, const QString& file, Media t);
-//    void creerTache(tm crea, const QString& a, tm dateFin=0, unsigned int prio=0); //j'ai fait trois constructeurs différents pour es trois types de note possibles
     /**
      * @brief constructeur de recopie de Note
      * en privé pour que l'utilisateur de Note ne puisse pas y avoir accès

@@ -62,3 +62,4 @@ class Couple //Class car on veut tout en privé
 };
 
 #endif // COUPLE_H
+  

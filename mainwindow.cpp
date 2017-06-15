@@ -423,6 +423,13 @@ void MainWindow::creerNote()
     }
 }
 
+/*void MainWindow::supprimerNoteListe(QString id)
+{
+    NoteListArchive->setCurrentItem(new QListWidgetItem(id));
+    delete NoteListArchive->currentItem();
+}*/
+
+
 void MainWindow::supprimerNote()
 {
     QString id= idNote->text();
@@ -439,7 +446,18 @@ void MainWindow::supprimerNote()
             QMessageBox::information(this, "Confirmation supression", "La note a bien été supprimée");
         delete NoteList->currentItem();
         if (n.getDerniereVersion().notetype()=="tache")
-            delete TacheList->currentItem();
+        {
+            QList<QListWidgetItem*> temp=TacheList->findItems(id,0);
+            QStringList stringList;
+            foreach( QListWidgetItem *item, temp )
+                stringList << item->text();
+            QListWidget ui;
+            ui.addItems(stringList);
+            unsigned int row=0;
+            while(ui.item(row)->text()!=id) {row++;}
+            QListWidgetItem* i= TacheList->item(row);//trouver moyen de recuperer le QListWidgetItem grace a l'id;
+            delete i;
+        }
         idNote->setText("");
         titreNote->setText("");
         dateCreaNote->setDateTime(QDateTime::currentDateTime());
@@ -592,7 +610,6 @@ void MainWindow::restaurerNote()
             QListWidgetItem* i= NoteListArchive->item(row);//trouver moyen de recuperer le QListWidgetItem grace a l'id;
             delete i;
         }
-
 }
 
 void MainWindow::fenRelation()

@@ -32,11 +32,11 @@ class Couple //Class car on veut tout en privé
     //! \return un poiteur sur la note 2
     Note* getNote2(){return note2;}
     //! acceseur pour permettre d'obtenir l'ID de la note 1
-    //! \return l(e label'ID de la première note du couple
+    //! \return le label'ID de la première note du couple
     QString getIdNote1()const {return note1->getId();}
     //! acceseur pour permettre d'obtenir l'ID de la note 2
-    //! \return l(e label'ID de la deuxième note du couple
-    QString getIdNote2() const {return note2->getId();}
+    //! \return le label'ID de la deuxième note du couple
+    QString getIdNote2()const {return note2->getId();}
     //! methode pour modifier le label du couple
     //! \param newl un entier correspondant au nouveau label
     void setLabel(int newl){label=newl;}

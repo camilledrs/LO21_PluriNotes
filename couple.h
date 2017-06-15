@@ -35,7 +35,7 @@ class Couple //Class car on veut tout en privé
     //! \return le label'ID de la première note du couple
     QString getIdNote1()const {return note1->getId();}
     //! acceseur pour permettre d'obtenir l'ID de la note 2
-    //! \return le label'ID de la deuxième note du couple
+    //! \return le l'ID de la deuxième note du couple
     QString getIdNote2()const {return note2->getId();}
     //! methode pour modifier le label du couple
     //! \param newl un entier correspondant au nouveau label

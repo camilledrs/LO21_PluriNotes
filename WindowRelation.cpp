@@ -1,5 +1,4 @@
 #include "windowrelation.h"
-//#include "mainwindow.h"
 
 void WindowRelation::readSettingsRel()  //A utiliser dans le constructeur de MainWindow()
 {
@@ -26,7 +25,6 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     zoneCentraleRel = new QWidget;
     zoneGaucheRel = new QDockWidget;
     zoneGaucheRel->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    //zoneGaucheRel->setWidget();
     addDockWidget(Qt::LeftDockWidgetArea, zoneGaucheRel);
 
     Titre = new QLineEdit;
@@ -41,8 +39,6 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     layoutRel->addRow("Description :", Desc);
     layoutRel->addRow("Couple :", contenuRelation);
     QObject::connect(RelationList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(seeRelation(QListWidgetItem*)));
-    //QObject::connect(boutonAfficherRel,SIGNAL(clicked()),this,SLOT(SeeRelation()));
-
 
     boutonCreer = new QPushButton("Creer une Relation");
     boutonEditer = new QPushButton("Editer");
@@ -63,24 +59,17 @@ WindowRelation::WindowRelation(QWidget *parent) : QMainWindow(parent) { //QTabWi
     layoutBouttons->addWidget(boutonSupprimerCouple);
     QObject::connect(boutonSupprimerCouple,SIGNAL(clicked()),this,SLOT(supprimerCouple()));
     boutonQuitter = new QPushButton("Quitter");
-    //QObject::connect(boutonQuitter,SIGNAL(clicked()),this,SLOT(quitter()));
 
     layoutPrincipalRel = new QVBoxLayout;
     layoutPrincipalRel->addLayout(layoutRel);
     layoutPrincipalRel->addLayout(layoutBouttons);
     layoutPrincipalRel->addWidget(boutonQuitter);
 
-    //this->setLayout(layoutPrincipalRel);
-
     zoneCentraleRel->setLayout(layoutPrincipalRel);
     setCentralWidget(zoneCentraleRel);
 
     readSettingsRel();
-
 }
-
-
-
 
 void WindowRelation::Creer()
 {
@@ -108,7 +97,8 @@ void WindowRelation::ajouterCouple()
 {
     Relation* r;
     QString titre= Titre->text();
-    if (titre=="Reference") r= RelationManager::getInstance().getRef();
+    if (titre=="Reference") 
+        r= RelationManager::getInstance().getRef();
     else
     {
         RelationManager::Iterator itr=RelationManager::getInstance().getIterator();
@@ -119,7 +109,6 @@ void WindowRelation::ajouterCouple()
     bool ok=false;
     Note* n1;
     Note* n2;
-    //while(!ok)
     QString id1 = QInputDialog::getText(this, "ID Note1 :", "Entrez l'id de la premiere note à mettre dans le couple", QLineEdit::Normal, QString(), &ok);
     NoteManager::Iterator it=NoteManager::getInstance().getIterator();
     while ((!it.isDone()) && (id1 != it.current().getId())) //parcours les notes
@@ -132,8 +121,7 @@ void WindowRelation::ajouterCouple()
     else
         QMessageBox::critical(this, "Note non existante", "L'id ne correspond à aucune note, ressaisir un nouvel Id");
     ok=false;
-    //while(!ok)
-        QString id2 = QInputDialog::getText(this, "ID Note2 :", "Entrez l'id de la seconde note à mettre dans le couple", QLineEdit::Normal, QString(), &ok);
+    QString id2 = QInputDialog::getText(this, "ID Note2 :", "Entrez l'id de la seconde note à mettre dans le couple", QLineEdit::Normal, QString(), &ok);
     NoteManager::Iterator itN=NoteManager::getInstance().getIterator();
     while ((!itN.isDone()) && (id2 != itN.current().getId())) //parcours les notes
         itN.next();
@@ -181,8 +169,6 @@ void WindowRelation::supprimerCouple()
         r=&itRelationManager.current();
     }
     bool ok;
-    //QString labelCouple = QInputDialog::getText(this, "Label :", "Entrez le label du couple", QLineEdit::Normal, QString(), &ok);
-    //labelCouple.toInt();
 
     int nbCouple= RelationManager::getInstance().getRef()->getnb();
     for (RelationManager::Iterator itRelationManager=RelationManager::getInstance().getIterator();!itRelationManager.isDone();itRelationManager.next())
@@ -212,12 +198,13 @@ void WindowRelation::seeRelation(QListWidgetItem* i)
 {
     Relation* r;
     if(i->text()=="Reference") r=RelationManager::getInstance().getRef();
-    else {
-    RelationManager::Iterator it= RelationManager::getInstance().getIterator();
-    while(!it.isDone() && (it.current().getTitre() != i->text()))
-        it.next();
-    r=&it.current();
-        }
+    else
+    {
+        RelationManager::Iterator it= RelationManager::getInstance().getIterator();
+        while(!it.isDone() && (it.current().getTitre() != i->text()))
+            it.next();
+        r=&it.current();
+    }
     Titre->setText(r->getTitre());
     Desc->setText(r->getDesc());
     contenuRelation->setText(r->SeeRelation());
@@ -253,42 +240,33 @@ void WindowRelation::Editer()
     QString titre=Titre->text();
     if(titre == RelationManager::getInstance().getRef()->getTitre())
         QMessageBox::warning(this, "Erreur modification", "La relation Reference ne peut être modifiée !");
-    else {
-    QMessageBox::StandardButton reponse;
-    reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
-    QString desc=Desc->text();
-    if(reponse == QMessageBox::Yes)
+    else
     {
-        bool ok;
-        titre=QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);
-        if (ok && !titre.isEmpty())
-        Titre->setText(titre);
+        QMessageBox::StandardButton reponse;
+        reponse= QMessageBox::question(this,"Modifier Titre", "Voulez vous modifier le titre ?",QMessageBox::Yes | QMessageBox::No);
+        QString desc=Desc->text();
+        if(reponse == QMessageBox::Yes)
+        {
+            bool ok;
+            titre=QInputDialog::getText(this, "Titre :", "Quel titre voulez vous ?", QLineEdit::Normal, QString(), &ok);
+            if (ok && !titre.isEmpty())
+                Titre->setText(titre);
+        }
+        QMessageBox::StandardButton reponse2;
+        reponse2= QMessageBox::question(this,"Modifier Description", "Voulez vous modifier la description ?",QMessageBox::Yes | QMessageBox::No);
+        if(reponse2 == QMessageBox::Yes)
+        {
+            bool ok;
+            desc = QInputDialog::getText(this, "Description :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok);
+            if (ok && !desc.isEmpty())
+                Desc->setText(desc);
+        }
+        QListWidgetItem* i= RelationList->currentItem();
+        RelationManager::Iterator it = RelationManager::getInstance().getIterator();
+        while(it.current().getTitre() != i->text())
+            it.next();
+        Relation& r=it.current();
+        RelationManager::getInstance().editerRelation(&r,titre, desc);
+        i->setText(titre);
     }
-    QMessageBox::StandardButton reponse2;
-    reponse2= QMessageBox::question(this,"Modifier Description", "Voulez vous modifier la description ?",QMessageBox::Yes | QMessageBox::No);
-    if(reponse2 == QMessageBox::Yes)
-    {
-        bool ok;
-        desc = QInputDialog::getText(this, "Description :", "Quel description voulez vous ?", QLineEdit::Normal, QString(), &ok);
-        if (ok && !desc.isEmpty())
-        Desc->setText(desc);
-    }
-    QListWidgetItem* i= RelationList->currentItem();
-    RelationManager::Iterator it = RelationManager::getInstance().getIterator();
-    while(it.current().getTitre() != i->text())
-        it.next();
-    Relation& r=it.current();
-    RelationManager::getInstance().editerRelation(&r,titre, desc);
-    i->setText(titre);
 }
-
-}
-
-/*
-void WindowRelation::quitter()
-{
-    writeSettingsRel();
-    close()
-}
-*/
-

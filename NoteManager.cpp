@@ -344,4 +344,3 @@ void NoteManager::load() {
     qDebug()<<"fin load\n";
 }
 */
-  

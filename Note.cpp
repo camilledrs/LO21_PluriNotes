@@ -36,9 +36,9 @@ void Note::editer(QString title, QDateTime modif, const Version& v)
     }
 }
 
-void Note::verifRef( const QString s)
+void Note::verifRef(const QString s)
 {
-    if(s.contains("\ref{"))
+    if(s.contains("ref{",Qt::CaseInsensitive))
     {
         const QChar *data = s.data();
         while(*data!= '\\')
@@ -51,19 +51,23 @@ void Note::verifRef( const QString s)
             idy.append(*data);
             data++;
         }
+        QMessageBox::information(0, "Confirmation creation", "L'id de la note a reference est"+idy+" ! ");
         NoteManager::Iterator it=NoteManager::getInstance().getIterator();
         while(it.current().getId()!=idy)
         {
             it.next();
         }
-        int l2;
-        std::cout<<"quel nouveau label pour la reference ?\n";
-        std::cin>>l2;
+
+
+        bool ok;
+
+        QString l2 = QInputDialog::getText(0, "label ", "Quel label voulez vous pour le couple ?", QLineEdit::Normal, QString(), &ok);
         for(unsigned int i=0; i<RelationManager::getInstance().getRef()->getnb(); i++)
         {
-            if (const_cast<Couple*>(RelationManager::getInstance().getRef()->elem(i).elementCourant())->getLabel()==l2) throw NoteException("error, creation of an already existent label");
+            if (const_cast<Couple*>(RelationManager::getInstance().getRef()->elem(i).elementCourant())->getLabel()==l2.toInt(&ok)) throw NoteException("error, creation of an already existent label");
         }
-        RelationManager::getInstance().getRef()->addCouple(*this,it.current(),l2);
+        RelationManager::getInstance().getRef()->addCouple(*this,it.current(),l2.toInt(&ok));
+        //QMessageBox::information(0, "Confirmation creation", "Couple ajouté !!");
     }
 }
 

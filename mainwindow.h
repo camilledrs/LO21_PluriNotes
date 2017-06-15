@@ -54,13 +54,6 @@ class MainWindow : public QMainWindow
     QTreeWidget *NoteAbrFils;
     QTreeWidget *NoteAbrPeres;
 
-
-    /*QTextEdit *texteNote;
-    QLineEdit *actionNote;
-    QLineEdit *descriptionNote;
-    QLineEdit *fichier;*/
-
-
     QPushButton *enregistrer;
 
     QPushButton *creer;
@@ -70,15 +63,9 @@ class MainWindow : public QMainWindow
     QPushButton *boutonQuitter;
     QPushButton *restaurerVersion;
 
-    //QLineEdit *idNote ;
-    //QPushButton *boutonAfficher;
-    //QPushButton *boutonRestaurer;
-
     QFormLayout *layoutAffich;
     QVBoxLayout *layoutAffichage;
     QVBoxLayout *layoutList;
-    //QFormLayout *layout;
-    //QVBoxLayout *layoutRecherche;
     QVBoxLayout *layoutPrincipal;
 
 public:
@@ -104,18 +91,9 @@ public:
      */
     void afficherNote(QString id);
 
-    //void supprimerNoteListe(QString id);
-
 signals:
 
 public slots:
-    //void articleNote();
-    //void tacheNote();
-    //void mediaNote();
-    /**
-     * @brief slot Recherche
-     */
-    //void Recherche();
     /**
      * @brief slot nouvelleFen
      * Ouvre une fenetre vide

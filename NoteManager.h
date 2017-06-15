@@ -156,21 +156,12 @@ public :
      * @param v une reference sur un objet version
      */
     void addNote(QString id, QString title, QDateTime crea,QDateTime modif, const Version& v);
-    /**
+  /**
      * @brief methode addNoteXML
      * créé une note et la range dans le tableau notes
-     * @param id de type QString
-     * @param title de type QString
-     * @param crea de type QDateTime
-     * @param modif de type QDateTime
-     * @param act de type bool, statut active de la note
-     * @param supp de type bool, statut supprime de la Note
-     * @param nbV de type unisgned int, nombre de versions de la note
-     * @param nbMV de type unisgned int, nombre de versions maximum de la note
-     * @param a de type QDateTime
-     * @param v un tableau d'adresses de versions
+     * @param n note ajouter a notemanager
      */
-    void addNoteXML(QString id, QString title, QDateTime crea,QDateTime modif,bool act, bool supp, unsigned int nbV, unsigned int nbMV,  Version** v);
+    void addNoteXML(Note* n);
     /**
      * @brief methode editer
      * @param n pointeur sur la note à éditer

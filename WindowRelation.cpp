@@ -157,6 +157,45 @@ void WindowRelation::ajouterCouple()
     }
 }}
 
+void WindowRelation::supprimerCouple()
+{
+    Relation* r;
+    QString titre= Titre->text();
+    if (titre=="Reference")
+        r= RelationManager::getInstance().getRef();
+    else
+    {
+        RelationManager::Iterator itRelationManager=RelationManager::getInstance().getIterator();
+        while((!itRelationManager.isDone()) && (titre!=itRelationManager.current().getTitre()))
+            itRelationManager.next();
+        r=&itRelationManager.current();
+    }
+    bool ok;
+    //QString labelCouple = QInputDialog::getText(this, "Label :", "Entrez le label du couple", QLineEdit::Normal, QString(), &ok);
+    //labelCouple.toInt();
+
+    int nbCouple= RelationManager::getInstance().getRef()->getnb();
+    for (RelationManager::Iterator itRelationManager=RelationManager::getInstance().getIterator();!itRelationManager.isDone();itRelationManager.next())
+        nbCouple+=itRelationManager.current().getnb();
+
+    int labelCouple = QInputDialog::getInt(this, tr("Label"),tr("Entrez le label du couple:"), 0, 0, nbCouple, 1, &ok);
+    if (ok)
+    {
+        Relation::iterator itRelation = r->ibegin();
+        Relation::iterator itRelationFin = r->iend();
+        while ((itRelation!=itRelationFin) && (labelCouple != itRelation.elementCourant()->getLabel())) //parcours les notes
+            itRelation++;
+        if (itRelation==itRelationFin)
+            throw RelationException("Couple inexistant");
+        else
+        {
+            r->suppCouple(*itRelation.elementCourant());
+            QMessageBox::information(this,"Confirmation supression","Le couple a bien été suprimé");
+        }
+    }
+    else
+        QMessageBox::critical(this,"Erreur","Vous avez fait une erreur lors de la saisie");
+}
 
 void WindowRelation::seeRelation(QListWidgetItem* i)
 {

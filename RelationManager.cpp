@@ -187,3 +187,4 @@ void RelationManager::load() {
     qDebug()<<"fin load\n";
 }
 */
+  

@@ -21,24 +21,6 @@ void NoteManager::addNote(QString id, QString title, QDateTime crea, QDateTime m
     notes[nbNotes]->verifRef(title);
 }
 
-void NoteManager::addNote(QString id, QString title)
-{
-    for(unsigned int i=0; i<nbNotes; i++)
-    {
-        if (notes[i]->getId()==id) throw NoteException("error, creation of an already existent note");
-    }
-    if (nbNotes==nbMaxNotes)
-    {
-        Note** newNotes= new Note*[nbMaxNotes+5];
-        for(unsigned int i=0; i<nbNotes; i++) newNotes[i]=notes[i];
-        Note** oldNotes=notes;
-        notes=newNotes;
-        nbMaxNotes+=5;
-        if (oldNotes) delete[] oldNotes;
-    }
-    notes[nbNotes++]=new Note(id, title);
-    notes[nbNotes]->verifRef(title);
-}
 
 void NoteManager::addNoteXML(QString id, QString title, QDateTime crea,QDateTime modif,bool act, bool supp, unsigned int nbV, unsigned int nbMV,  Version** v){
     for(unsigned int i=0; i<nbNotes; i++)
@@ -56,6 +38,7 @@ void NoteManager::addNoteXML(QString id, QString title, QDateTime crea,QDateTime
     }
     notes[nbNotes++]=new Note(id, title, crea, modif,act,supp,nbV,nbMV, v);
     //notes[nbNotes]->verifRef(title);
+    //la fonction fonctionne mais fait planter l'application à l'affichage
 }
 
 NoteManager& NoteManager::operator=(const NoteManager& m)
@@ -90,8 +73,6 @@ void NoteManager::supprimerNote(Note& n)
             Relation::iterator it=reference->ibegin();
             Relation::iterator it_end=reference->iend();
             for(it;it!=it_end;it++)
-            //while ((it!=it_end) && (n.getId() != (it.elementCourant()->getIdNote1())))
-                //it++;
                 if (n.getId() == it.elementCourant()->getIdNote1())  //note fait référence à une note
                     reference->suppCouple(*it.elementCourant());
             RelationManager::Iterator itRelationManager = RelationManager::getInstance().getIterator();
@@ -115,8 +96,6 @@ void NoteManager::supprimerNote(Note& n)
         Relation::iterator it=reference->ibegin();
         Relation::iterator it_end=reference->iend();
         for(it;it!=it_end;it++)
-        //while ((it!=it_end) && (n.getId() != (it.elementCourant()->getIdNote1())))
-            //it++;
             if (n.getId() == it.elementCourant()->getIdNote1())  //note fait référence à une note
                 reference->suppCouple(*it.elementCourant());
         RelationManager::Iterator itRelationManager = RelationManager::getInstance().getIterator();
@@ -148,7 +127,6 @@ void NoteManager::viderCorbeille()
            RelationManager::Iterator itR=RelationManager::getInstance().getIterator();  //parcours les relations
            while(!itR.isDone())  //on parcours l'ensemble des relations
          {
-             //Relation curr=itR.current();
              Relation::const_iterator itrela=itR.current().begin();  //parcours les couples de la relation
              Relation::const_iterator end=itR.current().end();
              while (itrela!=end)
@@ -156,8 +134,8 @@ void NoteManager::viderCorbeille()
                  if (const_cast<Couple*>(itrela.elementCourant())->getIdNote1()==it.current().getId() || const_cast<Couple*>(itrela.elementCourant())->getIdNote2() == it.current().getId())  //on doit supprimer le couple
                  {
                      const Couple* tmp= itrela.elementCourant();
-                         itrela++;
-                         delete tmp;
+                     itrela++;
+                     delete tmp;
                  }
                  else
                      itrela++;  //on passe au couple suivant
@@ -187,7 +165,8 @@ void NoteManager::editer(Note* n, QString title, QDateTime modif, const Version&
 }
 
 
-void NoteManager::save() const {
+void NoteManager::save() const 
+{
     QFile newfile("notes.xml");
     if (!newfile.open(QIODevice::WriteOnly | QIODevice::Text))
         throw NotesException(QString("erreur sauvegarde notes : ouverture fichier xml"));
@@ -195,7 +174,8 @@ void NoteManager::save() const {
     stream.setAutoFormatting(true);
     stream.writeStartDocument();
     stream.writeStartElement("notes");
-    for(unsigned int i=0; i<nbNotes; i++){
+    for(unsigned int i=0; i<nbNotes; i++)
+    {
         stream.writeStartElement("note");
         stream.writeTextElement("id",notes[i]->getId());
         stream.writeTextElement("title",notes[i]->getTitre());
@@ -205,7 +185,8 @@ void NoteManager::save() const {
         stream.writeTextElement("supprime",QString::number(notes[i]->getStatutSupp()));
         stream.writeTextElement("nb version",QString::number(notes[i]->getNbVersion()));
         stream.writeTextElement("nb max version",QString::number(notes[i]->getNbMaxVersion()));
-        for(unsigned int j=0; j<notes[i]->getNbVersion(); j++){
+        for(unsigned int j=0; j<notes[i]->getNbVersion(); j++)
+        {
             notes[i]->versions[j]->save(&newfile);
              stream.writeEndElement();
         }

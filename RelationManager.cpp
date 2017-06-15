@@ -66,34 +66,26 @@ bool RelationManager::verifNoteRef(const Note* n)  //renvoie true si la note est
     return false;  //on a pas trouvé de couple avec n
 }
 
-void RelationManager::save() const {
-    QFile newfile("relations.xml");
-    if (!newfile.open(QIODevice::WriteOnly | QIODevice::Text))
-        throw RelationException(QString("erreur sauvegarde relation : ouverture fichier xml"));
-    QXmlStreamWriter stream(&newfile);
-    stream.setAutoFormatting(true);
-    stream.writeStartDocument();
-    stream.writeStartElement("relations");
+void RelationManager::save(QXmlStreamWriter &stream) const {
+
     for(unsigned int i=0; i<nbRelations; i++){
         stream.writeStartElement("relation");
-        relations[i]->save(&newfile);
+        relations[i]->save(stream);
      stream.writeEndElement();
     }
         stream.writeStartElement("refrence");
-        RelationManager::getInstance().getRef()->save(&newfile);
+        RelationManager::getInstance().getRef()->save(stream);
         stream.writeEndElement();
 
-    stream.writeEndElement();
-    stream.writeEndDocument();
-    newfile.close();
+
 }
 
 /*
 void RelationManager::load() {
-    QFile fin("relations.xml");
+    QFile fin("plurinotes.xml");
     // If we can't open it, let's show an error message.
     if (!fin.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw NotesException("Erreur ouverture fichier notes");
+        return;
     }
     // QXmlStreamReader takes any QIODevice.
     QXmlStreamReader xml(&fin);
@@ -107,7 +99,7 @@ void RelationManager::load() {
         // If token is StartElement, we'll see if we can read it.
         if(token == QXmlStreamReader::StartElement) {
             // If it's named taches, we'll go to the next.
-            if(xml.name() == "relations") continue;
+            if(xml.name() == "Save") continue;
             // If it's named tache, we'll dig the information from there.
             if(xml.name() == "relation") {
                 qDebug()<<"new relation\n";
@@ -115,8 +107,9 @@ void RelationManager::load() {
                 QString description;
                 bool orientee;
                 unsigned int nbc;
-                unisgned int nbcmax;
+                unsigned int nbcmax;
                 Couple** c;
+                Relation *r;
                 QXmlStreamAttributes attributes = xml.attributes();
                 xml.readNext();
                 //We're going to loop over the things because the order might change.
@@ -137,8 +130,7 @@ void RelationManager::load() {
                         if(xml.name() == "orientee") {
                             xml.readNext();
                             orientee=(xml.text().toString()).toInt();
-                            qDebug()<<"orientee="<<orientee<<"\n";
-
+                            qDebug()<<"orientee="<<orientee<<"\n";}
                         // We've found nbCouple
                         if(xml.name() == "nbCouple") {
                             xml.readNext();
@@ -151,39 +143,141 @@ void RelationManager::load() {
                             nbcmax=(xml.text().toString()).toInt();
                             qDebug()<<"max="<<nbcmax<<"\n";
                         }
-                        /*
-                         while(!(xml.tokenType() == QXmlStreamReader::EndElement && (xml.name() == "article"||xml.name() == "tache"||xml.name() == "multimedia"))) {
-                         if(xml.tokenType() == QXmlStreamReader::StartElement) {
-                        // We've found dateversion
-                        if(xml.name() == "date version") {
-                            xml.readNext();
-                            dateMod.fromString(xml.text().toString());
-                            qDebug()<<"dateModif="<<dateMod<<"\n";
-                        }
-                         }
-                         }
-                        // We've found versions
-                        if(xml.name() == "nb max version") {
-                            xml.readNext();
-                            nbMV=xml.text().toString();
-                            qDebug()<<"nbMaxVersion="<<nbMV<<"\n";
-                        }
-                        // A COMPLETER POUR REMPLIR VERSION
+                        r=new Relation(titre,description,orientee);
+
+                                if(xml.name() == "couple") {
+                                    qDebug()<<"new couple\n";
+                                    int label;
+                                    QString idn1;
+                                    QString idn2;
+                                    QXmlStreamAttributes attributesV = xml.attributes();
+                                    xml.readNext();
+                                    while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "couple")) {
+                                    if(xml.tokenType() == QXmlStreamReader::StartElement) {
+                                       // We've found label
+                                   if(xml.name() == "label") {
+                                       xml.readNext();
+                                       label=(xml.text().toString()).toInt();
+                                       qDebug()<<"label="<<label<<"\n";
+                               }
+                               // We've found idnote1
+                               if(xml.name() == "idNote1") {
+                                   xml.readNext();
+                                   idn1=xml.text().toString();
+                                   qDebug()<<"idNote1="<<idn1<<"\n";
+                               }
+                                if(xml.name() == "idNote2") {
+                                    xml.readNext();
+                                    idn2=xml.text().toString();
+                                    qDebug()<<"idNote2="<<idn2<<"\n";
+                                }
+                                }
+                                    xml.readNext();
+                                }
+                                    qDebug()<<"ajout couple "<<label<<"\n";
+                                    //r->addCouple();
+                                }
+
                     }
                     // ...and next...
                     xml.readNext();
                 }
-                qDebug()<<"ajout note "<<identificateur<<"\n";
-                addNoteXML(identificateur,titre,dateC,dateMod,act,supp,nbV,nbMV,v);
+                qDebug()<<"ajout relation "<<titre<<"\n";
+                //addRelation(r);
+            }
+            if(xml.name() == "reference") {
+                qDebug()<<"new relation\n";
+                QString titre;
+                QString description;
+                bool orientee;
+                unsigned int nbc;
+                unsigned int nbcmax;
+                Couple** c;
+                Relation *r;
+                QXmlStreamAttributes attributes = xml.attributes();
+                xml.readNext();
+                //We're going to loop over the things because the order might change.
+                //We'll continue the loop until we hit an EndElement named article.
+                while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "relation")) {
+                    if(xml.tokenType() == QXmlStreamReader::StartElement) {
+                        // We've found identificteur.
+                        if(xml.name() == "titre") {
+                            xml.readNext(); titre=xml.text().toString();
+                            qDebug()<<"titre="<<titre<<"\n";
+                        }
+                        // We've found description.
+                        if(xml.name() == "description") {
+                            xml.readNext(); description=xml.text().toString();
+                            qDebug()<<"descritpion="<<description<<"\n";
+                        }
+                        // We've found orientee
+                        if(xml.name() == "orientee") {
+                            xml.readNext();
+                            orientee=(xml.text().toString()).toInt();
+                            qDebug()<<"orientee="<<orientee<<"\n";}
+                        // We've found nbCouple
+                        if(xml.name() == "nbCouple") {
+                            xml.readNext();
+                            nbc=(xml.text().toString()).toInt();
+                            qDebug()<<"nb="<<nbc<<"\n";
+                        }
+                        // We've found nbMaxVersion
+                        if(xml.name() == "nbMaxCouple") {
+                            xml.readNext();
+                            nbcmax=(xml.text().toString()).toInt();
+                            qDebug()<<"max="<<nbcmax<<"\n";
+                        }
+                        r=new Relation(titre,description,orientee);
+
+                                if(xml.name() == "couple") {
+                                    qDebug()<<"new couple\n";
+                                    int label;
+                                    QString idn1;
+                                    QString idn2;
+                                    QXmlStreamAttributes attributesV = xml.attributes();
+                                    xml.readNext();
+                                    while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "couple")) {
+                                    if(xml.tokenType() == QXmlStreamReader::StartElement) {
+                                       // We've found label
+                                   if(xml.name() == "label") {
+                                       xml.readNext();
+                                       label=(xml.text().toString()).toInt();
+                                       qDebug()<<"label="<<label<<"\n";
+                               }
+                               // We've found idnote1
+                               if(xml.name() == "idNote1") {
+                                   xml.readNext();
+                                   idn1=xml.text().toString();
+                                   qDebug()<<"idNote1="<<idn1<<"\n";
+                               }
+                                if(xml.name() == "idNote2") {
+                                    xml.readNext();
+                                    idn2=xml.text().toString();
+                                    qDebug()<<"idNote2="<<idn2<<"\n";
+                                }
+                                }
+                                    xml.readNext();
+                                }
+                                    qDebug()<<"ajout couple "<<label<<"\n";
+                                    //r->addCouple();
+                                }
+
+                    }
+                    // ...and next...
+                    xml.readNext();
+                }
+                qDebug()<<"ajout reference "<<titre<<"\n";
+                Reference=r;
             }
         }
     }
     // Error handling.
     if(xml.hasError()) {
-        throw NotesException("Erreur lecteur fichier notes, parser xml");
+        throw RelationException("Erreur lecteur fichier notes, parser xml");
     }
     // Removes any device() or data from the reader * and resets its internal state to the initial state.
     xml.clear();
     qDebug()<<"fin load\n";
 }
+
 */
